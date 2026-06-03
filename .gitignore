@@ -1,0 +1,51 @@
+# ==========================================
+# FRONTEND (Angular)
+# ==========================================
+# Compiled output
+
+Frontend/dist/
+Frontend/tmp/
+Frontend/out-tsc/
+Frontend/bazel-out/
+
+# Node
+Frontend/node_modules/
+Frontend/npm-debug.log
+Frontend/yarn-error.log
+
+# Miscellaneous
+Frontend/.angular/cache/
+Frontend/.sass-cache/
+Frontend/connect.lock
+Frontend/coverage/
+Frontend/libpeerconnection.log
+Frontend/testem.log
+Frontend/typings/
+Frontend/__screenshots__/
+
+# ==========================================
+# BACKEND
+
+Backend/node_modules
+
+
+# ==========================================
+# IDEs, Editores y Sistema (Globales)
+# ==========================================
+# Esto aplica a cualquier carpeta del proyecto automáticamente
+.idea/
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+
+# Visual Studio Code
+.vscode/
+.idx
+
+# System files
+.DS_Store
+Thumbs.db
