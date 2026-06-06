@@ -1,6 +1,8 @@
 const express = require('express')
-
+const {sessionMiddleware} = require('../config/session.config')
 const app = express()
+
+app.use(sessionMiddleware)
 
 const PORT = 3000;
 
