@@ -1,5 +1,4 @@
-const Objeto = require('../../models/objeto.model')
-
+const Objeto = require('../../shared/models/objeto.model')
 
 // CREATE
 exports.crearObjetoRepository = async (datosObjeto) => {
