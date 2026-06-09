@@ -10,6 +10,6 @@ exports.getConnectMongoDB = async () => {
         console.log("Conexion con la base de datos lograda :)")
     }
 } catch (error) {
-        console.log("Error en la base de datos!", error)
+        console.log("Error en la base de datos!")
     }
 }

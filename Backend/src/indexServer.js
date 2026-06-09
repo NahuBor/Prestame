@@ -1,8 +1,12 @@
 const express = require('express')
-const {sessionMiddleware} = require('../config/session.config')
+const {sessionMiddleware} = require('./config/session.config')
+const routers = require('./routers')
 const app = express()
 
-app.use(sessionMiddleware)
+
+app.use(express.json())
+app.use(sessionMiddleware())
+app.use('/', routers)
 
 const PORT = 3000;
 

@@ -6,6 +6,5 @@ const dbConfig = {
     NAME_DB: process.env.NAME_DB,
 }
 
-
 module.exports = {dbConfig}
 
