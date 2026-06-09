@@ -1,1 +1,8 @@
-// Este sera el router principal, acá dirigeremos a los routers especificos de cada funcionalidad
+// Este sera el router principal, acá dirigeremos a los routers especificos de cada feature
+const express = require('express')
+const mainRouter = express.Router()
+const authRouter = require('./features/auth/authRouter')
+
+mainRouter.use('/auth', authRouter)
+
+module.exports = mainRouter;
