@@ -1,4 +1,4 @@
-const objetos = require('./src/objetos.js').objetos;
+const objetos = require('../../shared/models/models.js').objetos;
 
 exports.getAllobjetsRepository = async () =>{
     
