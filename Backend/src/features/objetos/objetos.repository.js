@@ -1,15 +1,35 @@
-const objetos = require('../../shared/models/models.js').objetos;
+
+
+//const objetos = require('../../shared/models/models.js').objetos;
+const Objetos= require('../../shared/models/models.js')
+
+getConnectMongoDB();
 
 exports.getAllobjetsRepository = async () =>{
     
     try {
-         console.log("REPOSITORY - getAllObjetsRepository ")
+         console.log(" MONGO DBREPOSITORY - getAllObjetsRepository ")
+         const objetos = await Objetos.find(); 
+         console.log(objetos);
          return await JSON.stringify(objetos)
     } catch (error) {
         console.log("Error en getAllObjetsRepository ", error)
     }
    
 }
+
+exports.getAllFrontendLanguagesRepository = async () => {
+    try {        
+        console.log("MONGO DB REPOSITORY - getAllFrontendLanguagesRepository ")
+        const lenguajes = await Lenguajes.find();
+        console.log(lenguajes)
+        return await JSON.stringify(lenguajes)
+    } catch (error) {
+        console.log("SQL Error en getAllFrontendLanguagesRepository ", error)
+    }
+
+}
+
 
 
 exports.getObjetsFilteredRepository = async (lenguaje, orderby) =>{
