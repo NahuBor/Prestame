@@ -1,0 +1,29 @@
+GET http://127.0.0.1:3000/auth/perfil 
+Content-Type: application/json
+
+### PROBAMOS REGISTER
+POST http://127.0.0.1:3000/auth/register 
+Content-Type: application/json
+
+{
+    "nombre": "Bohemian Rhapsody",
+    "email": "peron123@gmail.com",
+    "password": "floresmarillas123"
+}
+
+### PROBAMOS LOGIN
+POST http://127.0.0.1:3000/auth/login 
+Content-Type: application/json
+
+{
+    "email": "peron123@gmail.com",
+    "password": "floresmarillas123"
+}
+
+### PROBAMOS LA SESSION Y LOS PERMISOS.
+
+GET http://127.0.0.1:3000/auth/perfil
+
+### PROBAMOS LOGOUT
+
+POST http://127.0.0.1:3000/auth/logout
