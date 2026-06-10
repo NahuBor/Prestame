@@ -13,3 +13,5 @@ exports.getConnectMongoDB = async () => {
         console.log("Error en la base de datos!")
     }
 }
+
+//this.getConnectMongoDB();

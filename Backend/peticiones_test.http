@@ -1,0 +1,87 @@
+GET http://127.0.0.1:3001/api/lenguajes/frontend HTTP/1.1
+
+#### CON URL PARAM - SIN QUERY PARAM
+GET http://127.0.0.1:3001/api/lenguajes/frontend/javascript HTTP/1.1
+
+####
+GET http://127.0.0.1:3001/api/lenguajes/frontend/JavaSCRIPTTTT HTTP/1.1
+
+
+#### CON URL PARAM - CON QUERY PARAM "ARRIBA"
+GET http://127.0.0.1:3001/api/lenguajes/frontend/javascript?ordenar=arriba HTTP/1.1
+
+#### CON URL PARAM - CON QUERY PARAM "ABAJO"
+GET http://127.0.0.1:3001/api/lenguajes/frontend/javascript?ordenar=abajo HTTP/1.1
+
+#### CON URL PARAM - CON QUERY PARAM "LEMANDOFRUTA"
+GET http://127.0.0.1:3001/api/lenguajes/frontend/javascript?ordenar=lemandofruta HTTP/1.1
+
+
+################################################################################################################################################################
+# POST http://127.0.0.1:3001/api/lenguajes/frontend HTTP/1,1 >>>>> METODO URL PROTOCOLO
+# Content-Type: application/json # HEADER - Cuando vamos a enviar datos en el Body, es muy importante indicarle el tipo de dato que le vamos a mandar en el Body - IMPORTANTE! no dejar espacio entre la URL y el HEADER
+# >>>>>>>>>> Para separar el HEADER y el BODY se tiene que dejar una espacio en blanco, el CL RF que decía la ppt en la diapo de la anatomía  de la Request HTTP
+# BODY // En este caso vamos a enviar un JSON en el body, con el objeto que vamos a guardar.
+################################################################################################################################################################
+POST http://127.0.0.1:3001/api/lenguajes/frontend HTTP/1,1
+Content-Type: application/json
+
+{
+    "id": 10,
+    "nombre": "JavaSCRIPTTTT",
+    "turno": "noche",
+    "comision": "AAAAAA"
+}
+
+###
+PUT http://127.0.0.1:3001/api/lenguajes/frontend/6 HTTP/1,1
+Content-Type: application/json
+
+{
+    "nombre": "HTML"
+}
+
+###
+DELETE http://127.0.0.1:3001/api/lenguajes/frontend/3 HTTP/1,1
+
+
+####POST SQL
+
+POST http://127.0.0.1:3001/api/lenguajes/frontend HTTP/1,1
+Content-Type: application/json
+
+{
+    "materia_id": 1,
+    "nombre": "JavaSCRIPTTTT",
+    "turno_id": 2,
+    "comision_id": 1,
+    "cantidad_alumnos": 678
+}
+
+
+####POST SQL - PRUEBA 2
+
+POST http://127.0.0.1:3001/api/lenguajes/frontend HTTP/1,1
+Content-Type: application/json
+
+{
+    "id": 2,
+    "nombre": "CSS",
+    "turno": 1,
+    "comision": 2,
+    "cantidadAlumnos": 1
+}
+
+### PUT SQL 
+
+
+
+###
+PATCH http://127.0.0.1:3001/api/lenguajes/frontend/4 HTTP/1,1
+Content-Type: application/json
+
+{
+    "turno": 3,
+    "comision": 2,
+    "cantidadAlumnos": 998
+}
