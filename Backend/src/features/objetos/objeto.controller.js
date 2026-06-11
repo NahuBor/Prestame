@@ -34,3 +34,21 @@ exports.editarObjetoController = async (req, res) => {
 
     }
 }
+
+exports.eliminarObjetoController = async (req, res) => {
+    try {
+        const idObjeto = req.params.id
+        console.log("CONTROLLER - eliminarObjetoController - idObjeto:", idObjeto)
+        await objetoService.eliminarObjetoService(idObjeto)
+        res.send({
+            code: 200,
+            message: "Objeto eliminado correctamente"
+        })
+    } catch(error){
+        console.log("Error - CONTROLLER eliminarObjeto", error)
+        res.status(500).send({
+            code: 500,
+            message: "Error al eliminar el objeto"
+        })
+    }
+}

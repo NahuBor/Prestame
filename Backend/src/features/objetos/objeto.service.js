@@ -23,3 +23,19 @@ exports.editarObjetoService = async (id, objetoActualizado) => {
         throw error
     }
 }
+
+// eliminar Objeto Service
+
+exports.eliminarObjetoService = async (idObjeto) => {
+    try {
+        console.log("SERVICE - eliminarObjetoService", idObjeto)
+        const objetoEliminado = await objetoRepository.eliminarObjetoRepository(idObjeto)
+        if (!objetoEliminado) {
+            throw new Error("Objeto no encontrado")
+        }
+        return objetoEliminado
+    }
+    catch (error) {
+        throw error
+    }
+}

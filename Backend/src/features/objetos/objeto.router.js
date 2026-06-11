@@ -6,5 +6,6 @@ const objetoRouter = express.Router()
 
 objetoRouter.post('/', authMiddleware, objetoController.crearObjetoController)
 objetoRouter.put('/:id', authMiddleware, objetoController.editarObjetoController)
+objetoRouter.delete('/:id', authMiddleware, objetoController.eliminarObjetoController)
 
 module.exports = objetoRouter

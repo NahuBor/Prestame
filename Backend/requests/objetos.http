@@ -32,7 +32,7 @@ Content-Type: application/json
 }
 
 ### Editar objeto - caso feliz
-PUT http://127.0.0.1:3000/objetos/6a2b1dec16a755a64aed94c2
+PUT http://127.0.0.1:3000/objetos/6a2b49a91c7f20184cbfbd62
 Content-Type: application/json
 
 {
@@ -52,3 +52,10 @@ Content-Type: application/json
     "descripcion": "Id inválido",
     "categoria": "herramientas"
 }
+
+### Eliminar objeto - caso feliz
+DELETE http://127.0.0.1:3000/objetos/6a2b49a91c7f20184cbfbd62
+###
+
+### Eliminar objeto - caso fallo (id inexistente)
+DELETE http://127.0.0.1:3000/objetos/000000000000000000000000
