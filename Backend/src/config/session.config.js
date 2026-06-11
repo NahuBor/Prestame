@@ -10,8 +10,8 @@ exports.sessionMiddleware = () => {
         resave: true,
         saveUninitialized: false,
         store: MongoStore.create({
-             mongoUrl: process.env.MONGO_URI,
-            collection: 'sessions'
+        mongoUrl: process.env.MONGO_URI,
+        collection: 'sessions'
         }),
         cookie: {
             secure: false,

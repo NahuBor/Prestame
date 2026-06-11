@@ -4,7 +4,7 @@ const objetoRepository = require('./objeto.repository')
 exports.crearObjetoService = async (datosObjeto) => {
     try {
         console.log("SERVICE - crearObjetoService", datosObjeto)
-        return await objetoRepository.crearObjeto(datosObjeto)
+        return await objetoRepository.crearObjetoRepository(datosObjeto)
     } catch (error) {
         throw error
     }

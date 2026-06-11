@@ -1,0 +1,32 @@
+### Registrar usuario
+POST http://127.0.0.1:3000/auth/register
+Content-Type: application/json
+
+{
+    "nombre": "Diana Rodriguez",
+    "email": "diana@test.com",
+    "password": "123456"
+}
+
+###
+
+### Login
+POST http://127.0.0.1:3000/auth/login
+Content-Type: application/json
+
+{
+    "email": "diana@test.com",
+    "password": "123456"
+}
+
+###
+
+### Crear objeto (requiere estar logueada)
+POST http://127.0.0.1:3000/objetos
+Content-Type: application/json
+
+{
+    "titulo": "Taladro inalámbrico",
+    "descripcion": "Bosch 18V con baterías",
+    "categoria": "herramientas"
+}
