@@ -1,4 +1,4 @@
-const Objeto = require('../../shared/models/objeto.model')
+const Objeto = require('../../shared/models/objeto.model.js')
 
 // CREATE
 exports.crearObjetoRepository = async (datosObjeto) => {
