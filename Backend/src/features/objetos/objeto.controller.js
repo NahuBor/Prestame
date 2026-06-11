@@ -17,3 +17,20 @@ exports.crearObjetoController = async (req, res) => {
         })
     }
 }
+
+exports.editarObjetoController = async (req, res) => {
+    try {
+        const id = req.params.id
+        const objetoActualizado = req.body
+        console.log("CONTROLLER - editarObjetoController - ", typeof objetoActualizado, objetoActualizado)
+        res.send(await objetoService.editarObjetoService(id, objetoActualizado))
+
+    } catch (error) {
+        console.log("Error - CONTROLLER editarObjeto", error)
+        res.status(500).send({
+            code: 500,
+            message: "Error al editar el objeto"
+        })
+
+    }
+}

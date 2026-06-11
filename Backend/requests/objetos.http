@@ -30,3 +30,25 @@ Content-Type: application/json
     "descripcion": "Bosch 18V con baterías",
     "categoria": "herramientas"
 }
+
+### Editar objeto - caso feliz
+PUT http://127.0.0.1:3000/objetos/6a2b1dec16a755a64aed94c2
+Content-Type: application/json
+
+{
+    "titulo": "Taladro Bosch actualizado",
+    "descripcion": "Con maletín y mechas",
+    "categoria": "herramientas"
+}
+
+###
+
+### Editar objeto - caso fallo (id inexistente)
+PUT http://127.0.0.1:3000/objetos/000000000000000000000000
+Content-Type: application/json
+
+{
+    "titulo": "Esto no existe",
+    "descripcion": "Id inválido",
+    "categoria": "herramientas"
+}
