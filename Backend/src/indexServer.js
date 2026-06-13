@@ -4,6 +4,13 @@ const { getConnectMongoDB } = require('./database/databaseConection')
 const routers = require('./routers')
 const app = express()
 
+const cors = require('cors')
+
+app.use(cors({
+    origin: 'http://localhost:4200',
+    credentials: true
+}))
+
 app.use(express.json())
 app.use(sessionMiddleware())
 app.use('/', routers)

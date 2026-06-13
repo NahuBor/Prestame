@@ -1,5 +1,7 @@
 const Objeto = require('../../shared/models/objeto.model.js')
 
+
+const EMPTY_ARRAY = []
 // CREATE
 exports.crearObjetoRepository = async (datosObjeto) => {
     try {
@@ -7,7 +9,7 @@ exports.crearObjetoRepository = async (datosObjeto) => {
         const objeto = new Objeto(datosObjeto)
         return await objeto.save()
     } catch (error) {
-        throw error
+        console.log("Error en crearObjetoRepository", error)
     }
 }
 
@@ -15,9 +17,16 @@ exports.crearObjetoRepository = async (datosObjeto) => {
 exports.editarObjetoRepository = async (id, objetoActualizado) => {
     try {
         console.log("REPOSITORY - editarObjetoRepository - id:", id, "- objetoActualizado:", objetoActualizado)
-        return await Objeto.findByIdAndUpdate(id, objetoActualizado, { new: true })
+        const objetoEditado = await Objeto.findByIdAndUpdate(id, objetoActualizado, { new: true })
+        if (!objetoEditado) {
+            console.log("objeto no encontrado")
+            return EMPTY_ARRAY
+        } else {
+            console.log("objeto editado:", objetoEditado)
+            return objetoEditado
+        }
     } catch (error) {
-        throw error
+        console.log("Error en editarObjetoRepository", error)
     }
 }
 
@@ -25,8 +34,15 @@ exports.editarObjetoRepository = async (id, objetoActualizado) => {
 exports.eliminarObjetoRepository = async (id) => {
     try {
         console.log("REPOSITORY - eliminarObjetoRepository - id:", id)
-        return await Objeto.findByIdAndDelete(id)
+        const objetoEliminado = await Objeto.findByIdAndDelete(id)
+        if (!objetoEliminado) {
+            console.log("objeto no encontrado")
+            return EMPTY_ARRAY
+        } else {
+            console.log("objeto eliminado:", objetoEliminado)
+            return objetoEliminado
+        }
     } catch (error) {
-        throw error
+         console.log("Error en eliminarObjetoRepository", error)
     }
 }

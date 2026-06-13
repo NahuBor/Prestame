@@ -8,13 +8,14 @@ exports.crearObjetoController = async (req, res) => {
             estado: 'disponible'
         }
         console.log("CONTROLLER - crearObjetoController - ", typeof nuevoObjeto, nuevoObjeto)
-        res.send(await objetoService.crearObjetoService(nuevoObjeto))
+        const objeto = await objetoService.crearObjetoService(nuevoObjeto)
+        if (!objeto || objeto.length === 0) {
+            return res.status(400).send("No se pudo crear el objeto")
+        }
+        res.status(200).send(objeto)
     } catch (error) {
-        console.log("Error - CONTROLLER crearObejto", error)
-        res.status(500).send({
-            code: 500,
-            message: "Error al agregar el nuevo Objeto"
-        })
+        console.log("Error - CONTROLLER crearObjeto", error)
+        res.status(500).send({ code: 500, message: "Error al agregar el nuevo Objeto" })
     }
 }
 
@@ -23,15 +24,14 @@ exports.editarObjetoController = async (req, res) => {
         const id = req.params.id
         const objetoActualizado = req.body
         console.log("CONTROLLER - editarObjetoController - ", typeof objetoActualizado, objetoActualizado)
-        res.send(await objetoService.editarObjetoService(id, objetoActualizado))
-
+        const objeto = await objetoService.editarObjetoService(id, objetoActualizado)
+        if (!objeto || objeto.length === 0) {
+            return res.status(404).send(`No se encuentra un objeto a modificar con el id: ${id}`)
+        }
+        res.status(200).send(objeto)
     } catch (error) {
         console.log("Error - CONTROLLER editarObjeto", error)
-        res.status(500).send({
-            code: 500,
-            message: "Error al editar el objeto"
-        })
-
+        res.status(500).send({ code: 500, message: "Error al editar el objeto" })
     }
 }
 
@@ -39,16 +39,13 @@ exports.eliminarObjetoController = async (req, res) => {
     try {
         const idObjeto = req.params.id
         console.log("CONTROLLER - eliminarObjetoController - idObjeto:", idObjeto)
-        await objetoService.eliminarObjetoService(idObjeto)
-        res.send({
-            code: 200,
-            message: "Objeto eliminado correctamente"
-        })
-    } catch(error){
+        const objeto = await objetoService.eliminarObjetoService(idObjeto)
+        if (!objeto || objeto.length === 0) {
+            return res.status(404).send(`No se encuentra un objeto a eliminar con el id: ${id}`)
+        }
+        res.status(200).send({ code: 200, message: "Objeto eliminado correctamente" })
+    } catch (error) {
         console.log("Error - CONTROLLER eliminarObjeto", error)
-        res.status(500).send({
-            code: 500,
-            message: "Error al eliminar el objeto"
-        })
+        res.status(500).send({ code: 500, message: "Error al eliminar el objeto" })
     }
 }
