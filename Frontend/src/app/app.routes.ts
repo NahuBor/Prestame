@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
-import { MisObjetos } from './mis-objetos/mis-objetos';
-import { ObjetoForm } from './objeto-form/objeto-form';
+import { MisObjetos } from './components/mis-objetos/mis-objetos';
+import { ObjetoForm } from './components/objeto-form/objeto-form';
 
 
 export const routes: Routes = [

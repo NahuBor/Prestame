@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { PrestameApi } from '../prestame-api';
-import { Objeto } from '../interfaces/objeto.interface';
+import { PrestameApi } from '../../prestame-api';
+import { Objeto } from '../../interfaces/objeto.interface';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
@@ -26,7 +26,7 @@ export class ObjetoForm implements OnInit {
     private prestameApi: PrestameApi,
     private route: ActivatedRoute,
     private router: Router
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.objetoId = this.route.snapshot.paramMap.get('id');
@@ -38,18 +38,28 @@ export class ObjetoForm implements OnInit {
   guardar() {
     if (this.esEdicion && this.objetoId) {
       this.prestameApi.editarObjeto(this.objetoId, this.objeto).subscribe({
-        next: () => this.router.navigate(['/mis-objetos']),
+        next: () => {
+          alert('Objeto editado correctamente');
+          this.router.navigate(['/mis-objetos']);
+        },
         error: (err) => console.log('Error al editar', err)
       });
     } else {
       this.prestameApi.crearObjeto(this.objeto).subscribe({
-        next: () => this.router.navigate(['/mis-objetos']),
-        error: (err) => console.log('Error al crear', err)
+        next: () => {
+          alert('Objeto publicado correctamente');
+          this.router.navigate(['/mis-objetos']);
+        },
+        error: (err) => {
+          alert('Error al crear el objeto');
+          console.log('Error al crear', err)
+        }
       });
     }
   }
 
   cancelar() {
+    alert('Cancelaste la creación del objeto');
     this.router.navigate(['/mis-objetos']);
   }
 }
