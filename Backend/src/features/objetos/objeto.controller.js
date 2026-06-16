@@ -4,7 +4,7 @@ exports.crearObjetoController = async (req, res) => {
     try {
         const nuevoObjeto = {
             ...req.body,
-            duenioId: req.session.userId,
+            duenioId: /*req.session.userId,*/'6a2b1de016a755a64aed94c1',
             estado: 'disponible'
         }
         console.log("CONTROLLER - crearObjetoController - ", typeof nuevoObjeto, nuevoObjeto)
