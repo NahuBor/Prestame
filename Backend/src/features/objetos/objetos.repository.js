@@ -1,34 +1,62 @@
-
-
-//const objetos = require('../../shared/models/models.js').objetos;
 const Objetos= require('../../shared/models/models.js')
-
+const { getConnectMongoDB } = require('../../database/databaseConection')
+const EMPTY_ARRAY = []
 getConnectMongoDB();
 
 exports.getAllobjetsRepository = async () =>{
     
     try {
-         console.log(" MONGO DBREPOSITORY - getAllObjetsRepository ")
-         const objetos = await Objetos.find(); 
-         console.log(objetos);
-         return await JSON.stringify(objetos)
+        console.log(" MONGO DBREPOSITORY - getAllObjetsRepository ")
+        const objetos = await Objetos.find(); 
+        console.log(objetos);
+        return await JSON.stringify(objetos)
     } catch (error) {
         console.log("Error en getAllObjetsRepository ", error)
     }
-   
 }
+exports.getObjetsByIdRepository = async (idParam) => {
+    try {
+        const objeto = await Objetos.findById(idParam).lean(); // .lean() retorna objetos JavaScripts planos, no documentos Mongoose (más rápido)
 
-exports.getAllFrontendLanguagesRepository = async () => {
-    try {        
-        console.log("MONGO DB REPOSITORY - getAllFrontendLanguagesRepository ")
-        const lenguajes = await Lenguajes.find();
-        console.log(lenguajes)
-        return await JSON.stringify(lenguajes)
+        if (!objeto) {
+            return EMPTY_ARRAY;
+        }
+        console.log("OBEJTO"+ objeto)
+        return [objeto];
     } catch (error) {
-        console.log("SQL Error en getAllFrontendLanguagesRepository ", error)
+        // Si el ID no es un formato válido de MongoDB, capturamos el error
+        if (error.name === 'CastError') {
+            return EMPTY_ARRAY;
+        }
+        console.error("Error en getFrontendLanguagesFilteredByIdRepository:", error);
+        throw error;
     }
+};
 
-}
+exports.getObjectsByDuenioIdRepository = async (duenioIdParam) => {
+    try {
+        // Buscar todos los objetos que pertenezcan a ese duenioId
+        const objetos = await Objetos.find({ duenioId: duenioIdParam }).lean();
+        
+        // Si no hay objetos, devolvemos array vacío
+        if (!objetos || objetos.length === 0) {
+            return EMPTY_ARRAY;
+        }
+        
+        console.log("OBJETOS DEL DUEÑO:", objetos);
+        return objetos; // ya es un array
+    } catch (error) {
+        // Si el ID no es un formato válido de MongoDB
+        if (error.name === 'CastError') {
+            return EMPTY_ARRAY;
+        }
+        console.error("Error en getObjectsByDuenioIdRepository:", error);
+        throw error;
+    }
+};
+
+
+
 
 
 
