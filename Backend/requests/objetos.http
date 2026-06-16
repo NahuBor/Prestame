@@ -1,0 +1,59 @@
+### Registrar usuario
+POST http://127.0.0.1:3000/auth/register
+Content-Type: application/json
+
+{
+    "nombre": "Diana Rodriguez",
+    "email": "diana@test.com",
+    "password": "123456"
+}
+
+###
+
+### Login
+POST http://127.0.0.1:3000/auth/login
+Content-Type: application/json
+
+{
+    "email": "diana@test.com",
+    "password": "123456"
+}
+
+###
+
+### Crear objeto (requiere estar logueada)
+POST http://127.0.0.1:3000/objetos
+Content-Type: application/json
+
+{
+    "titulo": "Taladro inalámbrico",
+    "descripcion": "Bosch 18V con baterías",
+    "categoria": "herramientas"
+}
+
+### Editar objeto - caso feliz
+PUT http://127.0.0.1:3000/objetos/6a2d92677f05f3782a0d4a47
+Content-Type: application/json
+
+{
+    "titulo": "Taladro Bosch actualizado",
+    "descripcion": "Con maletín y mechas",
+    "categoria": "herramientas"
+}
+
+###
+
+### Editar objeto - caso fallo (id inexistente)
+PUT http://127.0.0.1:3000/objetos/000000000000000000000000
+Content-Type: application/json
+
+{
+    "titulo": "Esto no existe",
+    "descripcion": "Id inválido",
+    "categoria": "herramientas"
+}
+
+### Eliminar objeto - caso feliz
+DELETE http://127.0.0.1:3000/objetos/6a2d94ac57c0a260df400cdf
+### Eliminar objeto - caso fallo (id inexistente)
+DELETE http://127.0.0.1:3000/objetos/000000000000000000000000
