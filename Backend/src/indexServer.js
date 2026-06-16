@@ -3,14 +3,14 @@ const { sessionMiddleware } = require('./config/session.config')
 const { getConnectMongoDB } = require('./database/databaseConection')  
 const routers = require('./routers')
 const app = express()
-const objetosRouter = require('../src/features/objetos/objetos.router'); 
+const objetosRouter = require('../src/features/objetos/objeto.router'); 
 
 const cors = require('cors')
 
-app.use(cors({
+/*app.use(cors({
     origin: 'http://localhost:4200',
     credentials: true
-}))
+}))*/
 
 app.use(express.json())
 app.use(sessionMiddleware())
