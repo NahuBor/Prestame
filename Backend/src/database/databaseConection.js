@@ -16,4 +16,3 @@ exports.getConnectMongoDB = async () => {
     }
 }
 
-//this.getConnectMongoDB();

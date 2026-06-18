@@ -57,3 +57,10 @@ Content-Type: application/json
 DELETE http://127.0.0.1:3000/objetos/6a2d94ac57c0a260df400cdf
 ### Eliminar objeto - caso fallo (id inexistente)
 DELETE http://127.0.0.1:3000/objetos/000000000000000000000000
+
+
+### Traer mis objetos por duenioId
+GET http://127.0.0.1:3000/objetos/duenio/6a2b1de016a755a64aed94c1
+
+### GET objeto por id
+GET http://127.0.0.1:3000/objetos/6a2d91c97f05f3782a0d4a45
