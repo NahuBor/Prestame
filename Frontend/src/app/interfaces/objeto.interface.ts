@@ -4,6 +4,7 @@ export interface Objeto {
   titulo: string;
   descripcion?: string;
   categoria: 'herramientas' | 'libros'  | 'otro';
+  imagen?: Buffer;
   estado?: 'disponible' | 'prestado';
   fechaCreacion?: string;
 }

@@ -39,6 +39,6 @@ exports.eliminarObjetoService = async (idObjeto) => {
         return objetoEliminado
     }
     catch (error) {
-        throw error
+       console.log("Error en eliminarObjetoRepository", error)
     }
 }

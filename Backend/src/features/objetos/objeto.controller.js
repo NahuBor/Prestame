@@ -1,5 +1,22 @@
 const objetoService = require('./objeto.service')
 
+
+const miImagen = "https://www.lanacion.com.ar/resizer/v2/francia-y-senegal-abren-la-sexta-jornada-del-FRFKVMOCPREVHGE7ZPZ3DIF5QY.JPG?auth=cd52a9a6c31eb822e1cde26c9f13f2aaa76b93b7de22678aa507c6b46708b87a&width=320&height=213&quality=70&smart=true"
+
+const descargarImagen = async (url) => {
+    try {
+        const respuesta = await fetch(url);
+        // Agregar manejo de error
+        const arrayBuffer = await respuesta.arrayBuffer();
+        const mibuffer = Buffer.from(arrayBuffer);
+        console.log("Imagen descargada correctamente, tamaño en bytes:", mibuffer);
+        return mibuffer;
+    } catch (error) {
+        console.log("Error al descargar la imagen:", error);
+        throw error; // Re-lanzar el error para que pueda ser manejado por el controlador
+    }
+}
+descargarImagen(miImagen)
 exports.crearObjetoController = async (req, res) => {
     try {
         const nuevoObjeto = {
