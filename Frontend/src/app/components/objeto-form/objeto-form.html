@@ -1,26 +1,24 @@
 <div class="container">
-  <h2>Publicar objeto</h2>
+  <h2>{{ esEdicion ? 'Editar objeto' : 'Publicar objeto' }}</h2>
 
-  <form (ngSubmit)="guardar()">
+  <p *ngIf="cargando">Cargando datos...</p>
 
+  <form *ngIf="!cargando" (ngSubmit)="guardar()">
     <div class="form-group">
       <label class="form-label">Título *</label>
       <input type="text" class="form-control" [(ngModel)]="objeto.titulo" name="titulo"
         placeholder="Ej: Taladro inalámbrico Bosch">
     </div>
-
     <div class="form-group">
       <label class="form-label">Descripción</label>
       <textarea class="form-control" [(ngModel)]="objeto.descripcion" name="descripcion"
         placeholder="Estado, condiciones, instrucciones de uso...">
       </textarea>
     </div>
-
     <div class="form-group">
       <label class="form-label">Foto del objeto</label>
       <input type="file" class="form-control" accept="image/*" (change)="onFileSelected($event)">
     </div>
-
     <div class="form-group">
       <label class="form-label">Categoría *</label>
       <select class="form-select" [(ngModel)]="objeto.categoria" name="categoria">
@@ -29,11 +27,9 @@
         <option value="otro">Otro</option>
       </select>
     </div>
-
     <div class="form-actions">
-      <button type="submit" class="btn-primary">Publicar</button>
+      <button type="submit" class="btn-primary">{{ esEdicion ? 'Guardar cambios' : 'Publicar' }}</button>
       <button type="button" class="btn-secondary" (click)="cancelar()">Cancelar</button>
     </div>
-
   </form>
 </div>
