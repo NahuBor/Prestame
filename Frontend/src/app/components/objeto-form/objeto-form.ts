@@ -13,14 +13,16 @@ import { FormsModule } from '@angular/forms';
 })
 export class ObjetoForm implements OnInit {
 
+  imagenSeleccionada: File | null = null;
+  esEdicion: boolean = false;
+  objetoId: string | null = null;
+
   objeto: Objeto = {
     titulo: '',
     descripcion: '',
     categoria: 'herramientas'
   };
 
-  esEdicion: boolean = false;
-  objetoId: string | null = null;
 
   constructor(
     private prestameApi: PrestameApi,
@@ -35,17 +37,45 @@ export class ObjetoForm implements OnInit {
     }
   }
 
+  onFileSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      this.imagenSeleccionada = input.files[0];
+    }
+  }
+
   guardar() {
+    let formData: FormData | null = null;
+
+    if (this.imagenSeleccionada) {
+      formData = new FormData();
+      formData.append('titulo', this.objeto.titulo);
+      formData.append('categoria', this.objeto.categoria);
+      formData.append('descripcion', this.objeto.descripcion || '');
+      formData.append('imagen', this.imagenSeleccionada);
+    }
+
     if (this.esEdicion && this.objetoId) {
-      this.prestameApi.editarObjeto(this.objetoId, this.objeto).subscribe({
+      const peticion = formData
+        ? this.prestameApi.editarObjetoConImagen(this.objetoId, formData)
+        : this.prestameApi.editarObjeto(this.objetoId, this.objeto);
+
+      peticion.subscribe({
         next: () => {
           alert('Objeto editado correctamente');
           this.router.navigate(['/mis-objetos']);
         },
-        error: (err) => console.log('Error al editar', err)
+        error: (err) => {
+          alert('Error al editar el objeto');
+          console.log('Error al editar', err)
+        }
       });
     } else {
-      this.prestameApi.crearObjeto(this.objeto).subscribe({
+      const peticion = formData
+        ? this.prestameApi.crearObjetoConImagen(formData)
+        : this.prestameApi.crearObjeto(this.objeto);
+
+      peticion.subscribe({
         next: () => {
           alert('Objeto publicado correctamente');
           this.router.navigate(['/mis-objetos']);
@@ -56,7 +86,7 @@ export class ObjetoForm implements OnInit {
         }
       });
     }
-  }
+}
 
   cancelar() {
     alert('Cancelaste la creación del objeto');

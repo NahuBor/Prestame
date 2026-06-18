@@ -171,3 +171,11 @@
   font-size: .82rem;
   cursor: pointer;
 }
+
+.obj-img {
+  width: 50px;
+  height: 50px;
+  border-radius: 8px;
+  object-fit: cover;
+  margin-right: .75rem;
+}
