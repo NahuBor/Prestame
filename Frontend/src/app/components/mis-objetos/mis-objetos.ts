@@ -29,6 +29,7 @@ export class MisObjetos implements OnInit {
       next: (data) => {
         console.log('datos recibidos:', data);
         this.objetos = data;
+        this.cdr.detectChanges();
       },
       error: (err) => {
         console.log('Error al cargar objetos', err);
