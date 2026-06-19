@@ -1,6 +1,6 @@
 import { Component,OnInit, ChangeDetectorRef  } from '@angular/core';
-import { PrestameApi } from '../../prestame-api';
-import { Objeto } from '../../interfaces/objeto.interface';
+import { PrestameApi } from '../../services/prestameApi.service';
+import { Objeto } from '../../models/objeto.interface';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 

@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-
+import { Observable } from 'rxjs';
 import { Objeto } from '../models/objeto.interface';
+import {User} from '../models/User.model'
 
 @Injectable({
   providedIn: 'root',
@@ -31,6 +32,22 @@ export class PrestameApi {
   }
   obtenerObjetoPorId(id: string) {
     return this.http.get<Objeto>(`${this.apiUrl}/objetos/${id}`, { withCredentials: true });
+  }
+
+  login(email: string, password: string) : Observable<User> | undefined {
+    return this.http.post<any>(`${this.apiUrl}/auth/login`, { email, password }, { withCredentials: true });
+  }
+
+  register(nombre: string, email: string, password: string) : Observable <User> | undefined{
+    return this.http.post<any>(`${this.apiUrl}/auth/register`, { nombre, email, password }, { withCredentials: true });
+  }
+
+  logout() : Observable<void>{
+    return this.http.post<any>(`${this.apiUrl}/auth/logout`, {}, { withCredentials: true });
+  }
+
+  checkSession() : Observable<void>{
+    return this.http.get<any>(`${this.apiUrl}/auth/checkSession`, { withCredentials: true });
   }
 
 }
