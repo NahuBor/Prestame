@@ -135,3 +135,46 @@ exports.readObjetsByDuienioIdcontroller = async (req, res) => {
     res.setHeader('Content-Type', 'application/json')
     return res.status(200).send(objetoConImagen)
 }
+
+exports.getObjetsfilteredByCategoriaRepository = async (categoria) => {
+    try {
+        console.log(`MONGO DBREPOSITORY - getObjetsfilteredByCategoriaRepository: ${categoria}`);
+        const objetos = await Objeto.find({ categoria: categoria });
+        console.log(`Encontrados ${objetos.length} objetos en categoría: ${categoria}`);
+        return objetos;
+    } catch (error) {
+        console.log(`Error en getObjetsfilteredByCategoriaRepository:`, error);
+        return [];
+    }
+}
+
+exports.readObjetsByCategoriaController = async (req, res) => {
+    try {
+        const categoriaParam = req.params.categoria; 
+        console.log(`CONTROLLER - readObjetsByCategoriaController: ${categoriaParam}`);
+        
+        const objetoFiltrado = await objetoService.getObjetsfilteredByCategoriaService(categoriaParam)
+
+        if (objetoFiltrado.length === 0) {
+            return res.status(404).send(`No se encontraron objetos en la categoría: ${categoriaParam}`)
+        }
+
+        const objetoConImagen = objetoFiltrado.map(objeto => {
+            const objetoPlano = { ...objeto._doc || objeto }
+            if (objetoPlano.imagen && objetoPlano.imagen.data) {
+                const base64 = objetoPlano.imagen.data.toString('base64')
+                objetoPlano.imagen = `data:${objetoPlano.imagen.contentType};base64,${base64}`
+            }
+            return objetoPlano
+        })
+
+        res.setHeader('Content-Type', 'application/json')
+        return res.status(200).send(objetoConImagen)
+    } catch (error) {
+        console.log(" Error readObjetsByCategoriaController", error)
+        res.status(500).send({
+            code: 500,
+            message: "Error al obtener los objetos por categoría"
+        })
+    }
+}

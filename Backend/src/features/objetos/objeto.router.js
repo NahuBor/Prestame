@@ -37,6 +37,7 @@ objetoRouter.delete('/:id',/*authMiddleware,*/ objetoController.eliminarObjetoCo
 objetoRouter.get('/',/*authMiddleware,*/ objetoController.readObjets);
 objetoRouter.get('/:id',/*authMiddleware,*/ objetoController.readObjetsByIdcontroller)
 objetoRouter.get('/duenio/:duenioId', objetoController.readObjetsByDuienioIdcontroller);
+objetoRouter.get('/categoria/:categoria',/*authMiddleware,*/ objetoController.readObjetsByCategoriaController);
 
 
 module.exports = objetoRouter

@@ -53,9 +53,10 @@ exports.getAllobjetsRepository = async () => {
         console.log(" MONGO DBREPOSITORY - getAllObjetsRepository ")
         const objetos = await Objeto.find();
         console.log(objetos);
-        return await JSON.stringify(objetos)
+        return objetos; 
     } catch (error) {
         console.log("Error en getAllObjetsRepository ", error)
+        return EMPTY_ARRAY;
     }
 }
 
@@ -96,6 +97,18 @@ exports.getObjectsByDuenioIdRepository = async (duenioIdParam) => {
         console.log("Error en etObjectsByDuenioIdRepository ", error);
     }
 };
+
+exports.getObjetsfilteredByCategoriaRepository = async (categoria) => {
+    try {
+        console.log(`MONGO DBREPOSITORY - getObjetsByCategoriaRepository: ${categoria}`);
+        const objetos = await Objeto.find({ categoria: categoria });
+        console.log(`Encontrados ${objetos.length} objetos en categoría: ${categoria}`);
+        return objetos;
+    } catch (error) {
+        console.log(`Error en getObjetsByCategoriaRepository:`, error);
+        return EMPTY_ARRAY;
+    }
+}
 
 
 
