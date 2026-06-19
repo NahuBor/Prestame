@@ -3,6 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, firstValueFrom, Observable } from 'rxjs';
 import { User } from '../models/User.model';
 import { PrestameApi } from './prestameApi.service';
+import {map} from 'rxjs/operators'
+import {of, catchError} from 'rxjs'
 
 interface ResponseMessage {
   isActive: boolean,
@@ -43,8 +45,17 @@ export class AuthService {
     return this._apiService.logout()
   }
 
-  checkSessionService(): Observable<void> {
-    return this._apiService.checkSession()
+  checkSessionService(): Observable<boolean> {
+    return (this._apiService.checkSession() ?? of(false)).pipe(
+      map((res) => {
+        return true;
+      }),
+      catchError((err : Observable<boolean>) => {
+        console.log(err)
+        return of(false);
+      })
+    );
   }
 
-  }
+
+}

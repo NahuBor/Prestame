@@ -1,34 +1,47 @@
-<div class="container-fluid vh-100 p-5 align-items-center justify-content-center d-flex red bg-primary bg-gradient" id="conta">
-    <div class="row border border-dark center h-100 rounded g-0">
-        <div class="col-12 col-md-6 d-none d-md-block">
-                <img class="card-img-top w-100 h-100 rounded" id="loginimg" src="https://exprofundis.com/wp-content/uploads/2015/09/tumblr_ngzxxaUS4H1tj0qdro7_1280.jpg" alt="Card image cap">
+<div class="container-fluid min-vh-100 p-3 p-md-5 d-flex align-items-center justify-content-center bg-primary bg-gradient" id="conta">
+    <div class="row border border-dark rounded g-0 w-100 shadow" style="max-width: 900px;">
+        <div class="col-md-6 d-none d-md-block position-relative">
+            <img class="w-100 h-100 rounded-start" id="loginimg" 
+                 src="https://exprofundis.com/wp-content/uploads/2015/09/tumblr_ngzxxaUS4H1tj0qdro7_1280.jpg" 
+                 alt="Card image cap" 
+                 style="object-fit: cover; position: absolute; top: 0; left: 0;">
         </div>
-        <div class="col-12 col-md-6 p-5 d-flex flex-column justify-content-center bg-light rounded" id="loginform">
-            <h2 class="fw-bold text-center">Registrar cuenta</h2>
+        
+        <div class="col-12 col-md-6 p-4 p-md-5 d-flex flex-column justify-content-center bg-light rounded-end" id="loginform">
+            <h2 class="fw-bold text-center mb-4">Registrar cuenta</h2>
+            
             @if (errorMessage) {
-                <div>
-                    <h2 class="fw-bold text-center">{{errorMessage}}</h2>
+                <div class="alert alert-danger text-center py-2 fs-6 mb-3" role="alert">
+                    {{errorMessage}}
                 </div>
             }
-            <form (ngSubmit) = "register()">
-                <label for="name" class="form-label fs-3">Nombre</label>
-                <input [(ngModel)]="nombre" name="nombre" type="name" class="form-control form-control-lg" id="name" placeholder="Nombre">
-                <label for="lastName" class="form-label fs-3 mt-3">Apellido</label>
-                <input [(ngModel)]="apellido" name="apellido" class="form-control form-control-lg" id="lastName" placeholder="Apellido">
-                <label for="email" class="form-label fs-3 mt-3">Email</label>
-                <input [(ngModel)]="email" name="email" type="email" class="form-control form-control-lg" id="email" placeholder="georgiarose@gmail.com">
-                <label for="password" class="form-label text-center fs-3 mt-3">Contraseña</label>
-                <input [(ngModel)]="password" name="password" type="password" class="form-control form-control-lg" id="password" placeholder="********">
-                <label for="confirmPassword" type="password" class="form-label text-center fs-3 mt-3">Repita Contraseña</label>
-                <input [(ngModel)]="confirmPassword" name="confirmPassword" type="password" class="form-control form-control-lg" id="confirmPassword" placeholder="********">
-                <div class="text-center">
-                    <button type="submit" [disabled]="isLoading" class="btn btn-primary my-5 center fs-3">
+            
+            <form (ngSubmit)="register()">
+                <label for="name" class="form-label fs-5">Nombre</label>
+                <input [(ngModel)]="nombre" name="nombre" type="text" class="form-control" id="name" placeholder="Nombre">
+                
+                <label for="lastName" class="form-label fs-5 mt-3">Apellido</label>
+                <input [(ngModel)]="apellido" name="apellido" class="form-control" id="lastName" placeholder="Apellido">
+                
+                <label for="email" class="form-label fs-5 mt-3">Email</label>
+                <input [(ngModel)]="email" name="email" type="email" class="form-control" id="email" placeholder="georgiarose@gmail.com">
+                
+                <label for="password" class="form-label fs-5 mt-3">Contraseña</label>
+                <input [(ngModel)]="password" name="password" type="password" class="form-control" id="password" placeholder="********">
+                
+                <label for="confirmPassword" class="form-label fs-5 mt-3">Repita Contraseña</label>
+                <input [(ngModel)]="confirmPassword" name="confirmPassword" type="password" class="form-control" id="confirmPassword" placeholder="********">
+                
+                <div class="text-center mt-4">
+                    <button type="submit" [disabled]="isLoading" class="btn btn-primary fs-5 px-5 py-2" style="min-width: 180px;">
                         @if (isLoading) {
-                            <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
-                            <span>Procesando...</span>
-                          } @else {
+                            <div class="d-flex align-items-center justify-content-center">
+                                <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                                <span>Procesando...</span>
+                            </div>
+                        } @else {
                             <span>Registrarse</span>
-                          }
+                        }
                     </button>
                 </div>
             </form>

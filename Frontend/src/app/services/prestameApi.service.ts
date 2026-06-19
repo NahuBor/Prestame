@@ -46,8 +46,8 @@ export class PrestameApi {
     return this.http.post<any>(`${this.apiUrl}/auth/logout`, {}, { withCredentials: true });
   }
 
-  checkSession() : Observable<void>{
-    return this.http.get<any>(`${this.apiUrl}/auth/checkSession`, { withCredentials: true });
+  checkSession() : Observable<boolean> | undefined{
+    return this.http.post<any>(`${this.apiUrl}/auth/checkSession`, {}, { withCredentials: true });
   }
 
 }

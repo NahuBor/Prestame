@@ -75,7 +75,7 @@ validatePassword(): boolean {
       {
         next: (res) => {
           this.router.navigate(['/mis-objetos'])
-          console.log(res)
+          console.log("hola, funciona")
         },
         error: (err) => {
           console.log(err)
