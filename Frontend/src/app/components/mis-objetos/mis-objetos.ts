@@ -42,6 +42,7 @@ export class MisObjetos implements OnInit {
       next: () => {
         this.objetos = this.objetos.filter(o => o._id !== id);
         alert('Objeto eliminado correctamente');
+        this.cdr.detectChanges();
       },
       error: (err) => {
         console.log('Error al eliminar', err)
