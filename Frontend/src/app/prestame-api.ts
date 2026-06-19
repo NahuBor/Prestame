@@ -33,5 +33,13 @@ export class PrestameApi {
     return this.http.get<Objeto>(`${this.apiUrl}/objetos/${id}`, { withCredentials: true });
   }
 
+  obtenerPerfil() {
+    return this.http.get(`${this.apiUrl}/auth/perfil`, { withCredentials: true });
+  }
+
+  logout() {
+  return this.http.post(`${this.apiUrl}/auth/logout`, {}, { withCredentials: true });
+}
+
 }
 

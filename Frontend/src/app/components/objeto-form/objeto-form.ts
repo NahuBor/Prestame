@@ -4,6 +4,7 @@ import { PrestameApi } from '../../prestame-api';
 import { Objeto } from '../../interfaces/objeto.interface';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-objeto-form',
@@ -35,7 +36,7 @@ export class ObjetoForm implements OnInit {
       this.esEdicion = true;
       this.cargando = true;
       try {
-        const data = await this.prestameApi.obtenerObjetoPorId(this.objetoId).toPromise();
+        const data = await firstValueFrom(this.prestameApi.obtenerObjetoPorId(this.objetoId));
         this.objeto = Array.isArray(data) ? data[0] : data as Objeto;
         this.cargando = false;
         this.cdr.detectChanges();
