@@ -51,4 +51,4 @@ Backend/src/.env
 .DS_Store
 Thumbs.db
 
-
+.env

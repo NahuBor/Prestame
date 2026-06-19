@@ -1,8 +1,6 @@
 const User = require('../../shared/models/user.model')
 const { getConnectMongoDB } = require('../../database/databaseConection')
 
-getConnectMongoDB()
-
 exports.findByEmail = async (email) => {
     try {
         const user = await User.findOne({ email: email })

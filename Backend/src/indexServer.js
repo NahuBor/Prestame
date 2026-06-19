@@ -1,21 +1,38 @@
 const express = require('express')
-const {sessionMiddleware} = require('./config/session.config')
-const routers = require('./routers')
 const app = express()
-
-
-app.use(express.json())
-app.use(sessionMiddleware())
-app.use('/', routers)
+const routers = require('./routers')
+const { sessionMiddleware } = require('./config/session.config')
+const { getConnectMongoDB } = require('./database/databaseConection')
+const cors = require('cors')
 
 const PORT = 3000;
+const HOST = '127.0.0.1'
 
-const HOST = '127.0.0.1';
+app.use(cors({
+    origin: 'http://localhost:4200',
+    credentials: true
+}))
 
-app.get('/', (req, res) => {
-    res.status(200).send("Bienvenido a Prestame - API REST!");
-})
+app.use(express.json())
+
+app.use('/', routers)
+
+const startServer = async () => {
+    try {
+        await getConnectMongoDB()
+        
+        app.use(sessionMiddleware()) 
+        
+        app.use('/', routers)
+
+
+    } catch (error) {
+        console.error("Error crítico al iniciar el servidor:", error)
+    }
+}
 
 app.listen(PORT, HOST, () => {
     console.log(`Server corriendo en http://${HOST}:${PORT}`);
 })
+
+startServer()

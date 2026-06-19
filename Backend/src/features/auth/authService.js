@@ -26,7 +26,7 @@ exports.login = async (email, password) => {
                 ok: false,
                 error: INVALIDAD_CREDENTIALS
             }
-        } 
+        }
         return {
             ok: true,
             user: {
@@ -46,26 +46,27 @@ exports.login = async (email, password) => {
     }
 }
 
-exports.register = async(nombre, password, email) => {
+exports.register = async (nombre, password, email) => {
     try {
-    if (await authRepository.findByEmail(email)) {
-        return {
-            ok: false,
-            error: USER_ALREADY_EXISTS
+        console.log("hola")
+        if (await authRepository.findByEmail(email)) {
+            return {
+                ok: false,
+                error: USER_ALREADY_EXISTS
+            }
         }
-    }
-    const passwordHash = await bcrypt.hash(password, 10)
-    const userTemp = {
-        nombre,
-        email,
-        passwordHash,
-        activo: true
-    }
-    const userCreated = await authRepository.createUser(userTemp)
-    return {
-        ok: true,
-        user: userCreated
-    }    
+        const passwordHash = await bcrypt.hash(password, 10)
+        const userTemp = {
+            nombre,
+            email,
+            passwordHash,
+            activo: true
+        }
+        const userCreated = await authRepository.createUser(userTemp)
+        return {
+            ok: true,
+            user: userCreated
+        }
     } catch (error) {
         console.log("ERROR - En metodo register, capa service")
         return {
