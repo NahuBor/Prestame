@@ -9,8 +9,8 @@ exports.sessionMiddleware = () => {
         resave: true,
         saveUninitialized: false,
         store: MongoStore.create({
-        client: mongoose.connection.getClient(),
-        collection: 'sessions'
+            client: mongoose.connection.getClient(),
+            collection: 'sessions'
         }),
         cookie: {
             secure: false,

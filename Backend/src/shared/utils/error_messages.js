@@ -1,15 +1,23 @@
-
-const errorMessages = {
-    INVALIDAD_CREDENTIALS : 'INVALID_CREDENTIALS',
-    USER_NOT_ACTIVE : 'USER_NOT_ACTIVE',
-    INTERNAL_ERROR : 'INTERNAL_ERROR',
-    USER_ALREADY_EXISTS : 'USER_ALREADY_EXISTS',
-    LOGIN_FAILED: 'LOGIN_FAILED',
-    REGISTER_FAILED: 'REGISTER_FAILED',
-    NOT_AUTHORIZED: 'NOT_AUTHORIZED',
-    SESION_EXPIRED: 'SESION_EXPIRED',
-    USER_NOT_FOUND: 'USER_NOT_FOUND'
+const typeErrorAuth = {
+    INVALID_CREDENTIALS: "INVALID_CREDENTIALS", 
+    USER_NOT_ACTIVE: "USER_NOT_ACTIVE", 
+    INTERNAL_ERROR: "INTERNAL_ERROR", 
+    USER_ALREADY_EXISTS: "USER_ALREADY_EXISTS", 
+    LOGIN_FAILED: "LOGIN_FAILED", 
+    REGISTER_FAILED: "REGISTER_FAILED", 
+    NOT_AUTHORIZED: "NOT_AUTHORIZED", 
+    SESION_EXPIRED: "SESION_EXPIRED", 
+    USER_NOT_FOUND: "USER_NOT_FOUND"
 }
 
-module.exports = errorMessages
+const createMessage = (errorConst) => {
+    return {
+        code: false,
+        error: errorConst
+   }
+}
+module.exports = {
+    typeErrorAuth,
+    createMessage
+}
 

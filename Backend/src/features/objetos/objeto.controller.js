@@ -1,11 +1,19 @@
 const objetoService = require('./objeto.service')
 
+
 exports.crearObjetoController = async (req, res) => {
     try {
         const nuevoObjeto = {
             ...req.body,
-            duenioId: /*req.session.userId,*/'6a2b1de016a755a64aed94c1',
+            duenioId: /*req.session.userId,*/'6a2b1de016a755a64aed94c1', // temporal para pruebas
             estado: 'disponible'
+        }
+
+        if (req.file) {
+            nuevoObjeto.imagen = {
+                data: req.file.buffer,
+                contentType: req.file.mimetype
+            }
         }
         console.log("CONTROLLER - crearObjetoController - ", typeof nuevoObjeto, nuevoObjeto)
         const objeto = await objetoService.crearObjetoService(nuevoObjeto)
@@ -23,7 +31,15 @@ exports.editarObjetoController = async (req, res) => {
     try {
         const id = req.params.id
         const objetoActualizado = req.body
+
+        if (req.file) {
+            objetoActualizado.imagen = {
+                data: req.file.buffer,
+                contentType: req.file.mimetype
+            }
+        }
         console.log("CONTROLLER - editarObjetoController - ", typeof objetoActualizado, objetoActualizado)
+
         const objeto = await objetoService.editarObjetoService(id, objetoActualizado)
         if (!objeto || objeto.length === 0) {
             return res.status(404).send(`No se encuentra un objeto a modificar con el id: ${id}`)
@@ -50,52 +66,72 @@ exports.eliminarObjetoController = async (req, res) => {
     }
 }
 
-
-
 exports.readObjets = async (req, res) => {
     try {
+        const objetos = await objetoService.getAllObjets()
+
+        if (objetos.length === 0) {
+            return res.status(404).send('No se encontraron objetos')
+        }
+
+        const objetoConImagen = objetos.map(objeto => {
+            const objetoPlano = { ...objeto._doc || objeto }
+            if (objetoPlano.imagen && objetoPlano.imagen.data) {
+                const base64 = objetoPlano.imagen.data.toString('base64')
+                objetoPlano.imagen = `data:${objetoPlano.imagen.contentType};base64,${base64}`
+            }
+            return objetoPlano
+        })
+
         res.setHeader('Content-Type', 'application/json')
-        res.status(200)
-        res.send(await objetoService.getAllObjets())
+        return res.status(200).send(objetoConImagen)
     } catch (error) {
-        console.log("Error readObjetsLanguages", error)
+        console.log("Error readObjets", error)
         res.status(500).send({
             code: 500,
-            message: "Error al obtener los lenguajes frontend"
+            message: "Error al obtener los objetos"
         })
     }
 }
 
 exports.readObjetsByIdcontroller = async (req, res) => {
     const idParam = req.params.id;
-    
-    const filtrado = await objetoService.getObjetsfilteredByIdService(idParam)
+    const objetoFiltrado = await objetoService.getObjetsfilteredByIdService(idParam)
 
-    if(filtrado.length === 0){
+    if (objetoFiltrado.length === 0) {
         return res.status(404).send(`No se encontró el objeto con el id: ${idParam}`)
-        console.log("Saliendo del if")
     }
 
-    res.setHeader('Content-Type', 'application/json')
-    let filtradoJson = JSON.stringify(filtrado)
-    
-    return res.status(200).send(filtradoJson)
+    const objetoConImagen = objetoFiltrado.map(objeto => {
+        const objetoPlano = { ...objeto._doc || objeto }
+        if (objetoPlano.imagen && objetoPlano.imagen.data) {
+            const base64 = objetoPlano.imagen.data.toString('base64')
+            objetoPlano.imagen = `data:${objetoPlano.imagen.contentType};base64,${base64}`
+        }
+        return objetoPlano
+    })
 
+    res.setHeader('Content-Type', 'application/json')
+    return res.status(200).send(objetoConImagen)
 }
 
 exports.readObjetsByDuienioIdcontroller = async (req, res) => {
     const duenioIdParam = req.params.duenioId;
-    
-    const filtrado = await objetoService.getObjetsfilteredByDuenioIdService(duenioIdParam)
+    const objetoFiltrado = await objetoService.getObjetsfilteredByDuenioIdService(duenioIdParam)
 
-    if(filtrado.length === 0){
+    if (objetoFiltrado.length === 0) {
         return res.status(404).send(`No se encontró el objeto con el id: ${duenioIdParam}`)
-        console.log("Saliendo del if")
     }
 
-    res.setHeader('Content-Type', 'application/json')
-    let filtradoJson = JSON.stringify(filtrado)
-    
-    return res.status(200).send(filtradoJson)
+    const objetoConImagen = objetoFiltrado.map(objeto => {
+        const objetoPlano = { ...objeto._doc || objeto }
+        if (objetoPlano.imagen && objetoPlano.imagen.data) {
+            const base64 = objetoPlano.imagen.data.toString('base64')
+            objetoPlano.imagen = `data:${objetoPlano.imagen.contentType};base64,${base64}`
+        }
+        return objetoPlano
+    })
 
+    res.setHeader('Content-Type', 'application/json')
+    return res.status(200).send(objetoConImagen)
 }

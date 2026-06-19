@@ -1,29 +1,23 @@
 const authService = require('./authService')
-const { INVALIDAD_CREDENTIALS, USER_NOT_ACTIVE, INTERNAL_ERROR } = require('../../shared/utils/error_messages')
+const { mapResponse } = require('../../shared/utils/mapResponse')
+const INTERNAL_ERROR = 'INTERNAL_ERROR'
 
-exports.login = async (req, res) => {
+exports.loginController = async (req, res) => {
     try {
         const { email, password } = req.body
-        const result = await authService.login(email, password)
-        if (result.code == 'INVALID_CREDENTIALS') {
-            return res.status(401).send({
-                status: 401,
-                message: INVALIDAD_CREDENTIALS
+        const respuestaService = await authService.loginService(email, password)
+        if (!respuestaService.ok) {
+            const {statusCode} = mapResponse(respuestaService.error)
+            return res.status(statusCode).send({
+                status: statusCode,
+                message: respuestaService.error
             })
         }
-        if (result.code == 'USER_NOT_ACTIVE') {
-            return res.status(401).send({
-                status: 401,
-                message: USER_NOT_ACTIVE
-            })
-        }
-        req.session.userId = result.user._id
-        return res.status(200).send({
-            status: 200,
-            user: result.user
-        })
+        console.log(respuestaService.user)
+        req.session.userId = respuestaService.user
+        return res.status(200).send(respuestaService.user)
     } catch (error) {
-        console.log("ERROR - Ocurrió un error en el login(), de la capa controller")
+        console.log("Ocurrió un error en loginController()", error)
         return res.status(500).send({
             status: 500,
             message: INTERNAL_ERROR
@@ -31,32 +25,25 @@ exports.login = async (req, res) => {
     }
 }
 
-exports.register = async (req, res) => {
+exports.registerController = async (req, res) => {
     try {
-        console.log(req.body)
         const { nombre, password, email } = req.body
-        const result = await authService.register(nombre, password, email)
-        if (!result.ok) {
-            if (result.code == 'USER_ALREADY_EXISTS') {
-                return res.status(400).send({
-                    status: 400,
-                    message: result.code
-                })
-            }
-        }
-        if (result.code == 'USER_ALREADY_EXISTS') {
-            return res.status(400).send({
-                status: 400,
-                message: result.code
+        const respuestaService = await authService.registerService(nombre, password, email)
+        console.log("en el controller llega: ", respuestaService)
+        if (!respuestaService.ok) {
+            const {statusCode} = mapResponse(respuestaService.error)
+            return res.status(statusCode).send({
+                status: statusCode,
+                message: respuestaService.error
             })
+
         }
         return res.status(201).send({
             status: 201,
-            user: result.user
+            user: respuestaService.user
         })
     } catch (error) {
-        console.log("Error controller: metodo register")
-        console.log(error)
+        console.log("Error en registerController()", error)
         return res.status(500).send(
             {
                 status: 500,
@@ -76,7 +63,7 @@ exports.perfil = async (req, res) => {
     }
 }
 
-exports.logout = async (req, res) => {
+exports.logoutController = async (req, res) => {
     try {
         if (!req.session) {
             return res.status(403).send({

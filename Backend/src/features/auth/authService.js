@@ -1,31 +1,20 @@
 const authRepository = require('./authRepository')
 const bcrypt = require('bcrypt')
 const User = require('../../shared/models/user.model')
-const { INVALIDAD_CREDENTIALS, USER_NOT_ACTIVE, INTERNAL_ERROR, USER_ALREADY_EXISTS } = require('../../shared/utils/error_messages')
+const {createMessage, typeErrorAuth} = require('../../shared/utils/error_messages')
 
-
-
-exports.login = async (email, password) => {
+exports.loginService = async (email, password) => {
     try {
-        const usuarioEncontrado = await authRepository.findByEmail(email)
-        if (usuarioEncontrado == null) {
-            return {
-                ok: false,
-                error: INVALIDAD_CREDENTIALS
-            }
+        const usuarioEncontrado = await authRepository.findByEmailRepository(email)
+        if (!usuarioEncontrado) {
+            return createMessage(typeErrorAuth.INVALIDAD_CREDENTIALS)
         }
         if (usuarioEncontrado.activo == false) {
-            return {
-                ok: false,
-                error: USER_NOT_ACTIVE
-            }
+            return createMessage(typeErrorAuth.USER_NOT_ACTIVE)
         }
         const isMatch = await bcrypt.compare(password, usuarioEncontrado.passwordHash)
         if (!isMatch) {
-            return {
-                ok: false,
-                error: INVALIDAD_CREDENTIALS
-            }
+            return createMessage(typeErrorAuth.LOGIN_FAILED)
         }
         return {
             ok: true,
@@ -38,23 +27,19 @@ exports.login = async (email, password) => {
         }
 
     } catch (error) {
-        console.log("Hubo un error en el login, capa service")
-        return {
-            ok: false,
-            error: INTERNAL_ERROR
-        }
+        console.log("Error en LoginService()", error)
+        return createMessage(typeErrorAuth.INTERNAL_ERROR)
     }
 }
 
-exports.register = async (nombre, password, email) => {
+exports.registerService = async (nombre, password, email) => {
     try {
-        console.log("hola")
-        if (await authRepository.findByEmail(email)) {
-            return {
-                ok: false,
-                error: USER_ALREADY_EXISTS
-            }
+         userFounded = await authRepository.findByEmailRepository(email)
+        console.log("el valor de userfounded es: ", userFounded)
+        if (userFounded) {
+            return createMessage(typeErrorAuth.USER_ALREADY_EXISTS)
         }
+
         const passwordHash = await bcrypt.hash(password, 10)
         const userTemp = {
             nombre,
@@ -62,16 +47,18 @@ exports.register = async (nombre, password, email) => {
             passwordHash,
             activo: true
         }
-        const userCreated = await authRepository.createUser(userTemp)
+        const userCreated = await authRepository.createUserRepository(userTemp)
         return {
             ok: true,
-            user: userCreated
+            user: {
+                _id: userCreated._id,
+                nombre: userCreated.nombre,
+                email: userCreated.email,
+                activo: userCreated.activo
+            }
         }
     } catch (error) {
-        console.log("ERROR - En metodo register, capa service")
-        return {
-            ok: false,
-            code: INTERNAL_ERROR
-        }
+        console.log("este es el error amigooo", error)
+        return createMessage(typeErrorAuth.INTERNAL_ERROR)
     }
 }

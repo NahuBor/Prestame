@@ -1,33 +1,37 @@
 const User = require('../../shared/models/user.model')
 const { getConnectMongoDB } = require('../../database/databaseConection')
 
-exports.findByEmail = async (email) => {
+
+
+const EMPTY_ARRAY = []
+
+exports.findByEmailRepository = async (email) => {
     try {
-        const user = await User.findOne({ email: email })
-        return user
+        const usuario = await User.findOne({ email: email })
+        return usuario
     } catch (error) {
-        console.log("Error - en la la busqueda del user, capa repo")
-        return undefined
+        console.log("Error en crearObjetoRepository")
+        throw error
     }
 }
 
-exports.createUser = async (user) => {
+exports.createUserRepository = async (user) => {
     try {
         const userCrated = await User.create(user)
         return await userCrated.save()
     } catch (error) {
-        console.log("Error - En el metodo createUser, capa repo", error)
-        return undefined
+        console.log("Error en crearObjetoRepository")
+        throw error
     }
 }
 
-exports.findUserById = async (id) => {
+exports.findUserByIdRepository = async (id) => {
     try {
         const user = await User.findById(id)
         return user
     } catch (error) {
-        console.log("Error - En el metodo findUserById, capa repo")
-        return undefined
+        console.log("Error en findUserByIdRepository")
+        throw error
     }
 }
 

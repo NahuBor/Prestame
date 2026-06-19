@@ -4,12 +4,18 @@
     <a routerLink="/objeto-form" class="btn-publicar">+ Publicar objeto</a>
   </div>
 
-  <div class="divider"></div>
+  <p *ngIf="objetos.length === 0" class="empty-message">No tenés objetos publicados todavía.</p>
 
-  <div class="solicitudes-header">
-    <h3>Solicitudes recibidas</h3>
-    <span class="badge-pendientes">0 pendientes</span>
-  </div>
-
-  <p class="empty-message">No tenés objetos publicados todavía.</p>
-</div>
+  <div *ngFor="let objeto of objetos" class="obj-row">
+    <img *ngIf="objeto.imagen" [src]="objeto.imagen" class="obj-img" alt="Foto del objeto">
+    <div class="obj-info">
+      <h5>{{ objeto.titulo }}</h5>
+      <small>{{ objeto.categoria }}</small>
+    </div>
+    <div class="obj-actions">
+      <span [class]="objeto.estado === 'disponible' ? 'badge-disponible' : 'badge-prestado'">
+        {{ objeto.estado }}
+      </span>
+      <a [routerLink]="['/objeto-form', objeto._id]" class="btn-editar">Editar</a>
+      <button class="btn-eliminar" (click)="eliminarObjeto(objeto._id!)">Eliminar</button>
+    </div>
