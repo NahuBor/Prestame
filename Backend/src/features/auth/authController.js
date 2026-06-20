@@ -62,6 +62,7 @@ exports.perfil = async (req, res) => {
             _id: user._id
         })
     } catch (error) {
+        console.log("Error en perfil controller:", error.message) 
         return res.status(500).send("Error en el servidor")
     }
 }
@@ -77,11 +78,11 @@ exports.logoutController = async (req, res) => {
         req.session.destroy((err) => {
             if (err) {
                 console.log(err)
+                return res.status(500).json({ message: 'Error al destruir la sesión' })
             }
+            return res.status(200).json({ message: 'Se ha deslogueado correctamente' })
         })
-        return res.status(200).send("Se ha deslogueado correctamente")
-
     } catch (error) {
-        return res.status(500).send("Error en el servidor al desloguarse")
+        return res.status(500).json({ message: 'Error en el servidor al desloguarse' })
     }
 }
