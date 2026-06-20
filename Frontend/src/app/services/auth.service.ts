@@ -17,7 +17,7 @@ interface ResponseMessage {
 export class AuthService {
 
   public actualUser = signal<User | null>(null);
-  private apiUrl = 'http://127.0.0.1:3000';
+  private apiUrl = 'http://localhost:3000';
 
   constructor(private http: HttpClient) { }
 

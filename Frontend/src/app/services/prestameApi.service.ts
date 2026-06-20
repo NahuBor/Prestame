@@ -8,9 +8,12 @@ import {User} from '../models/User.model'
   providedIn: 'root',
 })
 export class PrestameApi {
-  private apiUrl = 'http://127.0.0.1:3000';
+  private apiUrl = 'http://localhost:3000';
   constructor(private http: HttpClient) { }
 
+  obtenerPerfil() {
+    return this.http.get(`${this.apiUrl}/auth/perfil`, { withCredentials: true });
+  }
   crearObjeto(objeto: Objeto) {
     return this.http.post<Objeto>(`${this.apiUrl}/objetos`, objeto, { withCredentials: true });
   }
@@ -42,9 +45,6 @@ export class PrestameApi {
     return this.http.get<Objeto[]>(`${this.apiUrl}/objetos/categoria/${categoria}`, { withCredentials: true });
   }
 
-  obtenerPerfil() {
-    return this.http.get(`${this.apiUrl}/auth/perfil`, { withCredentials: true });
-  }
 
 }
 
