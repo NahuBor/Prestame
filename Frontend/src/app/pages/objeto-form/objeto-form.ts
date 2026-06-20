@@ -1,7 +1,7 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { PrestameApi } from '../../prestame-api';
-import { Objeto } from '../../interfaces/objeto.interface';
+import { PrestameApi } from '../../services/prestameApi.service';
+import { Objeto } from '../../models/objeto.interface';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { firstValueFrom } from 'rxjs';
@@ -17,12 +17,14 @@ export class ObjetoForm implements OnInit {
   esEdicion: boolean = false;
   cargando: boolean = false;
   objetoId: string | null = null;
+  duenioId: string = ''; // 
+
   objeto: Objeto = {
     titulo: '',
     descripcion: '',
-    categoria: 'herramientas'
+    categoria: 'herramientas',
+    duenioId: ''
   };
-
   constructor(
     private prestameApi: PrestameApi,
     private route: ActivatedRoute,
@@ -31,6 +33,16 @@ export class ObjetoForm implements OnInit {
   ) { }
 
   async ngOnInit() {
+    try {
+      const perfil: any = await firstValueFrom(this.prestameApi.obtenerPerfil());
+      this.duenioId = perfil._id || perfil.id || (perfil as any).userId;
+      this.objeto.duenioId = this.duenioId;
+    } catch (error) {
+      alert('Error al identificar al usuario');
+      this.router.navigate(['/login']);
+      return;
+    }
+
     this.objetoId = this.route.snapshot.paramMap.get('id');
     if (this.objetoId) {
       this.esEdicion = true;
@@ -56,6 +68,12 @@ export class ObjetoForm implements OnInit {
   }
 
   guardar() {
+    if (!this.objeto.duenioId) {
+      alert('Error: No se pudo identificar al usuario');
+      console.error('duenioId es undefined');
+      return;
+    }
+
     let formData: FormData | null = null;
     if (this.imagenSeleccionada) {
       formData = new FormData();
@@ -63,6 +81,7 @@ export class ObjetoForm implements OnInit {
       formData.append('categoria', this.objeto.categoria);
       formData.append('descripcion', this.objeto.descripcion || '');
       formData.append('imagen', this.imagenSeleccionada);
+      formData.append('duenioId', this.objeto.duenioId);
     }
     if (this.esEdicion && this.objetoId) {
       const peticion = formData

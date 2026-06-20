@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { PrestameApi } from '../../prestame-api';
+import { PrestameApi } from '../../services/prestameApi.service';
 import { ChangeDetectorRef } from '@angular/core';
-import { Objeto } from '../../interfaces/objeto.interface';
+import { Objeto } from '../../models/objeto.interface';
 import { firstValueFrom } from 'rxjs';
 
 @Component({

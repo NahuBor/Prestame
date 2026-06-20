@@ -1,15 +1,19 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-
-import { Objeto } from './interfaces/objeto.interface';
+import { Observable } from 'rxjs';
+import { Objeto } from '../models/objeto.interface';
+import {User} from '../models/User.model'
 
 @Injectable({
   providedIn: 'root',
 })
 export class PrestameApi {
-  private apiUrl = 'http://127.0.0.1:3000';
+  private apiUrl = 'http://localhost:3000';
   constructor(private http: HttpClient) { }
 
+  obtenerPerfil() {
+    return this.http.get(`${this.apiUrl}/auth/perfil`, { withCredentials: true });
+  }
   crearObjeto(objeto: Objeto) {
     return this.http.post<Objeto>(`${this.apiUrl}/objetos`, objeto, { withCredentials: true });
   }
@@ -41,13 +45,6 @@ export class PrestameApi {
     return this.http.get<Objeto[]>(`${this.apiUrl}/objetos/categoria/${categoria}`, { withCredentials: true });
   }
 
-  obtenerPerfil() {
-    return this.http.get(`${this.apiUrl}/auth/perfil`, { withCredentials: true });
-  }
-
-  logout() {
-  return this.http.post(`${this.apiUrl}/auth/logout`, {}, { withCredentials: true });
-}
 
 }
 

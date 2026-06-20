@@ -1,36 +1,55 @@
 const authService = require('./authService')
+const { mapResponse } = require('../../shared/utils/mapResponse')
+const INTERNAL_ERROR = 'INTERNAL_ERROR'
 
-exports.login = async (req, res) => {
+exports.loginController = async (req, res) => {
     try {
-        const {email, password} = req.body
-        const user = await authService.login(email, password)
-        if (!user) {
-            return res.status(401).send("Email o contraseña no validos")
+        const { email, password } = req.body
+        const respuestaService = await authService.loginService(email, password)
+        if (!respuestaService.ok) {
+            const {statusCode} = mapResponse(respuestaService.error)
+            return res.status(statusCode).send({
+                status: statusCode,
+                message: respuestaService.error
+            })
         }
-        req.session.userId = user._id
-        return res.status(200).send({
-            user: user.nombre, 
-            email: user.email,
-            id: user._id,
-            activo: user.activo
-        })
+        console.log(respuestaService.user)
+        req.session.userId = respuestaService.user
+        return res.status(200).send(respuestaService.user)
     } catch (error) {
-        console.log("ERROR - Ocurrió un error en el login(), de la capa controller")
-        return res.status(500).send("ERROR - Ocurrió un error interno en el servidor")
+        console.log("Ocurrió un error en loginController()", error)
+        return res.status(500).send({
+            status: 500,
+            message: INTERNAL_ERROR
+        })
     }
 }
 
-exports.register = async (req, res) => {
+exports.registerController = async (req, res) => {
     try {
-        const {nombre, password, email} = req.body 
-        const user = await authService.register(nombre, password, email)
-        if (!user) {
-            return res.status(400).send("Hubo un error en el registro")
+        const { nombre, password, email } = req.body
+        const respuestaService = await authService.registerService(nombre, password, email)
+        console.log("en el controller llega: ", respuestaService)
+        if (!respuestaService.ok) {
+            const {statusCode} = mapResponse(respuestaService.error)
+            return res.status(statusCode).send({
+                status: statusCode,
+                message: respuestaService.error
+            })
+
         }
-        return res.status(201).send("Usuario creado de forma correcta y espectacularmente genial!")
+        return res.status(201).send({
+            status: 201,
+            user: respuestaService.user
+        })
     } catch (error) {
-        console.log("Error controller: metodo register")
-        return res.status(500).send("ERROR - Ocurrió un error interno en el servidor")           
+        console.log("Error en registerController()", error)
+        return res.status(500).send(
+            {
+                status: 500,
+                message: INTERNAL_ERROR
+            }
+        )
     }
 }
 
@@ -43,26 +62,27 @@ exports.perfil = async (req, res) => {
             _id: user._id
         })
     } catch (error) {
+        console.log("Error en perfil controller:", error.message) 
         return res.status(500).send("Error en el servidor")
     }
 }
 
-exports.logout = async (req, res) => {
+exports.logoutController = async (req, res) => {
     try {
         if (!req.session) {
-            console.log("Sin sesiones activas")
-            return res.status(404).send("No hay sesiones en este momento")
-        } 
+            return res.status(403).send({
+                status: 403,
+                message: 'SESSION NOT FOUND'
+            })
+        }
         req.session.destroy((err) => {
             if (err) {
                 console.log(err)
+                return res.status(500).json({ message: 'Error al destruir la sesión' })
             }
-        }) 
-        console.log("Sesion borrada")
-        return res.status(200).send("Se ha deslogueado correctamente")
-
+            return res.status(200).json({ message: 'Se ha deslogueado correctamente' })
+        })
     } catch (error) {
-        console.log("Error al logout")
-        return res.status(500).send("Error en el servidor al desloguarse")
+        return res.status(500).json({ message: 'Error en el servidor al desloguarse' })
     }
 }

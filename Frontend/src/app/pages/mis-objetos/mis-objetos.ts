@@ -1,6 +1,6 @@
 import { Component,OnInit, ChangeDetectorRef  } from '@angular/core';
-import { PrestameApi } from '../../prestame-api';
-import { Objeto } from '../../interfaces/objeto.interface';
+import { PrestameApi } from '../../services/prestameApi.service';
+import { Objeto } from '../../models/objeto.interface';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
@@ -24,13 +24,19 @@ export class MisObjetos implements OnInit {
   }
 
   async cargarObjetos() {
+    console.log('🔍 cargarObjetos - INICIO');
     try {
-        //const perfil = await firstValueFrom(this.prestameApi.obtenerPerfil());
-        //const duenioId = (perfil as any)._id;
-        //const data = await firstValueFrom(this.prestameApi.obtenerMisObjetos(duenioId));
-        const duenioId = '6a2b1de016a755a64aed94c1'; // TEMPORAL - reemplazar con obtenerPerfil()
+        const perfil = await firstValueFrom(this.prestameApi.obtenerPerfil());
+        console.log('✅ Perfil obtenido:', perfil);
+      
+        const duenioId = (perfil as any)._id;
+        console.log('🔑 duenioId:', duenioId);
         const data = await firstValueFrom(this.prestameApi.obtenerMisObjetos(duenioId));
+              console.log('📦 Datos recibidos:', data);
+      
+       
         this.objetos = Array.isArray(data) ? data : [];
+         console.log(`✅ ${this.objetos.length} objetos cargados`);
         this.cdr.detectChanges();
     } catch (err) {
         console.log('Error al cargar objetos', err);
