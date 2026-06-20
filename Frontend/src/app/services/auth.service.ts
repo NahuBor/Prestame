@@ -5,7 +5,7 @@ import { User } from '../models/User.model';
 import { PrestameApi } from './prestameApi.service';
 import {map} from 'rxjs/operators'
 import {of, catchError} from 'rxjs'
-
+import {signal} from '@angular/core'
 interface ResponseMessage {
   isActive: boolean,
   user: User
@@ -16,46 +16,29 @@ interface ResponseMessage {
 })
 export class AuthService {
 
-  private _apiService = inject(PrestameApi)
-  private actualUserSubject = new BehaviorSubject<User | null>(null);
-  private $actualUser: Observable<User | null> = (this.actualUserSubject.asObservable())
+  public actualUser = signal<User | null>(null);
+  private apiUrl = 'http://127.0.0.1:3000';
 
   constructor(private http: HttpClient) { }
 
-  get actualUserValue(): User | null {
-    return this.actualUserSubject.value;
+
+  loginService (email: string, password: string) {
+    const body = {email, password}
+    const respuesta =  this.http.post<User>(`${this.apiUrl}/auth/login`, body, { withCredentials: true });
+    console.log("La respuesta del back es: ", respuesta)
+    return respuesta
   }
 
-  loginService(email: string, password: string) : Observable<User> | undefined {
-
-    const body = { email, password }
-
-    return this._apiService.login(email, password)
-  
-  }
-
-  registerService(nombre: string, apellido: string, email: string, password: string): Observable<User> | null | undefined {
+  registerService (nombre: string, apellido: string, email: string, password: string) : Observable <User> | undefined{
     nombre = nombre + apellido;
-    const body = { nombre, email, password }
-
-    return this._apiService.register(nombre, email, password)
+    return this.http.post<User>(`${this.apiUrl}/auth/register`, { nombre, email, password }, { withCredentials: true });
   }
 
-  logoutService(): Observable<void> {
-    return this._apiService.logout()
+  logoutService() : Observable<void>{
+    return this.http.post<void>(`${this.apiUrl}/auth/logout`, {}, { withCredentials: true });
   }
 
-  checkSessionService(): Observable<boolean> {
-    return (this._apiService.checkSession() ?? of(false)).pipe(
-      map((res) => {
-        return true;
-      }),
-      catchError((err : Observable<boolean>) => {
-        console.log(err)
-        return of(false);
-      })
-    );
+  checkSessionService() : Observable<boolean> {
+    return this.http.post<boolean>(`${this.apiUrl}/auth/checkSession`,{}, { withCredentials: true });
   }
-
-
 }

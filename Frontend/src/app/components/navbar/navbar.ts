@@ -1,21 +1,42 @@
-import { Component, inject } from '@angular/core';
-import { Router, RouterLink, RouterLinkActive } from '@angular/router';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
+import { inject } from '@angular/core'
+import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-navbar',
-  standalone: true,
-  imports: [RouterLink, RouterLinkActive],
+  imports: [CommonModule, RouterLink],
   templateUrl: './navbar.html',
-  styleUrl: './navbar.css'
+  styleUrl: './navbar.css',
 })
-export class NavbarComponent {
+export class Navbar implements OnInit {
   private authService = inject(AuthService);
-  private router = inject(Router);
+  private router = inject(Router)
 
-  logout() {
-    this.authService.logoutService(); 
-    
-    this.router.navigate(['/login']);
+  public usuarioLogueado = this.authService.actualUser;
+
+  constructor(
+    private cdr: ChangeDetectorRef
+  ) { }
+
+  async ngOnInit() {
+  }
+
+  cerrarSesion() {
+    this.authService.logoutService().subscribe({
+      next: () => {
+        this.usuarioLogueado.set(null);
+        this.router.navigate(['/login'])
+      },
+      error: (err) => {
+        console.log(err)
+      },
+      complete: () => {
+        this.cdr.detectChanges();
+      }
+    })
   }
 }

@@ -1,34 +1,20 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark px-4 shadow-sm">
-    <div class="container-fluid">
-      <a class="navbar-brand fw-bold" routerLink="/dashboard">PrestameApp</a>
-  
-      <button class="navbar-brand navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-  
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          
-          <li class="nav-item">
-            <a class="nav-link fs-5" routerLinkActive="active" routerLink="/mis-objetos">
-              <i class="bi bi-box-seam me-1"></i> Mis Objetos
-            </a>
-          </li>
-          
-          <li class="nav-item">
-            <a class="nav-link fs-5" routerLinkActive="active" routerLink="/objeto-form">
-              <i class="bi bi-plus-circle me-1"></i> Crear Objeto
-            </a>
-          </li>
-  
-        </ul>
-  
-        <div class="d-flex">
-          <button (click)="logout()" class="btn btn-outline-danger d-flex align-items-center gap-2">
-            <i class="bi bi-box-arrow-right"></i>
-            <span>Cerrar Sesión</span>
-          </button>
-        </div>
-      </div>
-    </div>
-  </nav>
+<nav class="navbar">
+  <div class="navbar-brand">
+    <a routerLink="/">Préstame</a>
+  </div>
+
+  <div class="navbar-links">    
+    @if (!usuarioLogueado()) {
+      <a routerLink="/login" class="nav-link">Iniciá sesión</a>
+      <a routerLink="/register" class="nav-link btn-register">Registrate</a>
+    }
+
+    @if (usuarioLogueado()) {
+      <span class="nav-user">{{ usuarioLogueado()?.nombre }}</span>
+      <a routerLink="/objetos" class="nav-link">Objetos</a>
+      <a routerLink="/mis-objetos" class="nav-link">Mis objetos</a>
+      <a routerLink="/mis-prestamos" class="nav-link">Mis préstamos</a>
+      <button class="nav-link btn-salir" (click)="cerrarSesion()">Salir</button>
+    }
+  </div>
+</nav>

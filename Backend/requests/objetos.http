@@ -64,3 +64,6 @@ GET http://127.0.0.1:3000/objetos/duenio/6a2b1de016a755a64aed94c1
 
 ### GET objeto por id
 GET http://127.0.0.1:3000/objetos/6a2d91c97f05f3782a0d4a45
+
+### Perfil
+GET http://127.0.0.1:3000/auth/perfil

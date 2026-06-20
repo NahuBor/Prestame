@@ -1,14 +1,17 @@
 import { Routes } from '@angular/router';
 import { MisObjetos } from './pages/mis-objetos/mis-objetos';
 import { ObjetoForm } from './pages/objeto-form/objeto-form';
-
+import { ObjetosFeedComponent } from './components/objetos-feed/objetos-feed';
+import { LoginComponent } from './pages/login.component/login.component';
+import { RegisterComponent } from './pages/register.component/register.component';
 import { authGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
-  {path: '', redirectTo: '/login', pathMatch: 'full' },
-  { path: 'login', loadComponent: () => import('./pages/login.component/login.component').then(m => m.LoginComponent) },
-  {path: 'register', loadComponent: () => import('./pages/register.component/register.component').then(m => m.RegisterComponent)},
-  { path: 'mis-objetos', component: MisObjetos, canActivate: [authGuard]},
-  { path: 'objeto-form', component: ObjetoForm, canActivate: [authGuard] },
-  { path: 'objeto-form/:id', component: ObjetoForm, canActivate: [authGuard] },
+    { path: 'login', component: LoginComponent },
+    { path: 'register', component: RegisterComponent },
+    { path: 'objetos', component: ObjetosFeedComponent },
+    { path: 'mis-objetos', component: MisObjetos },
+    { path: 'objeto-form', component: ObjetoForm },
+    { path: 'objeto-form/:id', component: ObjetoForm },
+    { path: '', redirectTo: 'mis-objetos', pathMatch: 'full' }
 ];

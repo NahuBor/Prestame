@@ -62,3 +62,13 @@ exports.registerService = async (nombre, password, email) => {
         return createMessage(typeErrorAuth.INTERNAL_ERROR)
     }
 }
+
+exports.findById = async (id) => {
+    try {
+        const user = await authRepository.findUserById(id)
+        return user
+    } catch (error) {
+        console.log("Error - En findById, capa service")
+        return undefined
+    }
+}

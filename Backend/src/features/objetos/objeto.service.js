@@ -49,9 +49,10 @@ exports.getAllObjets = async () => {
         console.log("SERVICE - ObjetosdelRepository")
         let testDatos = await objetoRepository.getAllobjetsRepository()
         console.log(testDatos)
-        return testDatos
+        return testDatos || EMPTY_ARRAY
     } catch (error) {
         console.log("Error en getAllobjetsRepository()", error)//borrar el error
+        return EMPTY_ARRAY
     }
 
 }
@@ -75,5 +76,17 @@ exports.getObjetsfilteredByDuenioIdService = async (id) => {
         return testDatos
     } catch (error) {
         console.log("Error en getObjetsfilteredByDuenioIdService", error)
+    }
+}
+
+exports.getObjetsfilteredByCategoriaService = async (categoria) => {
+    try {
+        console.log(`SERVICE - getObjetsfilteredByCategoriaService: ${categoria}`);
+        const objetos = await objetoRepository.getObjetsfilteredByCategoriaRepository(categoria);
+        console.log(`Service recibió ${objetos?.length || 0} objetos de categoría: ${categoria}`);
+        return objetos || EMPTY_ARRAY;
+    } catch (error) {
+        console.log(`Error en getObjetsfilteredByCategoriaService:`, error);
+        return EMPTY_ARRAY;
     }
 }

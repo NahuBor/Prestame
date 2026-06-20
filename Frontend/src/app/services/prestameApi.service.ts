@@ -34,20 +34,16 @@ export class PrestameApi {
     return this.http.get<Objeto>(`${this.apiUrl}/objetos/${id}`, { withCredentials: true });
   }
 
-  login(email: string, password: string) : Observable<User> | undefined {
-    return this.http.post<any>(`${this.apiUrl}/auth/login`, { email, password }, { withCredentials: true });
+   obtenerObjetosPublicos() {
+    return this.http.get<Objeto[]>(`${this.apiUrl}/objetos`, { withCredentials: true });
   }
 
-  register(nombre: string, email: string, password: string) : Observable <User> | undefined{
-    return this.http.post<any>(`${this.apiUrl}/auth/register`, { nombre, email, password }, { withCredentials: true });
+    obtenerObjetosPorCategoria(categoria: string) {
+    return this.http.get<Objeto[]>(`${this.apiUrl}/objetos/categoria/${categoria}`, { withCredentials: true });
   }
 
-  logout() : Observable<void>{
-    return this.http.post<any>(`${this.apiUrl}/auth/logout`, {}, { withCredentials: true });
-  }
-
-  checkSession() : Observable<boolean> | undefined{
-    return this.http.post<any>(`${this.apiUrl}/auth/checkSession`, {}, { withCredentials: true });
+  obtenerPerfil() {
+    return this.http.get(`${this.apiUrl}/auth/perfil`, { withCredentials: true });
   }
 
 }

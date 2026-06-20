@@ -4,6 +4,7 @@ import { FormBuilder, FormsModule } from '@angular/forms';
 import { User } from '../../models/User.model';
 import { Router } from '@angular/router';
 import { inject } from '@angular/core';
+import { RouterLink } from '@angular/router';
 
 
 @Component({
@@ -51,7 +52,9 @@ validatePassword(): boolean {
     }
   }
 
-
+irAlRegistro() {
+  this.router.navigate(['/register'])
+}
 
   login() {
     this.errorMessage = ''
@@ -74,11 +77,14 @@ validatePassword(): boolean {
     this.authService.loginService(this.email, this.password)?.subscribe(
       {
         next: (res) => {
+          console.log(res)
+          this.authService.actualUser.set(res)
           this.router.navigate(['/mis-objetos'])
           console.log("hola, funciona")
+          console.log(res)
         },
         error: (err) => {
-          console.log(err)
+          console.log("el error esta en:", err)
           this.errorMessage = 'Error al iniciar sesión'
           this.isLoading = false;
         },
