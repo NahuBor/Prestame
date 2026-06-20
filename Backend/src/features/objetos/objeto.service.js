@@ -8,6 +8,7 @@ exports.crearObjetoService = async (datosObjeto) => {
         return await objetoRepository.crearObjetoRepository(datosObjeto)
     } catch (error) {
         console.log("Error en crearObjetoRepository", error)
+        return null
     }
 }
 
@@ -23,6 +24,7 @@ exports.editarObjetoService = async (id, objetoActualizado) => {
         return objeto
     } catch (error) {
         console.log("Error en crearObjetoRepository", error)
+        return null
     }
 }
 
@@ -39,7 +41,8 @@ exports.eliminarObjetoService = async (idObjeto) => {
         return objetoEliminado
     }
     catch (error) {
-        throw error
+       console.log("Error en eliminarObjetoRepository", error)
+       return null 
     }
 }
 
@@ -49,9 +52,10 @@ exports.getAllObjets = async () => {
         console.log("SERVICE - ObjetosdelRepository")
         let testDatos = await objetoRepository.getAllobjetsRepository()
         console.log(testDatos)
-        return testDatos
+        return testDatos || EMPTY_ARRAY
     } catch (error) {
         console.log("Error en getAllobjetsRepository()", error)//borrar el error
+        return EMPTY_ARRAY
     }
 
 }
@@ -64,6 +68,7 @@ exports.getObjetsfilteredByIdService = async (id) => {
         return testDatos
     } catch (error) {
         console.log("Error en getObjetsfilteredById", error)
+        return null
     }
 }
 
@@ -75,5 +80,18 @@ exports.getObjetsfilteredByDuenioIdService = async (id) => {
         return testDatos
     } catch (error) {
         console.log("Error en getObjetsfilteredByDuenioIdService", error)
+        return null
+    }
+}
+
+exports.getObjetsfilteredByCategoriaService = async (categoria) => {
+    try {
+        console.log(`SERVICE - getObjetsfilteredByCategoriaService: ${categoria}`);
+        const objetos = await objetoRepository.getObjetsfilteredByCategoriaRepository(categoria);
+        console.log(`Service recibió ${objetos?.length || 0} objetos de categoría: ${categoria}`);
+        return objetos || EMPTY_ARRAY;
+    } catch (error) {
+        console.log(`Error en getObjetsfilteredByCategoriaService:`, error);
+        return EMPTY_ARRAY;
     }
 }

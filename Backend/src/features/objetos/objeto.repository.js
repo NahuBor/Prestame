@@ -1,7 +1,7 @@
 const Objeto = require('../../shared/models/objeto.model.js')
 const { getConnectMongoDB } = require('../../database/databaseConection')
+
 const EMPTY_ARRAY = []
-getConnectMongoDB();
 
 // CREATE
 exports.crearObjetoRepository = async (datosObjeto) => {
@@ -11,6 +11,7 @@ exports.crearObjetoRepository = async (datosObjeto) => {
         return await objeto.save()
     } catch (error) {
         console.log("Error en crearObjetoRepository", error)
+        return null
     }
 }
 
@@ -28,6 +29,7 @@ exports.editarObjetoRepository = async (id, objetoActualizado) => {
         }
     } catch (error) {
         console.log("Error en editarObjetoRepository", error)
+        return null
     }
 }
 
@@ -44,40 +46,39 @@ exports.eliminarObjetoRepository = async (id) => {
             return objetoEliminado
         }
     } catch (error) {
-         console.log("Error en eliminarObjetoRepository", error)
+        console.log("Error en eliminarObjetoRepository", error)
+        return null
     }
 }
 
-
-
-
-exports.getAllobjetsRepository = async () =>{
-    
+exports.getAllobjetsRepository = async () => {
     try {
         console.log(" MONGO DBREPOSITORY - getAllObjetsRepository ")
-        const objetos = await Objeto.find(); 
+        const objetos = await Objeto.find();
         console.log(objetos);
-        return await JSON.stringify(objetos)
+        return objetos; 
     } catch (error) {
         console.log("Error en getAllObjetsRepository ", error)
+        return EMPTY_ARRAY;
     }
 }
+
 exports.getObjetsByIdRepository = async (idParam) => {
     try {
         const objeto = await Objeto.findById(idParam).lean(); // .lean() retorna objetos JavaScripts planos, no documentos Mongoose (más rápido)
-
         if (!objeto) {
             return EMPTY_ARRAY;
         }
-        console.log("OBEJTO"+ objeto)
-        return [objeto];
+        console.log("OBEJTO" + objeto)
+        return objeto;
     } catch (error) {
         // Si el ID no es un formato válido de MongoDB, capturamos el error
         if (error.name === 'CastError') {
             return EMPTY_ARRAY;
         }
         console.error("Error en getFrontendLanguagesFilteredByIdRepository:", error);
-        throw error;
+        console.log("Error en getObjetsByIdRepository ", error);
+        return null; 
     }
 };
 
@@ -85,12 +86,10 @@ exports.getObjectsByDuenioIdRepository = async (duenioIdParam) => {
     try {
         // Buscar todos los objetos que pertenezcan a ese duenioId
         const objetos = await Objeto.find({ duenioId: duenioIdParam }).lean();
-        
         // Si no hay objetos, devolvemos array vacío
         if (!objetos || objetos.length === 0) {
             return EMPTY_ARRAY;
         }
-        
         console.log("OBJETOS DEL DUEÑO:", objetos);
         return objetos; // ya es un array
     } catch (error) {
@@ -99,39 +98,25 @@ exports.getObjectsByDuenioIdRepository = async (duenioIdParam) => {
             return EMPTY_ARRAY;
         }
         console.error("Error en getObjectsByDuenioIdRepository:", error);
-        throw error;
+        console.log("Error en etObjectsByDuenioIdRepository ", error);
+        return null
     }
 };
 
-
-
-
-
-
-exports.getObjetsFilteredRepository = async (lenguaje, orderby) =>{
-
-    const filtrado = objetos.filter(
-        objetos => objetos.id.toLocaleLowerCase() === lenguaje.toLocaleLowerCase()
-    )
-
-    if(filtrado.length === 0){
-        return []
+exports.getObjetsfilteredByCategoriaRepository = async (categoria) => {
+    try {
+        console.log(`MONGO DBREPOSITORY - getObjetsByCategoriaRepository: ${categoria}`);
+        const objetos = await Objeto.find({ categoria: categoria });
+        console.log(`Encontrados ${objetos.length} objetos en categoría: ${categoria}`);
+        return objetos;
+    } catch (error) {
+        console.log(`Error en getObjetsByCategoriaRepository:`, error);
+        return EMPTY_ARRAY;
     }
-
-    if(orderby === 'arriba'){
-        return filtrado.sort(
-            (a,b) => b.cantidadAlumnos - a.cantidadAlumnos
-        )
-    }
-    else if (orderby === 'abajo'){
-        return filtrado.sort(
-            (a,b) => a.cantidadAlumnos - b.cantidadAlumnos
-        )
-    }else{
-        return filtrado
-    }
-
 }
+
+
+
 
 
 

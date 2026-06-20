@@ -35,11 +35,14 @@ exports.register = async (req, res) => {
 }
 
 exports.perfil = async (req, res) => {
-    try {
-        console.log("Usuario autorizado a perfil")
-        return res.status(200).send("Acceso autorizado a perfil")
+     try {
+        const user = await authService.findById(req.session.userId)
+        return res.status(200).send({
+            nombre: user.nombre,
+            email: user.email,
+            _id: user._id
+        })
     } catch (error) {
-        console.log("Error - No se pudo acceder a /perfil")
         return res.status(500).send("Error en el servidor")
     }
 }

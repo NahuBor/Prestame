@@ -1,21 +1,40 @@
 const objetoService = require('./objeto.service')
 
+
 exports.crearObjetoController = async (req, res) => {
     try {
         const nuevoObjeto = {
             ...req.body,
-            duenioId: /*req.session.userId,*/'6a2b1de016a755a64aed94c1',
+            duenioId: /*req.session.userId,*/'6a2b1de016a755a64aed94c1', // temporal para pruebas
             estado: 'disponible'
+        }
+        if (req.file) {
+            nuevoObjeto.imagen = {
+                data: req.file.buffer,
+                contentType: req.file.mimetype
+            }
         }
         console.log("CONTROLLER - crearObjetoController - ", typeof nuevoObjeto, nuevoObjeto)
         const objeto = await objetoService.crearObjetoService(nuevoObjeto)
+        if (objeto === null) {
+            return res.status(400).send({
+                code: 400,
+                message: "No se pudo crear el objeto. Verifique los datos."
+            })
+        }
         if (!objeto || objeto.length === 0) {
-            return res.status(400).send("No se pudo crear el objeto")
+            return res.status(400).send({
+                code: 400,
+                message: "No se pudo crear el objeto"
+            })
         }
         res.status(200).send(objeto)
     } catch (error) {
         console.log("Error - CONTROLLER crearObjeto", error)
-        res.status(500).send({ code: 500, message: "Error al agregar el nuevo Objeto" })
+        res.status(500).send({
+            code: 500,
+            message: "Error al agregar el nuevo Objeto"
+        })
     }
 }
 
@@ -23,10 +42,25 @@ exports.editarObjetoController = async (req, res) => {
     try {
         const id = req.params.id
         const objetoActualizado = req.body
-        console.log("CONTROLLER - editarObjetoController - ", typeof objetoActualizado, objetoActualizado)
+
+        if (req.file) {
+            objetoActualizado.imagen = {
+                data: req.file.buffer,
+                contentType: req.file.mimetype
+            }
+        }
         const objeto = await objetoService.editarObjetoService(id, objetoActualizado)
+        if (objeto === null) {
+            return res.status(400).send({
+                code: 400,
+                message: "No se pudo editar el objeto."
+            })
+        }
         if (!objeto || objeto.length === 0) {
-            return res.status(404).send(`No se encuentra un objeto a modificar con el id: ${id}`)
+            return res.status(404).send({
+                code: 404,
+                message: `No se encuentra un objeto a modificar con el id: ${id}`
+            })
         }
         res.status(200).send(objeto)
     } catch (error) {
@@ -40,8 +74,17 @@ exports.eliminarObjetoController = async (req, res) => {
         const idObjeto = req.params.id
         console.log("CONTROLLER - eliminarObjetoController - idObjeto:", idObjeto)
         const objeto = await objetoService.eliminarObjetoService(idObjeto)
+        if (objeto === null) {
+            return res.status(400).send({
+                code: 400,
+                message: "No se pudo eliminar el objeto"
+            })
+        }
         if (!objeto || objeto.length === 0) {
-            return res.status(404).send(`No se encuentra un objeto a eliminar con el id: ${id}`)
+            return res.status(404).send({
+                code: 404,
+                message: `No se encuentra un objeto a eliminar con el id: ${idObjeto}`
+            })
         }
         res.status(200).send({ code: 200, message: "Objeto eliminado correctamente" })
     } catch (error) {
@@ -50,52 +93,115 @@ exports.eliminarObjetoController = async (req, res) => {
     }
 }
 
-
-
 exports.readObjets = async (req, res) => {
     try {
+        const objetos = await objetoService.getAllObjets()
+
+        if (objetos.length === 0) {
+            return res.status(404).send('No se encontraron objetos')
+        }
+
+        const objetoConImagen = objetos.map(objeto => {
+            const objetoPlano = { ...objeto._doc || objeto }
+            if (objetoPlano.imagen && objetoPlano.imagen.data) {
+                const base64 = objetoPlano.imagen.data.toString('base64')
+                objetoPlano.imagen = `data:${objetoPlano.imagen.contentType};base64,${base64}`
+            }
+            return objetoPlano
+        })
+
         res.setHeader('Content-Type', 'application/json')
-        res.status(200)
-        res.send(await objetoService.getAllObjets())
+        return res.status(200).send(objetoConImagen)
     } catch (error) {
-        console.log("Error readObjetsLanguages", error)
+        console.log("Error readObjets", error)
         res.status(500).send({
             code: 500,
-            message: "Error al obtener los lenguajes frontend"
+            message: "Error al obtener los objetos"
         })
     }
 }
 
 exports.readObjetsByIdcontroller = async (req, res) => {
     const idParam = req.params.id;
-    
-    const filtrado = await objetoService.getObjetsfilteredByIdService(idParam)
-
-    if(filtrado.length === 0){
-        return res.status(404).send(`No se encontró el objeto con el id: ${idParam}`)
-        console.log("Saliendo del if")
+    const objetoFiltrado = await objetoService.getObjetsfilteredByIdService(idParam)
+    if (objetoFiltrado === null) {
+        return res.status(400).send({
+            code: 400,
+            message: "Error al buscar el objeto"
+        })
     }
-
+    if (!objetoFiltrado || objetoFiltrado.length === 0) {
+        return res.status(404).send({
+            code: 404,
+            message: `No se encontró el objeto con el id: ${idParam}`
+        })
+    } const objetoPlano = { ...objetoFiltrado._doc || objetoFiltrado }
+    if (objetoPlano.imagen && objetoPlano.imagen.data) {
+        const base64 = objetoPlano.imagen.data.toString('base64')
+        objetoPlano.imagen = `data:${objetoPlano.imagen.contentType};base64,${base64}`
+    }
     res.setHeader('Content-Type', 'application/json')
-    let filtradoJson = JSON.stringify(filtrado)
-    
-    return res.status(200).send(filtradoJson)
-
+    return res.status(200).send(objetoPlano)
 }
 
 exports.readObjetsByDuienioIdcontroller = async (req, res) => {
     const duenioIdParam = req.params.duenioId;
-    
-    const filtrado = await objetoService.getObjetsfilteredByDuenioIdService(duenioIdParam)
+    const objetoFiltrado = await objetoService.getObjetsfilteredByDuenioIdService(duenioIdParam)
 
-    if(filtrado.length === 0){
-        return res.status(404).send(`No se encontró el objeto con el id: ${duenioIdParam}`)
-        console.log("Saliendo del if")
+    if (objetoFiltrado === null) {
+        return res.status(400).send({
+            code: 400,
+            message: "Error al buscar objetos del dueño"
+        })
     }
 
-    res.setHeader('Content-Type', 'application/json')
-    let filtradoJson = JSON.stringify(filtrado)
-    
-    return res.status(200).send(filtradoJson)
+    if (objetoFiltrado.length === 0) {
+        return res.status(404).send({
+            code: 404,
+            message: `No se encontró el objeto con el id: ${duenioIdParam}`
+        })
+    }
 
+    const objetoConImagen = objetoFiltrado.map(objeto => {
+        const objetoPlano = { ...objeto._doc || objeto }
+        if (objetoPlano.imagen && objetoPlano.imagen.data) {
+            const base64 = objetoPlano.imagen.data.toString('base64')
+            objetoPlano.imagen = `data:${objetoPlano.imagen.contentType};base64,${base64}`
+        }
+        return objetoPlano
+    })
+
+    res.setHeader('Content-Type', 'application/json')
+    return res.status(200).send(objetoConImagen)
+}
+
+exports.readObjetsByCategoriaController = async (req, res) => {
+    try {
+        const categoriaParam = req.params.categoria;
+        console.log(`CONTROLLER - readObjetsByCategoriaController: ${categoriaParam}`);
+
+        const objetoFiltrado = await objetoService.getObjetsfilteredByCategoriaService(categoriaParam)
+
+        if (objetoFiltrado.length === 0) {
+            return res.status(404).send(`No se encontraron objetos en la categoría: ${categoriaParam}`)
+        }
+
+        const objetoConImagen = objetoFiltrado.map(objeto => {
+            const objetoPlano = { ...objeto._doc || objeto }
+            if (objetoPlano.imagen && objetoPlano.imagen.data) {
+                const base64 = objetoPlano.imagen.data.toString('base64')
+                objetoPlano.imagen = `data:${objetoPlano.imagen.contentType};base64,${base64}`
+            }
+            return objetoPlano
+        })
+
+        res.setHeader('Content-Type', 'application/json')
+        return res.status(200).send(objetoConImagen)
+    } catch (error) {
+        console.log(" Error readObjetsByCategoriaController", error)
+        res.status(500).send({
+            code: 500,
+            message: "Error al obtener los objetos por categoría"
+        })
+    }
 }

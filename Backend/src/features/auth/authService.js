@@ -44,3 +44,13 @@ exports.register = async(nombre, password, email) => {
         console.log("ERROR - En metodo register, capa service")
     }
 }
+
+exports.findById = async (id) => {
+    try {
+        const user = await authRepository.findUserById(id)
+        return user
+    } catch (error) {
+        console.log("Error - En findById, capa service")
+        return undefined
+    }
+}
