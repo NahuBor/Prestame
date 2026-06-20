@@ -32,11 +32,11 @@ Content-Type: application/json
 }
 
 ### Editar objeto - caso feliz
-PUT http://127.0.0.1:3000/objetos/6a2d92677f05f3782a0d4a47
+PUT http://127.0.0.1:3000/objetos/6a369c0c5a64367cd9805550
 Content-Type: application/json
 
 {
-    "titulo": "Taladro Bosch actualizado",
+    "titulo": "Taladro CAT ACTUALIZADO",
     "descripcion": "Con maletín y mechas",
     "categoria": "herramientas"
 }
@@ -62,8 +62,11 @@ DELETE http://127.0.0.1:3000/objetos/000000000000000000000000
 ### Traer mis objetos por duenioId
 GET http://127.0.0.1:3000/objetos/duenio/6a2b1de016a755a64aed94c1
 
-### GET objeto por id
+### GET objeto por id borrado
 GET http://127.0.0.1:3000/objetos/6a2d91c97f05f3782a0d4a45
+
+### GET objeto por id 
+GET http://127.0.0.1:3000/objetos/6a2d92677f05f3782a0d4a47
 
 ### Perfil
 GET http://127.0.0.1:3000/auth/perfil

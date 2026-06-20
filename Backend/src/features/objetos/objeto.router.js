@@ -35,9 +35,9 @@ objetoRouter.put('/:id',/*authMiddleware,*/manejarErrorMulter(upload.single('ima
 objetoRouter.delete('/:id',/*authMiddleware,*/ objetoController.eliminarObjetoController)
 
 objetoRouter.get('/',/*authMiddleware,*/ objetoController.readObjets);
-objetoRouter.get('/:id',/*authMiddleware,*/ objetoController.readObjetsByIdcontroller)
 objetoRouter.get('/duenio/:duenioId', objetoController.readObjetsByDuienioIdcontroller);
 objetoRouter.get('/categoria/:categoria',/*authMiddleware,*/ objetoController.readObjetsByCategoriaController);
+objetoRouter.get('/:id',/*authMiddleware,*/ objetoController.readObjetsByIdcontroller)
 
 
 module.exports = objetoRouter

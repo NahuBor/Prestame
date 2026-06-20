@@ -11,6 +11,7 @@ exports.crearObjetoRepository = async (datosObjeto) => {
         return await objeto.save()
     } catch (error) {
         console.log("Error en crearObjetoRepository", error)
+        return null
     }
 }
 
@@ -28,6 +29,7 @@ exports.editarObjetoRepository = async (id, objetoActualizado) => {
         }
     } catch (error) {
         console.log("Error en editarObjetoRepository", error)
+        return null
     }
 }
 
@@ -45,6 +47,7 @@ exports.eliminarObjetoRepository = async (id) => {
         }
     } catch (error) {
         console.log("Error en eliminarObjetoRepository", error)
+        return null
     }
 }
 
@@ -67,7 +70,7 @@ exports.getObjetsByIdRepository = async (idParam) => {
             return EMPTY_ARRAY;
         }
         console.log("OBEJTO" + objeto)
-        return [objeto];
+        return objeto;
     } catch (error) {
         // Si el ID no es un formato válido de MongoDB, capturamos el error
         if (error.name === 'CastError') {
@@ -75,6 +78,7 @@ exports.getObjetsByIdRepository = async (idParam) => {
         }
         console.error("Error en getFrontendLanguagesFilteredByIdRepository:", error);
         console.log("Error en getObjetsByIdRepository ", error);
+        return null; 
     }
 };
 
@@ -95,6 +99,7 @@ exports.getObjectsByDuenioIdRepository = async (duenioIdParam) => {
         }
         console.error("Error en getObjectsByDuenioIdRepository:", error);
         console.log("Error en etObjectsByDuenioIdRepository ", error);
+        return null
     }
 };
 
@@ -109,6 +114,7 @@ exports.getObjetsfilteredByCategoriaRepository = async (categoria) => {
         return EMPTY_ARRAY;
     }
 }
+
 
 
 
