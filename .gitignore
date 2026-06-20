@@ -27,6 +27,7 @@ Frontend/__screenshots__/
 # BACKEND
 
 Backend/node_modules
+Backend/src/.env
 
 
 # ==========================================

@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-
-import { Objeto } from './interfaces/objeto.interface';
+import { Observable } from 'rxjs';
+import { Objeto } from '../models/objeto.interface';
+import {User} from '../models/User.model'
 
 @Injectable({
   providedIn: 'root',
@@ -44,10 +45,6 @@ export class PrestameApi {
   obtenerPerfil() {
     return this.http.get(`${this.apiUrl}/auth/perfil`, { withCredentials: true });
   }
-
-  logout() {
-  return this.http.post(`${this.apiUrl}/auth/logout`, {}, { withCredentials: true });
-}
 
 }
 

@@ -1,7 +1,7 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { PrestameApi } from '../../prestame-api';
-import { Objeto } from '../../interfaces/objeto.interface';
+import { PrestameApi } from '../../services/prestameApi.service';
+import { Objeto } from '../../models/objeto.interface';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { firstValueFrom } from 'rxjs';

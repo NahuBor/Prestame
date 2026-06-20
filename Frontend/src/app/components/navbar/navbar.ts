@@ -1,8 +1,10 @@
-import { Component,OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
-import { PrestameApi } from '../../prestame-api';
-import { firstValueFrom } from 'rxjs';
+import { AuthService } from '../../services/auth.service';
+import { inject } from '@angular/core'
+import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-navbar',
@@ -11,29 +13,30 @@ import { firstValueFrom } from 'rxjs';
   styleUrl: './navbar.css',
 })
 export class Navbar implements OnInit {
-  usuarioLogueado: any = null;
+  private authService = inject(AuthService);
+  private router = inject(Router)
+
+  public usuarioLogueado = this.authService.actualUser;
 
   constructor(
-    private prestameApi: PrestameApi,
     private cdr: ChangeDetectorRef
-  ) {}
+  ) { }
 
   async ngOnInit() {
-    try {
-      const perfil = await firstValueFrom(this.prestameApi.obtenerPerfil());
-      this.usuarioLogueado = perfil;
-      this.cdr.detectChanges();
-    } catch {
-      this.usuarioLogueado = null;
-    }
   }
 
   cerrarSesion() {
-    this.prestameApi.logout().subscribe({
+    this.authService.logoutService().subscribe({
       next: () => {
-        this.usuarioLogueado = null;
+        this.usuarioLogueado.set(null);
+        this.router.navigate(['/login'])
+      },
+      error: (err) => {
+        console.log(err)
+      },
+      complete: () => {
         this.cdr.detectChanges();
       }
-    });
+    })
   }
 }
