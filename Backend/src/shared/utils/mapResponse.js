@@ -1,44 +1,29 @@
-exports.mapResponse = (errorMessage) => {
-    switch(errorMessage.code) {
+exports.mapResponse = (errorInput) => {
+    // 1. Extraemos el código de error sin importar si nos pasaron un String o un Objeto
+    const code = (errorInput && typeof errorInput === 'object') 
+        ? errorInput.code 
+        : errorInput;
+
+    // 2. Evaluamos el código de forma segura
+    switch(code) {
         case 'INVALID_CREDENTIALS':
-            return {
-                statusCode: 401,
-            }
         case 'USER_NOT_ACTIVE':
-            return {
-                statusCode: 401,
-            }
-        case 'INTERNAL_ERROR':
-            return {
-                statusCode: 500,
-            }
-        case 'USER_ALREADY_EXISTS':
-            return {
-                statusCode: 400,
-            }
         case 'LOGIN_FAILED':
-            return {
-                statusCode: 401,
-            }
-        case 'REGISTER_FAILED':
-           return {
-                statusCode: 400,
-            }
-        case 'NOT_AUTHORIZED':
-            return {
-                statusCode: 403,
-            }
         case 'SESION_EXPIRED':
-            return {
-                statusCode: 401,
-            }
+            return { statusCode: 401 };
+
+        case 'NOT_AUTHORIZED':
+            return { statusCode: 403 };
+
         case 'USER_NOT_FOUND':
-            return {
-                statusCode: 404,
-            }
+            return { statusCode: 404 };
+
+        case 'USER_ALREADY_EXISTS':
+        case 'REGISTER_FAILED':
+            return { statusCode: 400 };
+
+        case 'INTERNAL_ERROR':
         default:
-            return {
-                statusCode: 500,
-            }
+            return { statusCode: 500 };
     }
-}
+};

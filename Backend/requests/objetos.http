@@ -15,8 +15,8 @@ POST http://127.0.0.1:3000/auth/login
 Content-Type: application/json
 
 {
-    "email": "diana@test.com",
-    "password": "123456"
+    "email": "diana3@test.com",
+    "password": "12345678"
 }
 
 ###
