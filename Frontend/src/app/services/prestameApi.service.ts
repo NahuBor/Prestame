@@ -37,13 +37,14 @@ export class PrestameApi {
     return this.http.get<Objeto>(`${this.apiUrl}/objetos/${id}`, { withCredentials: true });
   }
 
-   obtenerObjetosPublicos() {
+  obtenerObjetosPublicos() {
     return this.http.get<Objeto[]>(`${this.apiUrl}/objetos`, { withCredentials: true });
   }
 
     obtenerObjetosPorCategoria(categoria: string) {
     return this.http.get<Objeto[]>(`${this.apiUrl}/objetos/categoria/${categoria}`, { withCredentials: true });
   }
+  
 
 
 }

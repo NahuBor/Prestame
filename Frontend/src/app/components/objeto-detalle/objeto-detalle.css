@@ -1,0 +1,239 @@
+/* ==============================================
+   ESTILOS PARA EL DETALLE DEL OBJETO
+   ============================================== */
+
+/* ── Contenedor principal ──────────────────── */
+.detalle-container {
+  max-width: 720px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+  font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  transition: box-shadow 0.25s ease;
+}
+
+.detalle-container:hover {
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
+}
+
+/* ── Botones de navegación ──────────────────── */
+.detalle-actions {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.detalle-actions button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.45rem 1.1rem;
+  border: none;
+  border-radius: 40px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  background: #f0f2f0;
+  color: #1e2b2a;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.1s ease;
+}
+
+.detalle-actions button:hover {
+  background: #e3e7e3;
+  transform: scale(1.02);
+}
+
+.detalle-actions button:active {
+  transform: scale(0.97);
+}
+
+/* Botón de editar (destacado) */
+.detalle-actions button:last-child {
+  background: #4a7c59;
+  color: #fff;
+}
+
+.detalle-actions button:last-child:hover {
+  background: #3b6849;
+}
+
+/* ── Imagen ──────────────────────────────────── */
+.detalle-imagen {
+  margin: 1rem 0 1.5rem 0;
+  border-radius: 16px;
+  overflow: hidden;
+  background: #f5f7f5;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.detalle-imagen img {
+  width: 100%;
+  height: auto;
+  max-height: 360px;
+  object-fit: cover;
+  display: block;
+}
+
+/* ── Título ──────────────────────────────────── */
+.detalle-container h1 {
+  font-size: 1.8rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  margin: 0.5rem 0 0.25rem 0;
+  color: #1c2a28;
+  line-height: 1.2;
+}
+
+/* ── Estado y categoría ──────────────────────── */
+.detalle-container > div:nth-of-type(2) {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  margin: 0.5rem 0 1rem 0;
+  font-size: 0.95rem;
+  color: #2d3f3c;
+}
+
+.detalle-container > div:nth-of-type(2) strong {
+  font-weight: 600;
+  color: #1e2b2a;
+}
+
+/* ── Descripción ────────────────────────────── */
+.detalle-container h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 1.5rem 0 0.3rem 0;
+  color: #1e2b2a;
+}
+
+.detalle-container p {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #2d3f3c;
+  margin: 0.3rem 0 0.5rem 0;
+}
+
+/* ── Metadatos ────────────────────────────────── */
+.detalle-container > div:nth-of-type(4) {
+  margin: 1.2rem 0 1.5rem 0;
+  padding: 1rem 1.2rem;
+  background: #f8faf8;
+  border-radius: 12px;
+  border: 1px solid #eaece9;
+  font-size: 0.9rem;
+  color: #3d524a;
+}
+
+.detalle-container > div:nth-of-type(4) p {
+  margin: 0.25rem 0;
+  display: flex;
+  align-items: baseline;
+  gap: 0.4rem;
+}
+
+.detalle-container > div:nth-of-type(4) strong {
+  font-weight: 600;
+  color: #1e2b2a;
+  min-width: 80px;
+}
+
+/* ── Botón de solicitud ──────────────────────── */
+.btn-solicitar {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.7rem 2rem;
+  background: #4a7c59;
+  color: #fff;
+  border: none;
+  border-radius: 60px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.1s ease;
+  box-shadow: 0 4px 12px rgba(74, 124, 89, 0.25);
+}
+
+.btn-solicitar:hover {
+  background: #3b6849;
+  transform: scale(1.02);
+  box-shadow: 0 6px 16px rgba(74, 124, 89, 0.35);
+}
+
+.btn-solicitar:active {
+  transform: scale(0.97);
+}
+
+.no-disponible {
+  display: inline-block;
+  padding: 0.7rem 2rem;
+  background: #eef0ee;
+  color: #7b8c85;
+  border-radius: 60px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: not-allowed;
+}
+
+/* ── Estados de carga y error (fuera del container) ── */
+.loading,
+.error-message {
+  text-align: center;
+  padding: 3rem 1rem;
+  font-size: 1rem;
+  color: #5c6f68;
+}
+
+.error-message {
+  color: #b34141;
+}
+
+.error-message button {
+  margin-top: 1rem;
+  padding: 0.5rem 1.5rem;
+  border: none;
+  border-radius: 40px;
+  background: #eaece9;
+  color: #1e2b2a;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.2s;
+}
+
+.error-message button:hover {
+  background: #d5dad6;
+}
+
+/* ── Responsive ──────────────────────────────── */
+@media (max-width: 600px) {
+  .detalle-container {
+    margin: 1rem;
+    padding: 1.2rem;
+    border-radius: 16px;
+  }
+
+  .detalle-container h1 {
+    font-size: 1.4rem;
+  }
+
+  .detalle-actions button {
+    font-size: 0.8rem;
+    padding: 0.35rem 0.9rem;
+  }
+
+  .detalle-container > div:nth-of-type(4) p {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.1rem;
+  }
+
+  .btn-solicitar,
+  .no-disponible {
+    width: 100%;
+    justify-content: center;
+  }
+}

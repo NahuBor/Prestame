@@ -27,13 +27,12 @@ export class MisObjetos implements OnInit {
     this.cargarObjetos();
   }
     
-  onRowClick(id: string) {
-    console.log('Click en objeto con id:', id);
+  onRowClick(objeto: Objeto) {
+   
     // Aquí puedes navegar a una ruta de detalle (si la tienes)
-    // this.router.navigate(['/objeto-detalle', id]);
+    this.router.navigate(['/objeto-detalle', objeto._id], { state: { objeto } });
     
-    // O puedes mostrar un mensaje
-    alert('Ver detalle del objeto ' + id);
+
   }
   async cargarObjetos() {
     console.log('cargarObjetos - INICIO');

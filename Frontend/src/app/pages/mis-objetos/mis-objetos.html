@@ -9,7 +9,7 @@
   <!-- ✅ Agregamos (click) y cursor pointer -->
   <div *ngFor="let objeto of objetos" 
        class="obj-row" 
-       (click)="onRowClick(objeto._id!)" 
+      (click)="onRowClick(objeto)" 
        style="cursor: pointer;">
     
     <img *ngIf="objeto.imagen" [src]="objeto.imagen" class="obj-img" alt="Foto del objeto">

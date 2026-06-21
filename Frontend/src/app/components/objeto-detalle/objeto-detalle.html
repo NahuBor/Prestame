@@ -1,0 +1,45 @@
+
+
+
+
+
+<div *ngIf="objeto" class="detalle-container">
+
+  <div class="detalle-actions">
+    <button (click)="volver()">← Volver</button>
+    <button (click)="editar()" *ngIf="objeto._id">✎ Editar</button>
+  </div>
+
+  <div *ngIf="objeto.imagen" class="detalle-imagen">
+    <img [src]="objeto.imagen" alt="Imagen de {{ objeto.titulo }}" />
+  </div>
+
+  <h1>{{ objeto.titulo }}</h1>
+
+  
+  <div>
+    <span><strong>Estado:</strong> {{ objeto.estado || 'disponible' }}</span>
+    <span><strong>Categoría:</strong> {{ objeto.categoria }}</span>
+  </div>
+
+  <div *ngIf="objeto.descripcion">
+    <h3>Descripción</h3>
+    <p>{{ objeto.descripcion }}</p>
+  </div>
+
+  <div>
+    <p><strong>ID:</strong> {{ objeto._id }}</p>
+    <p *ngIf="objeto.duenioId"><strong>Dueño:</strong> {{ objeto.duenioId }}</p>
+    <p *ngIf="objeto.fechaCreacion"><strong>Publicado:</strong> {{ objeto.fechaCreacion | date:'dd/MM/yyyy' }}</p>
+  </div>
+
+  
+  <div>
+    <button *ngIf="objeto.estado === 'disponible'" class="btn-solicitar">
+      Solicitar
+    </button>
+    <span *ngIf="objeto.estado === 'prestado'" class="no-disponible">
+      No disponible
+    </span>
+  </div>
+</div>
