@@ -20,22 +20,21 @@ export class ObjetoDetalle implements OnInit {
     private route: ActivatedRoute,
     private prestameApi: PrestameApi,
     private router: Router,
-    private cdr: ChangeDetectorRef // ✅ Agregado
+    private cdr: ChangeDetectorRef 
   ) {}
 
   async ngOnInit() {
-    // 1. Intentar recuperar el objeto del estado de navegación
+
     const navigation = this.router.getCurrentNavigation();
     const state = navigation?.extras?.state as { objeto: Objeto };
     if (state?.objeto) {
-      console.log('✅ Objeto recuperado del estado');
+      console.log('Objeto recuperado del estado');
       this.objeto = state.objeto;
       this.cargando = false;
-      this.cdr.detectChanges(); // Forzar actualización
-      return;
+      this.cdr.detectChanges(); 
     }
 
-    // 2. Si no hay estado, cargar por ID (recarga o acceso directo)
+  
     await this.cargarObjeto();
   }
 
@@ -50,16 +49,16 @@ export class ObjetoDetalle implements OnInit {
       }
 
       console.log('🔄 Cargando objeto por ID:', id);
-      // ✅ Agregar timeout de 10 segundos para evitar que se quede colgado
+  
       const data = await firstValueFrom(
         this.prestameApi.obtenerObjetoPorId(id).pipe(timeout(5000))
       );
       this.objeto = data;
       this.cargando = false;
-      console.log('✅ Objeto cargado correctamente:', this.objeto);
+      console.log('Objeto cargado correctamente:', this.objeto);
       this.cdr.detectChanges(); // Forzar actualización
     } catch (err: any) {
-      console.error('❌ Error al cargar el objeto:', err);
+      console.error('Error al cargar el objeto:', err);
       if (err.name === 'TimeoutError') {
         this.error = 'La petición tardó demasiado. Intenta de nuevo.';
       } else {
