@@ -3,8 +3,8 @@ const objetoController = require('./objeto.controller')
 const authMiddleware = require('../../middlewares/authMiddleware')
 const multer = require('../../middlewares/multerMiddleware')
 
-
 const objetoRouter = express.Router()
+const {uploadImagen}=require('../../middlewares/multerMiddleware')
 
 
 objetoRouter.use(express.json());
