@@ -17,3 +17,4 @@ export const routes: Routes = [
     { path: 'objeto-form/:id', component: ObjetoForm },
     { path: '', redirectTo: 'mis-objetos', pathMatch: 'full' }  // ← Ruta raíz
 ];
+
