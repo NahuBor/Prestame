@@ -4,7 +4,7 @@ import { PrestameApi } from '../../services/prestameApi.service';
 import { Objeto } from '../../models/objeto.interface';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { firstValueFrom } from 'rxjs';
+
 
 @Component({
   selector: 'app-objeto-form',
@@ -32,41 +32,45 @@ export class ObjetoForm implements OnInit {
     private cdr: ChangeDetectorRef
   ) { }
 
-  async ngOnInit() {
-    try {
-      const perfil: any = await firstValueFrom(this.prestameApi.obtenerPerfil());
-      this.duenioId = perfil._id || perfil.id || (perfil as any).userId;
-      this.objeto.duenioId = this.duenioId;
-    } catch (error) {
-      alert('Error al identificar al usuario');
-      this.router.navigate(['/login']);
-      return;
-    }
 
-    this.objetoId = this.route.snapshot.paramMap.get('id');
-    if (this.objetoId) {
-      this.esEdicion = true;
-      this.cargando = true;
-      try {
-        const data = await firstValueFrom(this.prestameApi.obtenerObjetoPorId(this.objetoId));
-        this.objeto = Array.isArray(data) ? data[0] : data as Objeto;
-        this.cargando = false;
-        this.cdr.detectChanges();
-      } catch (err) {
-        console.log('Error al cargar objeto', err);
-        this.cargando = false;
-        this.cdr.detectChanges();
+ngOnInit() {
+    this.prestameApi.obtenerPerfil().subscribe({
+      next: (perfil: any) => {
+        this.duenioId = perfil._id;
+        this.objeto.duenioId = this.duenioId;
+
+        this.objetoId = this.route.snapshot.paramMap.get('id');
+        if (this.objetoId) {
+          this.esEdicion = true;
+          this.cargando = true;
+
+          this.prestameApi.obtenerObjetoPorId(this.objetoId).subscribe({
+            next: (data: any) => {
+              this.objeto = data as Objeto;
+              this.cargando = false;
+              this.cdr.detectChanges();
+            },
+            error: (err) => {
+              console.log('Error al cargar objeto', err);
+              this.cargando = false;
+              this.cdr.detectChanges();
+            }
+          });
+        }
+      },
+      error: (error) => {
+        alert('Error al identificar al usuario');
+        this.router.navigate(['/login']);
       }
-    }
-  }
+    });
+}
 
-  onFileSelected(event: Event) {
+onFileSelected(event: Event) {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
       this.imagenSeleccionada = input.files[0];
     }
-  }
-
+}
   guardar() {
     if (!this.objeto.duenioId) {
       alert('Error: No se pudo identificar al usuario');
