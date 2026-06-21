@@ -10,35 +10,10 @@ import { authGuard } from './guards/auth.guard';
 export const routes: Routes = [
     { path: 'login', component: LoginComponent },
     { path: 'register', component: RegisterComponent },
-    { 
-        path: 'objetos', 
-        component: ObjetosFeedComponent,
-        canActivate: [authGuard]
-    },
-    { 
-        path: 'mis-objetos', 
-        component: MisObjetos,
-        canActivate: [authGuard]
-    },
-    { 
-        path: 'objeto-form', 
-        component: ObjetoForm,
-        canActivate: [authGuard]
-    },
-    { 
-        path: 'objeto-detalle/:id', 
-        component: ObjetoDetalle,
-        canActivate: [authGuard]
-    },
-    { 
-        path: 'objeto-form/:id', 
-        component: ObjetoForm,
-        canActivate: [authGuard]
-    },
-    // ✅ AHORA redirige directamente a register
-    { 
-        path: '', 
-        redirectTo: 'login',
-        pathMatch: 'full' 
-    }
+    { path: 'objetos', component: ObjetosFeedComponent },
+    { path: 'mis-objetos', component: MisObjetos },
+    { path: 'objeto-form', component: ObjetoForm },
+    { path: 'objeto-detalle/:id', component: ObjetoDetalle },
+    { path: 'objeto-form/:id', component: ObjetoForm },
+    { path: '', redirectTo: 'mis-objetos', pathMatch: 'full' }  // ← Ruta raíz
 ];
