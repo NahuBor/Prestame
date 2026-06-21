@@ -30,14 +30,14 @@ const objetoRouter = express.Router()
 
 objetoRouter.use(express.json());
 
-objetoRouter.post('/',/*authMiddleware,*/manejarErrorMulter(upload.single('imagen')),objetoController.crearObjetoController)
-objetoRouter.put('/:id',/*authMiddleware,*/manejarErrorMulter(upload.single('imagen')),objetoController.editarObjetoController)
-objetoRouter.delete('/:id',/*authMiddleware,*/ objetoController.eliminarObjetoController)
+objetoRouter.post('/',authMiddleware,manejarErrorMulter(upload.single('imagen')),objetoController.crearObjetoController)
+objetoRouter.put('/:id',authMiddleware,manejarErrorMulter(upload.single('imagen')),objetoController.editarObjetoController)
+objetoRouter.delete('/:id',authMiddleware, objetoController.eliminarObjetoController)
 
-objetoRouter.get('/',/*authMiddleware,*/ objetoController.readObjets);
-objetoRouter.get('/duenio/:duenioId', objetoController.readObjetsByDuienioIdcontroller);
-objetoRouter.get('/categoria/:categoria',/*authMiddleware,*/ objetoController.readObjetsByCategoriaController);
-objetoRouter.get('/:id',/*authMiddleware,*/ objetoController.readObjetsByIdcontroller)
+objetoRouter.get('/',authMiddleware, objetoController.readObjets);
+objetoRouter.get('/duenio/:duenioId',authMiddleware, objetoController.readObjetsByDuienioIdcontroller);
+objetoRouter.get('/categoria/:categoria',authMiddleware, objetoController.readObjetsByCategoriaController);
+objetoRouter.get('/:id',authMiddleware, objetoController.readObjetsByIdcontroller)
 
 
 module.exports = objetoRouter

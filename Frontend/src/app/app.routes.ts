@@ -15,6 +15,6 @@ export const routes: Routes = [
     { path: 'objeto-form', component: ObjetoForm },
     { path: 'objeto-detalle/:id', component: ObjetoDetalle },
     { path: 'objeto-form/:id', component: ObjetoForm },
-    { path: '', redirectTo: 'mis-objetos', pathMatch: 'full' }  // ← Ruta raíz
+    { path: '', redirectTo: 'login', pathMatch: 'full' }  // ← Ruta raíz
 ];
 
