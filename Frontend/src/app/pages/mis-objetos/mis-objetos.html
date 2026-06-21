@@ -6,16 +6,35 @@
 
   <p *ngIf="objetos.length === 0" class="empty-message">No tenés objetos publicados todavía.</p>
 
-  <div *ngFor="let objeto of objetos" class="obj-row">
+  <!-- ✅ Agregamos (click) y cursor pointer -->
+  <div *ngFor="let objeto of objetos" 
+       class="obj-row" 
+       (click)="onRowClick(objeto._id!)" 
+       style="cursor: pointer;">
+    
     <img *ngIf="objeto.imagen" [src]="objeto.imagen" class="obj-img" alt="Foto del objeto">
+    
     <div class="obj-info">
       <h5>{{ objeto.titulo }}</h5>
       <small>{{ objeto.categoria }}</small>
     </div>
-    <div class="obj-actions">
+
+    <!-- ✅ Agregamos stopPropagation en el contenedor de acciones -->
+    <div class="obj-actions" (click)="$event.stopPropagation()">
       <span [class]="objeto.estado === 'disponible' ? 'badge-disponible' : 'badge-prestado'">
         {{ objeto.estado }}
       </span>
-      <a [routerLink]="['/objeto-form', objeto._id]" class="btn-editar">Editar</a>
-      <button class="btn-eliminar" (click)="eliminarObjeto(objeto._id!)">Eliminar</button>
+      <!-- ✅ También en el enlace de Editar -->
+      <a [routerLink]="['/objeto-form', objeto._id]" 
+         class="btn-editar" 
+         (click)="$event.stopPropagation()">
+        Editar
+      </a>
+      <!-- ✅ También en el botón Eliminar -->
+      <button class="btn-eliminar" 
+              (click)="eliminarObjeto(objeto._id!); $event.stopPropagation()">
+        Eliminar
+      </button>
     </div>
+  </div>
+</div>

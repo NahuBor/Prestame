@@ -4,6 +4,7 @@ import { Objeto } from '../../models/objeto.interface';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-mis-objetos',
@@ -17,12 +18,23 @@ export class MisObjetos implements OnInit {
 
   constructor(
     private prestameApi: PrestameApi,
-    private cdr: ChangeDetectorRef){}
+    private cdr: ChangeDetectorRef,
+    private router: Router
+    
+  ){}
 
   ngOnInit() {
     this.cargarObjetos();
   }
-
+    
+  onRowClick(id: string) {
+    console.log('Click en objeto con id:', id);
+    // Aquí puedes navegar a una ruta de detalle (si la tienes)
+    // this.router.navigate(['/objeto-detalle', id]);
+    
+    // O puedes mostrar un mensaje
+    alert('Ver detalle del objeto ' + id);
+  }
   async cargarObjetos() {
     console.log('cargarObjetos - INICIO');
     try {
