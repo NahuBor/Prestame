@@ -5,6 +5,7 @@ import { PrestameApi } from '../../services/prestameApi.service';
 import { ChangeDetectorRef } from '@angular/core';
 import { Objeto } from '../../models/objeto.interface';
 import { firstValueFrom } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-objetos-feed',
@@ -23,11 +24,19 @@ export class ObjetosFeedComponent implements OnInit {
 
   constructor(
     private apiService: PrestameApi,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private router: Router
   ) { }
 
   async ngOnInit() {
     await this.cargarObjetos();
+  }
+    onRowClick(objeto: Objeto) {
+   
+    // Aquí puedes navegar a una ruta de detalle (si la tienes)
+    this.router.navigate(['/objeto-detalle', objeto._id], { state: { objeto } });
+    
+
   }
 
   async cargarObjetos(): Promise<void> {
