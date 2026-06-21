@@ -12,6 +12,11 @@ export const routes: Routes = [
     { path: 'register', component: RegisterComponent },
     { path: 'objetos', component: ObjetosFeedComponent },
     { path: 'mis-objetos', component: MisObjetos },
+/*        { 
+        path: 'mis-objetos', 
+        component: MisObjetos,
+        canActivate: [authGuard]
+    },*/
     { path: 'objeto-form', component: ObjetoForm },
     { path: 'objeto-detalle/:id', component: ObjetoDetalle },
     { path: 'objeto-form/:id', component: ObjetoForm },

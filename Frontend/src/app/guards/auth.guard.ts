@@ -9,7 +9,9 @@ export const authGuard: CanActivateFn = (route, state) => {
     const router = inject(Router)
 
     return _authService.checkSessionService()?.pipe(
+  
         map((isSessionActive: boolean) => {
+            console.log("PRUEBA "+ isSessionActive)
             if (isSessionActive) {
                 return true;
             } else {
