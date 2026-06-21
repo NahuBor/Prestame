@@ -1,9 +1,4 @@
-
-
-
-
-
-<div *ngIf="objeto" class="detalle-container">
+<div *ngIf="!cargando && !error && objeto" class="detalle-container">
 
   <div class="detalle-actions">
     <button (click)="volver()">← Volver</button>
@@ -16,7 +11,6 @@
 
   <h1>{{ objeto.titulo }}</h1>
 
-  
   <div>
     <span><strong>Estado:</strong> {{ objeto.estado || 'disponible' }}</span>
     <span><strong>Categoría:</strong> {{ objeto.categoria }}</span>
@@ -28,18 +22,24 @@
   </div>
 
   <div>
-    
     <p *ngIf="objeto.duenioId"><strong>Dueño:</strong> {{ objeto.duenioId }}</p>
     <p *ngIf="objeto.fechaCreacion"><strong>Publicado:</strong> {{ objeto.fechaCreacion | date:'dd/MM/yyyy' }}</p>
   </div>
 
-  
+  <!-- ACCIONES CONDICIONALES -->
   <div>
-    <button *ngIf="objeto.estado === 'disponible'" class="btn-solicitar">
+    <!-- Botón Solicitar: solo si NO es propio y además no venimos de mis-objetos (por seguridad) -->
+    <button 
+      *ngIf="!esPropio && !desdeMisObjetos && objeto.estado === 'disponible'" 
+      class="btn-solicitar" 
+      (click)="solicitarObjeto()">
       Solicitar
     </button>
-    <span *ngIf="objeto.estado === 'prestado'" class="no-disponible">
+    <span *ngIf="!esPropio && objeto.estado === 'prestado'" class="no-disponible">
       No disponible
     </span>
+    <!-- Botones para el dueño (se muestran si es propio) -->
+  
+     <button *ngIf="esPropio" class="btn-eliminar btn-action" (click)="eliminarObjeto()">Eliminar</button>
   </div>
 </div>

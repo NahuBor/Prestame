@@ -18,7 +18,7 @@
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
 }
 
-/* ── Botones de navegación ──────────────────── */
+/* ── Botones de navegación (barra superior) ── */
 .detalle-actions {
   display: flex;
   gap: 0.75rem;
@@ -32,7 +32,7 @@
   gap: 0.4rem;
   padding: 0.45rem 1.1rem;
   border: none;
-  border-radius: 40px;
+  border-radius: 40px;        /* bordes redondeados */
   font-size: 0.875rem;
   font-weight: 500;
   background: #2a2a2a;
@@ -50,14 +50,92 @@
   transform: scale(0.97);
 }
 
-/* Botón de editar (destacado) */
-.detalle-actions button:last-child {
+/* ── Estilos para los botones de acción (abajo) ── */
+/* Botón Solicitar (verde) */
+.btn-solicitar {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.7rem 2rem;
   background: #4a7c59;
   color: #fff;
+  border: none;
+  border-radius: 60px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.1s ease;
 }
 
-.detalle-actions button:last-child:hover {
+.btn-solicitar:hover {
   background: #3b6849;
+  transform: scale(1.02);
+}
+
+.btn-solicitar:active {
+  transform: scale(0.97);
+}
+
+/* Botón Editar (verde) */
+.btn-editar {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.7rem 2rem;
+  background: #4a7c59;        /* verde */
+  color: #fff;
+  border: none;
+  border-radius: 60px;        /* bordes redondeados */
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.1s ease;
+}
+
+.btn-editar:hover {
+  background: #3b6849;
+  transform: scale(1.02);
+}
+
+.btn-editar:active {
+  transform: scale(0.97);
+}
+
+/* Botón Eliminar (rojo) */
+.btn-eliminar {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.7rem 2rem;
+  background: #c0392b;        /* rojo */
+  color: #fff;
+  border: none;
+  border-radius: 60px;        /* bordes redondeados */
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.1s ease;
+}
+
+.btn-eliminar:hover {
+  background: #a93226;
+  transform: scale(1.02);
+}
+
+.btn-eliminar:active {
+  transform: scale(0.97);
+}
+
+/* Estado "No disponible" */
+.no-disponible {
+  display: inline-block;
+  padding: 0.7rem 2rem;
+  background: #2a2a2a;
+  color: #666;
+  border-radius: 60px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: not-allowed;
 }
 
 /* ── Imagen ──────────────────────────────────── */
@@ -86,7 +164,7 @@
   line-height: 1.2;
 }
 
-/* ── Estado y categoría ──────────────────────── */
+/* ── Estado y categoría ────────────────────── */
 .detalle-container > div:nth-of-type(2) {
   display: flex;
   gap: 1.5rem;
@@ -116,7 +194,7 @@
   margin: 0.3rem 0 0.5rem 0;
 }
 
-/* ── Metadatos ────────────────────────────────── */
+/* ── Metadatos (Dueño, fecha) ──────────────── */
 .detalle-container > div:nth-of-type(4) {
   margin: 1.2rem 0 1.5rem 0;
   padding: 1rem 1.2rem;
@@ -140,40 +218,12 @@
   min-width: 80px;
 }
 
-/* ── Botón de solicitud ──────────────────────── */
-.btn-solicitar {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.7rem 2rem;
-  background: #4a7c59;
-  color: #fff;
-  border: none;
-  border-radius: 60px;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background 0.2s ease, transform 0.1s ease;
-}
-
-.btn-solicitar:hover {
-  background: #3b6849;
-  transform: scale(1.02);
-}
-
-.btn-solicitar:active {
-  transform: scale(0.97);
-}
-
-.no-disponible {
-  display: inline-block;
-  padding: 0.7rem 2rem;
-  background: #2a2a2a;
-  color: #666;
-  border-radius: 60px;
-  font-size: 1rem;
-  font-weight: 500;
-  cursor: not-allowed;
+/* ── Contenedor de acciones (para alinear botones) ── */
+.detalle-container > div:last-of-type {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-top: 1rem;
 }
 
 /* ── Estados de carga y error ────────────────── */
@@ -229,6 +279,8 @@
   }
 
   .btn-solicitar,
+  .btn-editar,
+  .btn-eliminar,
   .no-disponible {
     width: 100%;
     justify-content: center;

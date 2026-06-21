@@ -27,13 +27,14 @@ export class MisObjetos implements OnInit {
     this.cargarObjetos();
   }
     
-  onRowClick(objeto: Objeto) {
-   
-    // Aquí puedes navegar a una ruta de detalle (si la tienes)
-    this.router.navigate(['/objeto-detalle', objeto._id], { state: { objeto } });
-    
-
-  }
+onRowClick(objeto: Objeto) {
+  this.router.navigate(['/objeto-detalle', objeto._id], { 
+    state: { 
+      objeto: objeto,
+      desde: 'mis-objetos'   // 👈 flag
+    } 
+  });
+}
   async cargarObjetos() {
     console.log('cargarObjetos - INICIO');
     try {
