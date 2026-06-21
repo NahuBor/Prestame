@@ -4,7 +4,8 @@
     <a routerLink="/objeto-form" class="btn-publicar">+ Publicar objeto</a>
   </div>
 
-  <p *ngIf="objetos.length === 0" class="empty-message">No tenés objetos publicados todavía.</p>
+  <p *ngIf="cargando" class="loading-message">Cargando objetos...</p>
+  <p *ngIf="!cargando && objetos.length === 0" class="empty-message">No tenés objetos publicados todavía.</p>
 
   <!-- ✅ Agregamos (click) y cursor pointer -->
   <div *ngFor="let objeto of objetos" 
