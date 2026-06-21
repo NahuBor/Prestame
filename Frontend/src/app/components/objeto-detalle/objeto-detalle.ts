@@ -16,8 +16,8 @@ export class ObjetoDetalle implements OnInit {
   objeto: Objeto | null = null;
   cargando = true;
   error = '';
-  esPropio = false;           // para saber si es del usuario
-  desdeMisObjetos = false;    // 👈 flag para saber si vienes de "mis objetos"
+  esPropio = false;
+  desdeMisObjetos = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -29,10 +29,10 @@ export class ObjetoDetalle implements OnInit {
 
   async ngOnInit() {
     const navigation = this.router.getCurrentNavigation();
-    const state = navigation?.extras?.state as { objeto: Objeto, desde?: string };
+    const state = navigation?.extras?.state as { objeto: Objeto; desde?: string };
     if (state?.objeto) {
       this.objeto = state.objeto;
-      this.desdeMisObjetos = state.desde === 'mis-objetos'; // 👈 leer flag
+      this.desdeMisObjetos = state.desde === 'mis-objetos';
       this.cargando = false;
       this.verificarPropiedad();
       this.cdr.detectChanges();
@@ -55,9 +55,6 @@ export class ObjetoDetalle implements OnInit {
       );
       this.objeto = data;
       this.cargando = false;
-      // Después de cargar, también podemos verificar si venimos de mis-objetos
-      // (no lo sabemos desde el estado, pero podemos usar la URL o un servicio)
-      // En este caso, si no hay estado, asumimos que vienes del feed general
       this.verificarPropiedad();
       this.cdr.detectChanges();
     } catch (err: any) {
@@ -77,14 +74,13 @@ export class ObjetoDetalle implements OnInit {
       this.esPropio = false;
       return;
     }
-    // Usamos duenioId (que tienes en el objeto)
-    const idDuenio = this.objeto.duenioId;  // 👈 campo que se ve en tu HTML
+    // Usamos duenioId (campo que viene del backend)
+    const idDuenio = this.objeto.duenioId;
     const idUsuario = (usuario as any)._id;
     this.esPropio = idDuenio === idUsuario;
   }
 
   volver() {
-    // Si venías de "mis objetos", vuelve allí; si no, a la lista general
     if (this.desdeMisObjetos) {
       this.router.navigate(['/mis-objetos']);
     } else {
@@ -103,8 +99,24 @@ export class ObjetoDetalle implements OnInit {
     alert('Función de solicitar pendiente');
   }
 
+  // ✅ Método eliminar (igual que en MisObjetos)
   eliminarObjeto() {
-    // TODO: implementar
-    alert('Función de eliminar pendiente');
+    if (!this.objeto?._id) {
+      alert('No se puede eliminar este objeto');
+      return;
+    }
+    if (confirm('¿Seguro que quieres eliminar este objeto?')) {
+      this.prestameApi.eliminarObjeto(this.objeto._id).subscribe({
+        next: () => {
+          alert('Objeto eliminado correctamente');
+          // Redirige siempre a "mis objetos" (donde está la lista del usuario)
+          this.router.navigate(['/mis-objetos']);
+        },
+        error: (err) => {
+          console.error('Error al eliminar', err);
+          alert('Error al eliminar el objeto');
+        }
+      });
+    }
   }
 }
