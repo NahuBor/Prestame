@@ -16,12 +16,6 @@ exports.crearObjetoController = async (req, res) => {
         }
         console.log("CONTROLLER - crearObjetoController - ", typeof nuevoObjeto, nuevoObjeto)
         const objeto = await objetoService.crearObjetoService(nuevoObjeto)
-        if (objeto === null) {
-            return res.status(400).send({
-                code: 400,
-                message: "No se pudo crear el objeto. Verifique los datos."
-            })
-        }
         if (!objeto || objeto.length === 0) {
             return res.status(400).send({
                 code: 400,
@@ -50,12 +44,6 @@ exports.editarObjetoController = async (req, res) => {
             }
         }
         const objeto = await objetoService.editarObjetoService(id, objetoActualizado)
-        if (objeto === null) {
-            return res.status(400).send({
-                code: 400,
-                message: "No se pudo editar el objeto."
-            })
-        }
         if (!objeto || objeto.length === 0) {
             return res.status(404).send({
                 code: 404,
@@ -74,12 +62,6 @@ exports.eliminarObjetoController = async (req, res) => {
         const idObjeto = req.params.id
         console.log("CONTROLLER - eliminarObjetoController - idObjeto:", idObjeto)
         const objeto = await objetoService.eliminarObjetoService(idObjeto)
-        if (objeto === null) {
-            return res.status(400).send({
-                code: 400,
-                message: "No se pudo eliminar el objeto"
-            })
-        }
         if (!objeto || objeto.length === 0) {
             return res.status(404).send({
                 code: 404,
@@ -96,7 +78,6 @@ exports.eliminarObjetoController = async (req, res) => {
 exports.readObjets = async (req, res) => {
     try {
         const objetos = await objetoService.getAllObjets()
-
         if (objetos.length === 0) {
             return res.status(404).send('No se encontraron objetos')
         }
@@ -124,12 +105,7 @@ exports.readObjets = async (req, res) => {
 exports.readObjetsByIdcontroller = async (req, res) => {
     const idParam = req.params.id;
     const objetoFiltrado = await objetoService.getObjetsfilteredByIdService(idParam)
-    if (objetoFiltrado === null) {
-        return res.status(400).send({
-            code: 400,
-            message: "Error al buscar el objeto"
-        })
-    }
+
     if (!objetoFiltrado || objetoFiltrado.length === 0) {
         return res.status(404).send({
             code: 404,
@@ -148,13 +124,6 @@ exports.readObjetsByDuienioIdcontroller = async (req, res) => {
     const duenioIdParam = req.params.duenioId;
     const objetoFiltrado = await objetoService.getObjetsfilteredByDuenioIdService(duenioIdParam)
 
-    if (objetoFiltrado === null) {
-        return res.status(400).send({
-            code: 400,
-            message: "Error al buscar objetos del dueño"
-        })
-    }
-
     if (objetoFiltrado.length === 0) {
         return res.status(404).send({
             code: 404,
@@ -170,7 +139,6 @@ exports.readObjetsByDuienioIdcontroller = async (req, res) => {
         }
         return objetoPlano
     })
-
     res.setHeader('Content-Type', 'application/json')
     return res.status(200).send(objetoConImagen)
 }
@@ -194,7 +162,6 @@ exports.readObjetsByCategoriaController = async (req, res) => {
             }
             return objetoPlano
         })
-
         res.setHeader('Content-Type', 'application/json')
         return res.status(200).send(objetoConImagen)
     } catch (error) {

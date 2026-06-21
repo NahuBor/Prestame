@@ -54,7 +54,7 @@ Content-Type: application/json
 }
 
 ### Eliminar objeto - caso feliz
-DELETE http://127.0.0.1:3000/objetos/6a2d94ac57c0a260df400cdf
+DELETE http://127.0.0.1:3000/objetos/6a369c0c5a64367cd9805550
 ### Eliminar objeto - caso fallo (id inexistente)
 DELETE http://127.0.0.1:3000/objetos/000000000000000000000000
 

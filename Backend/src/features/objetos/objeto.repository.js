@@ -11,7 +11,7 @@ exports.crearObjetoRepository = async (datosObjeto) => {
         return await objeto.save()
     } catch (error) {
         console.log("Error en crearObjetoRepository", error)
-        return null
+        return EMPTY_ARRAY
     }
 }
 
@@ -29,7 +29,7 @@ exports.editarObjetoRepository = async (id, objetoActualizado) => {
         }
     } catch (error) {
         console.log("Error en editarObjetoRepository", error)
-        return null
+        return EMPTY_ARRAY
     }
 }
 
@@ -47,7 +47,7 @@ exports.eliminarObjetoRepository = async (id) => {
         }
     } catch (error) {
         console.log("Error en eliminarObjetoRepository", error)
-        return null
+        return EMPTY_ARRAY
     }
 }
 
@@ -78,7 +78,7 @@ exports.getObjetsByIdRepository = async (idParam) => {
         }
         console.error("Error en getFrontendLanguagesFilteredByIdRepository:", error);
         console.log("Error en getObjetsByIdRepository ", error);
-        return null; 
+        return EMPTY_ARRAY; 
     }
 };
 
@@ -99,7 +99,7 @@ exports.getObjectsByDuenioIdRepository = async (duenioIdParam) => {
         }
         console.error("Error en getObjectsByDuenioIdRepository:", error);
         console.log("Error en etObjectsByDuenioIdRepository ", error);
-        return null
+        return EMPTY_ARRAY
     }
 };
 
