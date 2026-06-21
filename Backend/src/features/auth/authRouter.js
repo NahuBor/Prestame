@@ -8,7 +8,7 @@ authRouter.post('/login', authController.loginController)
 authRouter.post('/register', authController.registerController)
 authRouter.get('/perfil', authMiddleware, authController.perfil)
 authRouter.post('/logout', authController.logoutController)
-authRouter.get('/checkSession', authMiddleware)
+authRouter.post('/checkSession', authMiddleware)
 
 
 module.exports = authRouter
