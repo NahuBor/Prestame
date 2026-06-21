@@ -24,19 +24,19 @@ export class MisObjetos implements OnInit {
   }
 
   async cargarObjetos() {
-    console.log('🔍 cargarObjetos - INICIO');
+    console.log('cargarObjetos - INICIO');
     try {
         const perfil = await firstValueFrom(this.prestameApi.obtenerPerfil());
-        console.log('✅ Perfil obtenido:', perfil);
+        console.log('Perfil obtenido:', perfil);
       
         const duenioId = (perfil as any)._id;
-        console.log('🔑 duenioId:', duenioId);
+        console.log('duenioId:', duenioId);
         const data = await firstValueFrom(this.prestameApi.obtenerMisObjetos(duenioId));
-              console.log('📦 Datos recibidos:', data);
+              console.log('Datos recibidos:', data);
       
        
         this.objetos = Array.isArray(data) ? data : [];
-         console.log(`✅ ${this.objetos.length} objetos cargados`);
+        console.log(`${this.objetos.length} objetos cargados`);
         this.cdr.detectChanges();
     } catch (err) {
         console.log('Error al cargar objetos', err);

@@ -38,7 +38,7 @@ Content-Type: application/json
 {
     "titulo": "Taladro CAT ACTUALIZADO",
     "descripcion": "Con maletín y mechas",
-    "categoria": "herramientas"
+    "categoria": "otro"
 }
 
 ###
@@ -70,3 +70,38 @@ GET http://127.0.0.1:3000/objetos/6a2d92677f05f3782a0d4a47
 
 ### Perfil
 GET http://127.0.0.1:3000/auth/perfil
+
+### Categoria
+GET http://127.0.0.1:3000/objetos/categoria/herramientas
+
+### Prestamo
+GET http://127.0.0.1:3000/prestamos
+
+### Prestamo
+GET http://127.0.0.1:3000/prestamos
+
+### Crear objeto (requiere estar logueada)
+GET http://127.0.0.1:3000/objetos
+
+### Crear objeto (requiere estar logueada)
+POST http://127.0.0.1:3000/prestamos
+Content-Type: application/json
+
+{
+     "objetoId": "6a36cccfa5b275c769814a3d",
+    "duenioId": "6a3737d9eee220803bb09ba4",
+    "tiempo_del_prestamo":"1"
+
+
+}
+
+
+
+### Login
+POST http://127.0.0.1:3000/auth/login
+Content-Type: application/json
+
+{
+    "email": "gus_led@gmail.com",
+    "password": "12341234"
+}
