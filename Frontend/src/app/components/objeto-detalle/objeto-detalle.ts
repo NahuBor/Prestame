@@ -52,7 +52,7 @@ export class ObjetoDetalle implements OnInit {
       console.log('🔄 Cargando objeto por ID:', id);
       // ✅ Agregar timeout de 10 segundos para evitar que se quede colgado
       const data = await firstValueFrom(
-        this.prestameApi.obtenerObjetoPorId(id).pipe(timeout(10000))
+        this.prestameApi.obtenerObjetoPorId(id).pipe(timeout(5000))
       );
       this.objeto = data;
       this.cargando = false;
