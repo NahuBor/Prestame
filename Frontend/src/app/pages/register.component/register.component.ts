@@ -2,14 +2,16 @@ import { Component } from '@angular/core';
 import { inject } from '@angular/core'
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
-import { FormGroup, FormsModule } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 import { FormControl } from '@angular/forms';
 import { Validators } from '@angular/forms';
-import { form } from '@angular/forms/signals';
+import { FormBuilder } from '@angular/forms';
+import { NgClass } from '@angular/common';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'app-register.component',
-  imports: [FormsModule],
+  selector: 'app-register',
+  imports: [NgClass, ReactiveFormsModule],
   templateUrl: './register.component.html',
   styleUrl: './register.component.css',
 })
@@ -20,76 +22,70 @@ export class RegisterComponent {
   password: string = '';
   confirmPassword: string = '';
   private authService = inject(AuthService)
+  private _fb = inject(FormBuilder)
   private router = inject(Router)
   isLoading = false;
   errorMessage = '';
+  public registerForm = new FormGroup({
+    nombre: new FormControl('', [Validators.required]),
+    apellido: new FormControl('', [Validators.required]),
+    email: new FormControl('', [Validators.required, Validators.email]),
+    password: new FormControl('', [Validators.required, Validators.minLength(8)]),
+    confirmPassword: new FormControl('', [Validators.required]),
+  })
 
-  validateVoid(): boolean {
-    if (this.nombre == '' || this.apellido == '' || this.email == '' || this.password == '') {
-      return false;
-    } else {
-      return true;
-    }
+  showErrors(control: string, validador: string): boolean {
+    const campo = this.registerForm.get(control);
+    if (!campo) return false;
+    return campo.errors?.[validador] === true && campo.touched === true;
   }
 
-  validateEmail(): boolean {
-    if (this.email.includes('@')) {
-      return true;
-    } else {
-      return false;
-    }
+  isValid(control: string): boolean {
+    const campo = this.registerForm.get(control);
+    if (!campo) return false;
+    if (control === 'confirmPassword' && this.passwordsDoNotMatch) return false;
+    return campo.touched === true && campo.valid === true;
   }
 
-  validatePassword(): boolean {
-    if (this.password.length >= 8) {
-      return true;
-    } else {
-      return false;
-    }
+  isNotValid(control: string): boolean {
+    const campo = this.registerForm.get(control);
+    if (!campo) return false;
+    if (control === 'confirmPassword' && this.passwordsDoNotMatch) return true;
+    return campo.touched === true && campo.invalid === true;
   }
 
-  validateSamePassword(): boolean {
-    if (this.password == this.confirmPassword) {
-      return true;
-    } else {
-      return false;
-    }
+
+
+  get passwordsDoNotMatch(): boolean {
+    const pass = this.registerForm.get('password')?.value ?? '';
+    const confirmPass = this.registerForm.get('confirmPassword')?.value ?? '';
+    const confirmTouched = this.registerForm.get('confirmPassword')?.touched ?? false;
+    
+    return confirmTouched && pass !== confirmPass;
   }
-
-// formRegister = new FormGroup({
-//   nombre: new FormControl('', [Validators.required]),
-//   apellido: new FormControl('', [Validators.required]),
-//   email: new FormControl('', [Validators.required, Validators.email]),
-//   password: new FormControl('', [Validators.required, Validators.minLength(8)]),
-//   confirmPassword: new FormControl('', [Validators.required, Validators.minLength(8)])
-// })
-
-
-
   register() {
-    console.log(this.email)
-    this.errorMessage = ''
-    if (!this.validateVoid) {
-      this.errorMessage = 'Debe completar todos los campos'
-      return;
-    }
-    if (!this.validateEmail()) {
-      this.errorMessage = 'El email no es válido'
-      return;
-    }
-    if (!this.validatePassword()) {
-      this.errorMessage = 'La contraseña debe tener al menos 8 caracteres'
+    this.errorMessage = '';
+
+    if (this.passwordsDoNotMatch) {
+      this.errorMessage = 'Las contraseñas no coinciden';
       return;
     }
 
-    if (!this.validateSamePassword()) {
-      this.errorMessage = 'Las contraseñas no coinciden'
+    if (!this.registerForm.valid) {
+      this.errorMessage = 'Por favor, verifique los datos ingresados';
       return;
     }
 
     this.isLoading = true;
 
-    this.authService.registerService(this.nombre, this.apellido, this.email, this.password)?.subscribe(
+    const { nombre, apellido, email, password } = this.registerForm.value;
+
+    this.authService.registerService(
+      nombre ?? '', 
+      apellido ?? '', 
+      email ?? '', 
+      password ?? ''
+    )?.subscribe(
       {
         next: (res) => {
           console.log(res)
