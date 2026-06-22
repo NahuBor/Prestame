@@ -20,9 +20,14 @@ exports.crearPrestamoRepository = async (datosPrestamo) => {
     }
 }
 
+// Obtener por dueño (con populate)
 exports.getPrestamosByDuenioRepository = async (duenioId) => {
     try {
-        const prestamos = await Prestamo.find({ duenioId }).lean()
+        const prestamos = await Prestamo.find({ duenioId })
+            .populate('objetoId', 'titulo imagen categoria')
+            .populate('duenioId', 'nombre email')
+            .populate('solicitanteId', 'nombre email')
+            .lean()
         return prestamos || EMPTY_ARRAY
     } catch (error) {
         console.log("Error getPrestamosByDuenioRepository", error)
@@ -30,9 +35,14 @@ exports.getPrestamosByDuenioRepository = async (duenioId) => {
     }
 }
 
+// Obtener por solicitante (con populate)
 exports.getPrestamosBySolicitanteRepository = async (solicitanteId) => {
     try {
-        const prestamos = await Prestamo.find({ solicitanteId }).lean()
+        const prestamos = await Prestamo.find({ solicitanteId })
+            .populate('objetoId', 'titulo imagen categoria')
+            .populate('duenioId', 'nombre email')
+            .populate('solicitanteId', 'nombre email')
+            .lean()
         return prestamos || EMPTY_ARRAY
     } catch (error) {
         console.log("Error getPrestamosBySolicitanteRepository", error)
@@ -40,15 +50,22 @@ exports.getPrestamosBySolicitanteRepository = async (solicitanteId) => {
     }
 }
 
+// Obtener por ID (con populate)
 exports.getPrestamoByIdRepository = async (prestamoId) => {
     try {
-        return await Prestamo.findById(prestamoId).lean()
+        const prestamo = await Prestamo.findById(prestamoId)
+            .populate('objetoId', 'titulo imagen categoria')
+            .populate('duenioId', 'nombre email')
+            .populate('solicitanteId', 'nombre email')
+            .lean()
+        return prestamo
     } catch (error) {
         console.log("Error getPrestamoByIdRepository", error)
         return null
     }
 }
 
+// Actualizar estado
 exports.updateEstadoPrestamoRepository = async (prestamoId, nuevoEstado) => {
     try {
         const prestamo = await Prestamo.findByIdAndUpdate(

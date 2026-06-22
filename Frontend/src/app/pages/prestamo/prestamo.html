@@ -20,21 +20,23 @@
 
     <!-- SECCIÓN 1: Solicitudes recibidas (pendientes como dueño) -->
     <div class="seccion">
-      <h3>Solicitudes recibidas <span class="badge">{{ solicitudesPendientesComoDuenio.length }}</span></h3>
+      <div class="solicitudes-header">
+        <h3>Solicitudes recibidas</h3>
+        <span class="badge-pendientes">{{ solicitudesPendientesComoDuenio.length }}</span>
+      </div>
       <div *ngIf="solicitudesPendientesComoDuenio.length === 0" class="empty-message">
         No hay solicitudes pendientes.
       </div>
-      <div *ngFor="let prestamo of solicitudesPendientesComoDuenio" class="prestamo-card">
+      <div *ngFor="let prestamo of solicitudesPendientesComoDuenio" class="prestamo-row">
         <div class="prestamo-info">
-          <div class="prestamo-titulo">Solicitud #{{ prestamo._id | slice:0:8 }}</div>
+          <div class="prestamo-titulo">{{ prestamo.objetoId?.titulo || 'Sin título' }}</div>
           <div class="prestamo-detalle">
-            <span><strong>Objeto:</strong> {{ prestamo.objetoId }}</span>
-            <span><strong>Solicitante:</strong> {{ prestamo.solicitanteId }}</span>
+            <span><strong>Solicitante:</strong> {{ prestamo.solicitanteId?.nombre || 'Desconocido' }}</span>
             <span><strong>Días:</strong> {{ prestamo.tiempo_del_prestamo }}</span>
-            <span class="badge-pendiente">Pendiente</span>
           </div>
         </div>
         <div class="prestamo-actions">
+          <span class="badge-pendiente">Pendiente</span>
           <button class="btn-aceptar" (click)="aceptarSolicitud(prestamo)">Aceptar</button>
           <button class="btn-rechazar" (click)="rechazarSolicitud(prestamo)">Rechazar</button>
         </div>
@@ -43,40 +45,47 @@
 
     <!-- SECCIÓN 2: Préstamos activos (aceptados como dueño) -->
     <div class="seccion">
-      <h3>Préstamos activos <span class="badge">{{ prestamosAceptadosComoDuenio.length }}</span></h3>
+      <div class="solicitudes-header">
+        <h3>Préstamos activos</h3>
+        <span class="badge-pendientes">{{ prestamosAceptadosComoDuenio.length }}</span>
+      </div>
       <div *ngIf="prestamosAceptadosComoDuenio.length === 0" class="empty-message">
         No tienes préstamos activos.
       </div>
-      <div *ngFor="let prestamo of prestamosAceptadosComoDuenio" class="prestamo-card">
+      <div *ngFor="let prestamo of prestamosAceptadosComoDuenio" class="prestamo-row">
         <div class="prestamo-info">
-          <div class="prestamo-titulo">Préstamo #{{ prestamo._id | slice:0:8 }}</div>
+          <div class="prestamo-titulo">{{ prestamo.objetoId?.titulo || 'Sin título' }}</div>
           <div class="prestamo-detalle">
-            <span><strong>Objeto:</strong> {{ prestamo.objetoId }}</span>
-            <span><strong>Solicitante:</strong> {{ prestamo.solicitanteId }}</span>
+            <span><strong>Solicitante:</strong> {{ prestamo.solicitanteId?.nombre || 'Desconocido' }}</span>
             <span><strong>Días:</strong> {{ prestamo.tiempo_del_prestamo }}</span>
-            <span [class]="'badge-' + prestamo.estado">{{ prestamo.estado }}</span>
           </div>
+        </div>
+        <div class="prestamo-actions">
+          <span [class]="'badge-' + prestamo.estado">{{ prestamo.estado }}</span>
         </div>
       </div>
     </div>
 
     <!-- SECCIÓN 3: Mis solicitudes (como solicitante) -->
     <div class="seccion">
-      <h3>Mis solicitudes <span class="badge">{{ prestamosComoSolicitante.length }}</span></h3>
+      <div class="solicitudes-header">
+        <h3>Mis solicitudes</h3>
+        <span class="badge-pendientes">{{ prestamosComoSolicitante.length }}</span>
+      </div>
       <div *ngIf="prestamosComoSolicitante.length === 0" class="empty-message">
         No has realizado solicitudes.
       </div>
-      <div *ngFor="let prestamo of prestamosComoSolicitante" class="prestamo-card">
+      <div *ngFor="let prestamo of prestamosComoSolicitante" class="prestamo-row">
         <div class="prestamo-info">
-          <div class="prestamo-titulo">Solicitud #{{ prestamo._id | slice:0:8 }}</div>
+          <div class="prestamo-titulo">{{ prestamo.objetoId?.titulo || 'Sin título' }}</div>
           <div class="prestamo-detalle">
-            <span><strong>Objeto:</strong> {{ prestamo.objetoId }}</span>
-            <span><strong>Dueño:</strong> {{ prestamo.duenioId }}</span>
+            <span><strong>Dueño:</strong> {{ prestamo.duenioId?.nombre || 'Desconocido' }}</span>
             <span><strong>Días:</strong> {{ prestamo.tiempo_del_prestamo }}</span>
-            <span [class]="'badge-' + prestamo.estado">{{ prestamo.estado }}</span>
           </div>
         </div>
-        <!-- Sin acciones para el solicitante -->
+        <div class="prestamo-actions">
+          <span [class]="'badge-' + prestamo.estado">{{ prestamo.estado }}</span>
+        </div>
       </div>
     </div>
 

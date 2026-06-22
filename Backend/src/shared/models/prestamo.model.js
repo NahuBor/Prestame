@@ -2,8 +2,8 @@ const mongoose = require('mongoose')
 
 const prestamoSchema = new mongoose.Schema({
   objetoId: { type: mongoose.Schema.Types.ObjectId, ref: 'Objeto', required: true },
-  duenioId: { type: mongoose.Schema.Types.ObjectId, ref: 'Usuario', required: true },
-  solicitanteId: { type: mongoose.Schema.Types.ObjectId, ref: 'Usuario', required: true }, // 👈 NUEVO
+  duenioId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+  solicitanteId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true }, // 👈 NUEVO
   estado: { 
     type: String, 
     enum: ['pendiente', 'aceptado', 'rechazado', 'devuelto'], 

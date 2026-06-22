@@ -1,10 +1,22 @@
 export interface Prestamo {
   _id?: string;
-  objetoId: string;
-  duenioId: string;
-  solicitanteId: string;   // 👈 NUEVO
+  objetoId: {
+    _id: string;
+    titulo: string;
+    imagen?: string;
+    categoria?: string;
+  };
+  duenioId: {
+    _id: string;
+    nombre: string;
+    email?: string;
+  };
+  solicitanteId: {
+    _id: string;
+    nombre: string;
+    email?: string;
+  };
   estado: 'pendiente' | 'aceptado' | 'rechazado' | 'devuelto';
-  fechaCreacion: Date;
-  fechaDevolucion?: Date | null;
   tiempo_del_prestamo: '1' | '7' | '30';
+  fechaCreacion: Date;
 }
