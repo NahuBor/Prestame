@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Objeto } from '../models/objeto.interface';
 import {User} from '../models/User.model'
+import { Prestamo } from '../models/prestamo.model';
 
 @Injectable({
   providedIn: 'root',
@@ -37,14 +38,30 @@ export class PrestameApi {
     return this.http.get<Objeto>(`${this.apiUrl}/objetos/${id}`, { withCredentials: true });
   }
 
-   obtenerObjetosPublicos() {
+  obtenerObjetosPublicos() {
     return this.http.get<Objeto[]>(`${this.apiUrl}/objetos`, { withCredentials: true });
   }
 
     obtenerObjetosPorCategoria(categoria: string) {
     return this.http.get<Objeto[]>(`${this.apiUrl}/objetos/categoria/${categoria}`, { withCredentials: true });
   }
+  
+  crearPrestamo(datos: { objetoId: string, tiempo_del_prestamo: string }): Observable<Prestamo> {
+    return this.http.post<Prestamo>(`${this.apiUrl}/prestamos`, datos, { withCredentials: true });
+  }
 
-
+obtenerPrestamosComoDuenio(duenioId: string): Observable<Prestamo[]> {
+  return this.http.get<Prestamo[]>(`${this.apiUrl}/prestamos/duenio/${duenioId}`, { withCredentials: true });
 }
 
+// Obtener préstamos donde el usuario es SOLICITANTE (mis solicitudes)
+obtenerPrestamosComoSolicitante(solicitanteId: string): Observable<Prestamo[]> {
+  return this.http.get<Prestamo[]>(`${this.apiUrl}/prestamos/solicitante/${solicitanteId}`, { withCredentials: true });
+}
+
+  // Actualizar estado de un préstamo (aceptar, rechazar, devolver)
+  actualizarEstadoPrestamo(id: string, estado: string): Observable<Prestamo> {
+    return this.http.put<Prestamo>(`${this.apiUrl}/prestamos/${id}/estado`, { estado }, { withCredentials: true });
+
+  }
+}

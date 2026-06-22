@@ -3,6 +3,7 @@ import { PrestameApi } from '../../services/prestameApi.service';
 import { Objeto } from '../../models/objeto.interface';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-mis-objetos',
@@ -17,12 +18,20 @@ export class MisObjetos implements OnInit {
 
   constructor(
     private prestameApi: PrestameApi,
-    private cdr: ChangeDetectorRef) { }
+    private cdr: ChangeDetectorRef,
+    private router: Router) { }
 
   ngOnInit() {
     this.cargarObjetos();
   }
-
+onRowClick(objeto: Objeto) {
+  this.router.navigate(['/objeto-detalle', objeto._id], { 
+    state: { 
+      objeto: objeto,
+      desde: 'mis-objetos'   // 👈 flag
+    } 
+  });
+}
   cargarObjetos() {
     this.cargando = true;
     this.prestameApi.obtenerPerfil().subscribe({

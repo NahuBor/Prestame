@@ -8,9 +8,7 @@ authRouter.post('/login', authController.loginController)
 authRouter.post('/register', authController.registerController)
 authRouter.get('/perfil', authMiddleware, authController.perfil)
 authRouter.post('/logout', authController.logoutController)
-authRouter.post('/checkSession', authMiddleware, (req, res) => {
-    res.status(200).send(true)
-})
+authRouter.post('/checkSession', authMiddleware)
 
 
 module.exports = authRouter
