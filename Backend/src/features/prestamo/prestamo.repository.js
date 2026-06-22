@@ -1,30 +1,64 @@
 const Prestamo = require('../../shared/models/prestamo.model.js')
-const { getConnectMongoDB } = require('../../database/databaseConection')
-
 const EMPTY_ARRAY = []
-
-
-
 
 exports.getAllprestamosRepository = async () => {
     try {
-        console.log(" MONGO DBREPOSITORY - getAllPrestamosRepository ")
-        const prestamos = await Prestamo.find();
-        console.log(prestamos);
-        return prestamos; 
+        return await Prestamo.find()
     } catch (error) {
-        console.log("Error en getAllPrestamosRepository ", error)
-        return EMPTY_ARRAY;
+        console.log("Error getAllPrestamosRepository", error)
+        return EMPTY_ARRAY
     }
 }
 
 exports.crearPrestamoRepository = async (datosPrestamo) => {
     try {
-        console.log("REPOSITORY - crearPrestamo", datosPrestamo)
         const prestamo = new Prestamo(datosPrestamo)
         return await prestamo.save()
     } catch (error) {
-        console.log("Error en crearPrestamoRepository", error)
+        console.log("Error crearPrestamoRepository", error)
+        return null
+    }
+}
+
+exports.getPrestamosByDuenioRepository = async (duenioId) => {
+    try {
+        const prestamos = await Prestamo.find({ duenioId }).lean()
+        return prestamos || EMPTY_ARRAY
+    } catch (error) {
+        console.log("Error getPrestamosByDuenioRepository", error)
+        return EMPTY_ARRAY
+    }
+}
+
+exports.getPrestamosBySolicitanteRepository = async (solicitanteId) => {
+    try {
+        const prestamos = await Prestamo.find({ solicitanteId }).lean()
+        return prestamos || EMPTY_ARRAY
+    } catch (error) {
+        console.log("Error getPrestamosBySolicitanteRepository", error)
+        return EMPTY_ARRAY
+    }
+}
+
+exports.getPrestamoByIdRepository = async (prestamoId) => {
+    try {
+        return await Prestamo.findById(prestamoId).lean()
+    } catch (error) {
+        console.log("Error getPrestamoByIdRepository", error)
+        return null
+    }
+}
+
+exports.updateEstadoPrestamoRepository = async (prestamoId, nuevoEstado) => {
+    try {
+        const prestamo = await Prestamo.findByIdAndUpdate(
+            prestamoId,
+            { estado: nuevoEstado },
+            { new: true }
+        ).lean()
+        return prestamo
+    } catch (error) {
+        console.log("Error updateEstadoPrestamoRepository", error)
         return null
     }
 }

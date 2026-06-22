@@ -116,7 +116,19 @@ exports.getObjetsfilteredByCategoriaRepository = async (categoria) => {
 }
 
 
-
+exports.updateEstadoObjetoRepository = async (objetoId, nuevoEstado) => {
+    try {
+        const objeto = await Objeto.findByIdAndUpdate(
+            objetoId,
+            { estado: nuevoEstado },
+            { new: true }
+        ).lean()
+        return objeto
+    } catch (error) {
+        console.log("Error en updateEstadoObjetoRepository", error)
+        return EMPTY_ARRAY
+    }
+}
 
 
 

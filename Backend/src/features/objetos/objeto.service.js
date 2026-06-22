@@ -8,7 +8,7 @@ exports.crearObjetoService = async (datosObjeto) => {
         return await objetoRepository.crearObjetoRepository(datosObjeto)
     } catch (error) {
         console.log("Error en crearObjetoRepository", error)
-        return null
+        return EMPTY_ARRAY
     }
 }
 
@@ -24,7 +24,7 @@ exports.editarObjetoService = async (id, objetoActualizado) => {
         return objeto
     } catch (error) {
         console.log("Error en crearObjetoRepository", error)
-        return null
+        return EMPTY_ARRAY
     }
 }
 
@@ -33,7 +33,7 @@ exports.editarObjetoService = async (id, objetoActualizado) => {
 exports.eliminarObjetoService = async (idObjeto) => {
     try {
         console.log("SERVICE - eliminarObjetoService", idObjeto)
-         const objetoEliminado = await objetoRepository.eliminarObjetoRepository(idObjeto)
+        const objetoEliminado = await objetoRepository.eliminarObjetoRepository(idObjeto)
         if (!objetoEliminado || objetoEliminado.length === 0) {
             console.log("objeto no encontrado")
             return EMPTY_ARRAY
@@ -41,8 +41,8 @@ exports.eliminarObjetoService = async (idObjeto) => {
         return objetoEliminado
     }
     catch (error) {
-       console.log("Error en eliminarObjetoRepository", error)
-       return null 
+        console.log("Error en eliminarObjetoRepository", error)
+        return EMPTY_ARRAY 
     }
 }
 
@@ -68,7 +68,7 @@ exports.getObjetsfilteredByIdService = async (id) => {
         return testDatos
     } catch (error) {
         console.log("Error en getObjetsfilteredById", error)
-        return null
+        return EMPTY_ARRAY
     }
 }
 
@@ -80,7 +80,7 @@ exports.getObjetsfilteredByDuenioIdService = async (id) => {
         return testDatos
     } catch (error) {
         console.log("Error en getObjetsfilteredByDuenioIdService", error)
-        return null
+        return EMPTY_ARRAY
     }
 }
 

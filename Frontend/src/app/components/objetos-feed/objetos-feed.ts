@@ -70,24 +70,28 @@ export class ObjetosFeedComponent implements OnInit {
       this.cdr.detectChanges();
     }
   }
-
+  
   async filtrarPorCategoria(categoria: string): Promise<void> {
     this.categoriaSeleccionada = this.categoriaSeleccionada === categoria ? '' : categoria;
     await this.cargarObjetos();
   }
   
-  async solicitarObjeto(objetoId: string): Promise<void> {
-    if (!objetoId) return;
-    try {
-      // PRESTAME 
-      // await firstValueFrom(this.apiService.solicitarObjeto(objetoId));
-      alert('Solicitud enviada correctamente');
-    } catch (error) {
-      console.log('Error al solicitar objeto:', error);
-      alert('Error al enviar la solicitud de prestamo');
-    }
+solicitarObjeto(objetoId: string) {
+  const dias = prompt('¿Cuántos días necesitas el préstamo? (1, 7 o 30)', '7');
+  if (!dias || !['1','7','30'].includes(dias)) {
+    alert('Por favor, elige 1, 7 o 30 días.');
+    return;
   }
-
+  this.apiService.crearPrestamo({ objetoId, tiempo_del_prestamo: dias }).subscribe({
+    next: (resp) => {
+      alert('Solicitud enviada correctamente');
+      // Opcional: recargar la lista o cambiar el estado local
+    },
+    error: (err) => {
+      alert('Error al enviar la solicitud: ' + err.message);
+    }
+  });
+}
   onImageError(objeto: Objeto): void {
     objeto.imagen = 'assets/imagen-default.jpg';
   }
