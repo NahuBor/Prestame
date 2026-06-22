@@ -58,7 +58,7 @@ irAlRegistro() {
 
   login() {
     this.errorMessage = ''
-    if(!this.validateVoid) {
+    if(!this.validateVoid()) {
       this.errorMessage = 'Debe completar todos los campos'
       return;
     }
