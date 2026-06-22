@@ -1,5 +1,5 @@
-<div class="container-fluid min-vh-100 p-3 p-md-5 d-flex align-items-center justify-content-center bg-primary bg-gradient" id="conta">
-    <div class="row border border-dark rounded g-0 w-100 shadow" style="max-width: 900px;">
+<div class="container-fluid min-vh-100 p-3 p-md-5 d-flex align-items-center justify-content-center bg-dark bg-gradient" id="conta">
+    <div class="row border border-secondary rounded g-0 w-100 shadow-lg" style="max-width: 900px;">
         <div class="col-md-6 d-none d-md-block position-relative">
             <img class="w-100 h-100 rounded-start" id="loginimg"
                  src="https://exprofundis.com/wp-content/uploads/2015/09/tumblr_ngzxxaUS4H1tj0qdro7_1280.jpg"
@@ -7,8 +7,8 @@
                  style="object-fit: cover; position: absolute; top: 0; left: 0;">
         </div>
        
-        <div class="col-12 col-md-6 p-4 p-md-5 d-flex flex-column justify-content-center bg-light rounded-end" id="loginform">
-            <h2 class="fw-bold text-center mb-4">Registrar cuenta</h2>
+        <div class="col-12 col-md-6 p-4 p-md-5 d-flex flex-column justify-content-center bg-dark text-light rounded-end" id="loginform">
+            <h2 class="fw-bold text-center mb-4 text-white">Registrar cuenta</h2>
            
             @if (errorMessage) {
                 <div class="alert alert-danger text-center py-2 fs-6 mb-3" role="alert">
@@ -19,21 +19,21 @@
             <form [formGroup]="registerForm" (ngSubmit)="register()">
                 
                 <label for="name" class="form-label fs-5">Nombre</label>
-                <input formControlName="nombre" type="text" class="form-control" id="name" placeholder="Nombre"
+                <input formControlName="nombre" type="text" class="form-control bg-secondary bg-opacity-25 text-white border-secondary" id="name" placeholder="Nombre"
                        [ngClass]="{'is-invalid': isNotValid('nombre'), 'is-valid': isValid('nombre')}">
                 @if (showErrors('nombre', 'required')) {
                     <div class="text-danger small mt-1">El nombre es obligatorio</div>
                 }
                
                 <label for="lastName" class="form-label fs-5 mt-3">Apellido</label>
-                <input formControlName="apellido" type="text" class="form-control" id="lastName" placeholder="Apellido"
+                <input formControlName="apellido" type="text" class="form-control bg-secondary bg-opacity-25 text-white border-secondary" id="lastName" placeholder="Apellido"
                        [ngClass]="{'is-invalid': isNotValid('apellido'), 'is-valid': isValid('apellido')}">
                 @if (showErrors('apellido', 'required')) {
                     <div class="text-danger small mt-1">El apellido es obligatorio</div>
                 }
                
                 <label for="email" class="form-label fs-5 mt-3">Email</label>
-                <input formControlName="email" type="email" class="form-control" id="email" placeholder="georgiarose@gmail.com"
+                <input formControlName="email" type="email" class="form-control bg-secondary bg-opacity-25 text-white border-secondary" id="email" placeholder="georgiarose@gmail.com"
                        [ngClass]="{'is-invalid': isNotValid('email'), 'is-valid': isValid('email')}">
                 @if (showErrors('email', 'required')) {
                     <div class="text-danger small mt-1">El email es obligatorio</div>
@@ -43,7 +43,7 @@
                 }
                
                 <label for="password" class="form-label fs-5 mt-3">Contraseña</label>
-                <input formControlName="password" type="password" class="form-control" id="password" placeholder="********"
+                <input formControlName="password" type="password" class="form-control bg-secondary bg-opacity-25 text-white border-secondary" id="password" placeholder="********"
                        [ngClass]="{'is-invalid': isNotValid('password'), 'is-valid': isValid('password')}">
                 @if (showErrors('password', 'required')) {
                     <div class="text-danger small mt-1">La contraseña es obligatoria</div>
@@ -53,7 +53,7 @@
                 }
                
                 <label for="confirmPassword" class="form-label fs-5 mt-3">Repita Contraseña</label>
-                <input formControlName="confirmPassword" type="password" class="form-control" id="confirmPassword" placeholder="********"
+                <input formControlName="confirmPassword" type="password" class="form-control bg-secondary bg-opacity-25 text-white border-secondary" id="confirmPassword" placeholder="********"
                        [ngClass]="{'is-invalid': isNotValid('confirmPassword'), 'is-valid': isValid('confirmPassword')}">
                 @if (showErrors('confirmPassword', 'required')) {
                     <div class="text-danger small mt-1">Debe confirmar la contraseña</div>
@@ -63,7 +63,8 @@
                 }
                
                 <div class="text-center mt-4">
-                    <button type="submit" [disabled]="registerForm.invalid || passwordsDoNotMatch || isLoading" class="btn btn-primary fs-5 px-5 py-2" style="min-width: 180px;">
+                    <button type="submit" [disabled]="registerForm.invalid || passwordsDoNotMatch || isLoading" 
+                            class="btn btn-outline-light fs-5 px-5 py-2">
                         @if (isLoading) {
                             <div class="d-flex align-items-center justify-content-center">
                                 <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
