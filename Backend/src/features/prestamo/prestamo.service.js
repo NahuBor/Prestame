@@ -14,7 +14,7 @@ exports.getAllPrestamosService = async () => {
 
 exports.createPrestamoService = async (datosPrestamo) => {
     try {
-        console.log("SERVICE - createPrestamoService", datosPrestamo)
+  
         const { objetoId, solicitanteId, tiempo_del_prestamo } = datosPrestamo
 
         const objeto = await objetoRepository.getObjetsByIdRepository(objetoId)
@@ -41,8 +41,7 @@ exports.createPrestamoService = async (datosPrestamo) => {
             tiempo_del_prestamo,
             fechaCreacion: new Date()
         }
-        console.log("📦 Creando préstamo con duenioId:", nuevoPrestamo.duenioId)
-        console.log("📦 solicitanteId:", nuevoPrestamo.solicitanteId)
+
 
         const prestamoCreado = await prestamoRepository.crearPrestamoRepository(nuevoPrestamo)
         if (!prestamoCreado) {
@@ -57,7 +56,7 @@ exports.createPrestamoService = async (datosPrestamo) => {
 
 exports.getPrestamosByDuenioService = async (duenioId) => {
     try {
-        console.log("SERVICE - getPrestamosByDuenioService, ID:", duenioId)
+
         return await prestamoRepository.getPrestamosByDuenioRepository(duenioId)
     } catch (error) {
         console.log("Error getPrestamosByDuenioService", error)
@@ -67,7 +66,7 @@ exports.getPrestamosByDuenioService = async (duenioId) => {
 
 exports.getPrestamosBySolicitanteService = async (solicitanteId) => {
     try {
-        console.log("SERVICE - getPrestamosBySolicitanteService, ID:", solicitanteId)
+      
         return await prestamoRepository.getPrestamosBySolicitanteRepository(solicitanteId)
     } catch (error) {
         console.log("Error getPrestamosBySolicitanteService", error)
@@ -86,15 +85,12 @@ exports.getPrestamoByIdService = async (prestamoId) => {
 
 exports.updateEstadoPrestamoService = async (prestamoId, nuevoEstado, usuarioId) => {
     try {
-        console.log("🔍 UPDATE - prestamoId:", prestamoId)
-        console.log("🔍 UPDATE - usuarioId recibido:", usuarioId)
 
-        // ✅ Extraer el ID real si usuarioId es un objeto
         let usuarioIdReal = null;
         if (usuarioId && typeof usuarioId === 'object') {
-            // Si es objeto, tomar _id o id
+      
             usuarioIdReal = usuarioId._id || usuarioId.id || null;
-            console.log("🔍 UPDATE - usuarioId es objeto, extrayendo _id:", usuarioIdReal);
+    
         } else if (typeof usuarioId === 'string') {
             usuarioIdReal = usuarioId;
         } else if (typeof usuarioId === 'number') {
@@ -104,32 +100,28 @@ exports.updateEstadoPrestamoService = async (prestamoId, nuevoEstado, usuarioId)
         }
 
         if (!usuarioIdReal) {
-            console.log("❌ No se pudo obtener el ID real del usuario");
+
             return { error: true, message: 'Usuario no identificado', status: 400 };
         }
 
-        // Convertir a string y trim
         const usuarioIdStr = String(usuarioIdReal).trim();
-        console.log("🔍 UPDATE - usuarioIdReal (string):", usuarioIdStr);
+
 
         const prestamo = await prestamoRepository.getPrestamoByIdRepository(prestamoId)
         if (!prestamo) {
-            console.log("❌ Préstamo no encontrado")
+
             return { error: true, message: 'Préstamo no encontrado', status: 404 }
         }
 
-        console.log("🔍 UPDATE - préstamo completo:", prestamo)
-        console.log("🔍 UPDATE - duenioId guardado:", prestamo.duenioId)
-        const duenioStr = String(prestamo.duenioId).trim()
-        console.log("🔍 UPDATE - duenioStr:", duenioStr)
 
-        console.log("🔍 Comparando: duenioStr =", duenioStr, "usuarioStr =", usuarioIdStr)
+        const duenioStr = String(prestamo.duenioId._id).trim()
 
-        // ⚠️ Si quieres desactivar temporalmente la validación (para pruebas), descomenta la siguiente línea:
-        // return await prestamoRepository.updateEstadoPrestamoRepository(prestamoId, nuevoEstado);
+
+
+
 
         if (duenioStr !== usuarioIdStr) {
-            console.log("❌ No coinciden: duenioId=", duenioStr, "usuarioId=", usuarioIdStr)
+
             return { error: true, message: 'No tienes permiso para modificar este préstamo', status: 403 }
         }
 

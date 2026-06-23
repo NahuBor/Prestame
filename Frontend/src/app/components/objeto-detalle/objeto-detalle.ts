@@ -41,28 +41,33 @@ export class ObjetoDetalle implements OnInit {
     await this.cargarObjeto();
   }
 
-  async cargarObjeto() {
-    try {
-      const id = this.route.snapshot.paramMap.get('id');
-      if (!id) {
-        this.error = 'ID no válido';
+cargarObjeto() {
+  const id = this.route.snapshot.paramMap.get('id');
+  if (!id) {
+    this.error = 'ID no válido';
+    this.cargando = false;
+    this.cdr.detectChanges();
+    return;
+  }
+
+  this.prestameApi.obtenerObjetoPorId(id)
+    .pipe(timeout(10000))
+    .subscribe({
+      next: (data: Objeto) => { 
+        this.objeto = data;
+        this.cargando = false;
+        this.verificarPropiedad();
+        this.cdr.detectChanges();
+      },
+      error: (err: Error) => {    // 👈 tipamos el error (sin any)
+        this.error = err.name === 'TimeoutError'
+          ? 'Tiempo de espera agotado'
+          : 'Error al cargar';
         this.cargando = false;
         this.cdr.detectChanges();
-        return;
       }
-      const data = await firstValueFrom(
-        this.prestameApi.obtenerObjetoPorId(id).pipe(timeout(10000))
-      );
-      this.objeto = data;
-      this.cargando = false;
-      this.verificarPropiedad();
-      this.cdr.detectChanges();
-    } catch (err: any) {
-      this.error = err.name === 'TimeoutError' ? 'Tiempo de espera agotado' : 'Error al cargar';
-      this.cargando = false;
-      this.cdr.detectChanges();
-    }
-  }
+    });
+}
 
   private verificarPropiedad() {
     if (!this.objeto) {

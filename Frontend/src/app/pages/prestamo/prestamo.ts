@@ -3,6 +3,9 @@ import { CommonModule } from '@angular/common';
 import { PrestameApi } from '../../services/prestameApi.service';
 import { AuthService } from '../../services/auth.service';
 import { Prestamo } from '../../models/prestamo.model';
+import { perfil_usuario } from '../../models/perfil_usuario.model';
+
+
 
 @Component({
   selector: 'app-mis-prestamos',
@@ -18,13 +21,15 @@ export class Prestamos implements OnInit {
   private peticionesCompletadas = 0;
 
   // ✅ Propiedades computadas para filtrar
-  get solicitudesPendientesComoDuenio(): Prestamo[] {
+get solicitudesPendientesComoDuenio(): Prestamo[] {
     return this.prestamosComoDuenio.filter(p => p.estado === 'pendiente');
   }
 
   get prestamosAceptadosComoDuenio(): Prestamo[] {
     return this.prestamosComoDuenio.filter(p => p.estado === 'aceptado' || p.estado === 'devuelto');
   }
+
+  
 
   constructor(
     private prestameApi: PrestameApi,
