@@ -7,7 +7,7 @@ exports.getAllPrestamosService = async () => {
         const prestamos = await prestamoRepository.getAllprestamosRepository()
         return prestamos || EMPTY_ARRAY
     } catch (error) {
-        console.log("Error en getAllPrestamosService", error)
+        console.log("Error en getAllPrestamosService");
         return EMPTY_ARRAY
     }
 }
@@ -49,7 +49,7 @@ exports.createPrestamoService = async (datosPrestamo) => {
         }
         return prestamoCreado
     } catch (error) {
-        console.log("Error en createPrestamoService", error)
+        console.log("Error en createPrestamoService");
         return { error: true, message: "Error interno del servidor", status: 500 }
     }
 }
@@ -59,7 +59,7 @@ exports.getPrestamosByDuenioService = async (duenioId) => {
 
         return await prestamoRepository.getPrestamosByDuenioRepository(duenioId)
     } catch (error) {
-        console.log("Error getPrestamosByDuenioService", error)
+        console.log("Error getPrestamosByDuenioService");
         return EMPTY_ARRAY
     }
 }
@@ -69,7 +69,7 @@ exports.getPrestamosBySolicitanteService = async (solicitanteId) => {
       
         return await prestamoRepository.getPrestamosBySolicitanteRepository(solicitanteId)
     } catch (error) {
-        console.log("Error getPrestamosBySolicitanteService", error)
+        console.log("Error getPrestamosBySolicitanteService");
         return EMPTY_ARRAY
     }
 }
@@ -78,7 +78,7 @@ exports.getPrestamoByIdService = async (prestamoId) => {
     try {
         return await prestamoRepository.getPrestamoByIdRepository(prestamoId)
     } catch (error) {
-        console.log("Error getPrestamoByIdService", error)
+        console.log("Error getPrestamoByIdService");
         return null
     }
 }
@@ -140,7 +140,7 @@ exports.updateEstadoPrestamoService = async (prestamoId, nuevoEstado, usuarioId)
         const prestamoActualizado = await prestamoRepository.updateEstadoPrestamoRepository(prestamoId, nuevoEstado)
         return prestamoActualizado
     } catch (error) {
-        console.log("Error en updateEstadoPrestamoService", error)
+        console.log("Error en updateEstadoPrestamoService");
         return { error: true, message: 'Error interno del servidor', status: 500 }
     }
 }

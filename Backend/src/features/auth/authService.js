@@ -27,7 +27,7 @@ exports.loginService = async (email, password) => {
         }
 
     } catch (error) {
-        console.log("Error en LoginService()", error)
+        console.log("Error en LoginService()");
         return createMessage(typeErrorAuth.INTERNAL_ERROR)
     }
 }
@@ -58,7 +58,7 @@ exports.registerService = async (nombre, password, email) => {
             }
         }
     } catch (error) {
-        console.log("este es el error amigooo", error)
+        console.log("este es el error amigooo");
         return createMessage(typeErrorAuth.INTERNAL_ERROR)
     }
 }

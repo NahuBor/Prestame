@@ -165,7 +165,7 @@ exports.readObjetsByCategoriaController = async (req, res) => {
         res.setHeader('Content-Type', 'application/json')
         return res.status(200).send(objetoConImagen)
     } catch (error) {
-        console.log(" Error readObjetsByCategoriaController", error)
+        console.log(" Error readObjetsByCategoriaController");
         res.status(500).send({
             code: 500,
             message: "Error al obtener los objetos por categoría"

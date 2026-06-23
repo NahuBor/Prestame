@@ -61,7 +61,7 @@ exports.readPrestamoByIdController = async (req, res) => {
         }
         res.status(200).send(prestamo)
     } catch (error) {
-        console.log("Error readPrestamoById", error)
+        console.log("Error readPrestamoById");
         res.status(500).send({ code: 500, message: "Error al obtener el préstamo" })
     }
 }
@@ -85,7 +85,7 @@ exports.createPrestamoController = async (req, res) => {
 
         res.status(201).send(resultado)
     } catch (error) {
-        console.log("Error - CONTROLLER createPrestamo", error)
+        console.log("Error - CONTROLLER createPrestamo");
         res.status(500).send({ code: 500, message: "Error al crear la solicitud" })
     }
 }
