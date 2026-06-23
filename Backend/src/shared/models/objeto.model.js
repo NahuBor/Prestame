@@ -11,6 +11,7 @@ const objetoSchema = new mongoose.Schema({
     },
     estado: { type: String, enum: ['disponible', 'prestado'], default: 'disponible' },
     fechaCreacion: { type: Date, default: Date.now }
-})
+},{ collection: 'objetos' }
+)
 
 module.exports = mongoose.model('Objeto', objetoSchema)

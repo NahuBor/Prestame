@@ -17,6 +17,7 @@ const prestamoSchema = new mongoose.Schema({
     default: '1', 
     required: true 
   }
-})
+},{ collection: 'prestamos' }
+)
 
 module.exports = mongoose.model('Prestamo', prestamoSchema)

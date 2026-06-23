@@ -102,10 +102,13 @@ POST http://127.0.0.1:3000/auth/login
 Content-Type: application/json
 
 {
-    "email": "gus_led@gmail.com",
+    "email": "Mati@gmial.com",
     "password": "12341234"
 }
 
 ####
 ### Crear objeto (requiere estar logueada)
 GET http://127.0.0.1:3000/objetos
+
+### Crear objeto (requiere estar logueada)
+GET http://127.0.0.1:3000/prestamos/duenio/6a3abc0863623c1265333662

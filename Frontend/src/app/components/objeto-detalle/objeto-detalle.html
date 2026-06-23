@@ -2,7 +2,6 @@
 
   <div class="detalle-actions">
     <button (click)="volver()">← Volver</button>
-
   </div>
 
   <div *ngIf="objeto.imagen" class="detalle-imagen">
@@ -11,30 +10,58 @@
 
   <h1>{{ objeto.titulo }}</h1>
 
-  <div>
+  <div class="info-badges">
     <span><strong>Estado:</strong> {{ objeto.estado || 'disponible' }}</span>
     <span><strong>Categoría:</strong> {{ objeto.categoria }}</span>
   </div>
 
-  <div *ngIf="objeto.descripcion">
+  <div *ngIf="objeto.descripcion" class="descripcion">
     <h3>Descripción</h3>
     <p>{{ objeto.descripcion }}</p>
   </div>
 
-  <div>
-    <p *ngIf="objeto.duenioId"><strong>Dueño:</strong> {{ objeto.duenioId }}</p>
-    <p *ngIf="objeto.fechaCreacion"><strong>Publicado:</strong> {{ objeto.fechaCreacion | date:'dd/MM/yyyy' }}</p>
+  <!-- 🔥 SECCIÓN DEL DUEÑO - CORREGIDA -->
+  <div class="duenio-info">
+    <div class="duenio-card">
+      <h3>👤 Dueño del objeto</h3>
+      <div class="duenio-datos">
+        <p><strong>Nombre:</strong> {{ getNombreDuenio() }}</p>
+        <p *ngIf="getEmailDuenio()"><strong>Email:</strong> {{ getEmailDuenio() }}</p>
+        <p *ngIf="!getEmailDuenio()" class="sin-email">⚠️ El dueño no tiene email registrado</p>
+      </div>
+    </div>
+    <p *ngIf="objeto.fechaCreacion" class="fecha-publicacion">
+      <strong>Publicado:</strong> {{ objeto.fechaCreacion | date:'dd/MM/yyyy' }}
+    </p>
   </div>
 
   <!-- ACCIONES CONDICIONALES -->
-  <div>
-    <!-- Botón Solicitar: solo si NO es propio y además no venimos de mis-objetos (por seguridad) -->
+  <div class="acciones">
+    <!-- Botón Solicitar: solo si NO es propio y el objeto está disponible -->
+    <button *ngIf="!esPropio && objeto.estado === 'disponible'" 
+            class="btn-solicitar" 
+            (click)="solicitarObjeto(objeto._id!)">
+      📩 Solicitar préstamo
+    </button>
 
     <span *ngIf="!esPropio && objeto.estado === 'prestado'" class="no-disponible">
-      No disponible
+      🔒 No disponible
     </span>
-    <!-- Botones para el dueño (se muestran si es propio) -->
-  
-     <button *ngIf="esPropio" class="btn-eliminar btn-action" (click)="eliminarObjeto()">🗑️ Eliminar</button>
+
+    <!-- Botones para el dueño -->
+    <button *ngIf="esPropio" class="btn-editar" (click)="editar()">✏️ Editar</button>
+    <button *ngIf="esPropio" class="btn-eliminar" (click)="eliminarObjeto()">🗑️ Eliminar</button>
   </div>
+</div>
+
+<!-- Estado de carga -->
+<div *ngIf="cargando" class="loading">
+  <div class="spinner"></div>
+  <p>Cargando objeto...</p>
+</div>
+
+<!-- Estado de error -->
+<div *ngIf="error" class="error-message">
+  <p>{{ error }}</p>
+  <button (click)="cargarObjeto()">Reintentar</button>
 </div>

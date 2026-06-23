@@ -111,11 +111,16 @@ exports.readObjetsByIdcontroller = async (req, res) => {
             code: 404,
             message: `No se encontró el objeto con el id: ${idParam}`
         })
-    } const objetoPlano = { ...objetoFiltrado._doc || objetoFiltrado }
+    }
+    
+    // 🔥 Ya viene populado del repositorio
+    const objetoPlano = { ...objetoFiltrado._doc || objetoFiltrado }
+    
     if (objetoPlano.imagen && objetoPlano.imagen.data) {
         const base64 = objetoPlano.imagen.data.toString('base64')
         objetoPlano.imagen = `data:${objetoPlano.imagen.contentType};base64,${base64}`
     }
+    
     res.setHeader('Content-Type', 'application/json')
     return res.status(200).send(objetoPlano)
 }

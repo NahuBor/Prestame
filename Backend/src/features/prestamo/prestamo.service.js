@@ -24,7 +24,10 @@ exports.createPrestamoService = async (datosPrestamo) => {
         if (objeto.estado !== 'disponible') {
             return { error: true, message: "El objeto no está disponible", status: 400 }
         }
-        if (String(objeto.duenioId).trim() === String(solicitanteId).trim()) {
+        const duenioIdStr = typeof objeto.duenioId === 'object' 
+    ? String(objeto.duenioId._id || objeto.duenioId) 
+    : String(objeto.duenioId);
+        if  (duenioIdStr.trim() === String(solicitanteId).trim()) {
             return { error: true, message: "No puedes solicitar tu propio objeto", status: 400 }
         }
 
@@ -35,7 +38,9 @@ exports.createPrestamoService = async (datosPrestamo) => {
 
         const nuevoPrestamo = {
             objetoId,
-            duenioId: objeto.duenioId,
+            duenioId: typeof objeto.duenioId === 'object' 
+    ? objeto.duenioId._id || objeto.duenioId 
+    : objeto.duenioId,
             solicitanteId,
             estado: 'pendiente',
             tiempo_del_prestamo,

@@ -17,7 +17,7 @@ export class ObjetoForm implements OnInit {
   esEdicion: boolean = false;
   cargando: boolean = false;
   objetoId: string | null = null;
-  duenioId: string = ''; // 
+  duenioId: string = '';
 
   objeto: Objeto = {
     titulo: '',
@@ -26,11 +26,11 @@ export class ObjetoForm implements OnInit {
     duenioId: ''
   };
 
-perfil: perfil_usuario={
-  _id:'',
-  nombre: '',
-  email: ''
-};
+  perfil: perfil_usuario = {
+    _id: '',
+    nombre: '',
+    email: ''
+  };
 
   constructor(
     private prestameApi: PrestameApi,
@@ -39,8 +39,7 @@ perfil: perfil_usuario={
     private cdr: ChangeDetectorRef
   ) { }
 
-
-ngOnInit() {
+  ngOnInit() {
     this.prestameApi.obtenerPerfil(this.perfil).subscribe({
       next: (perfil) => {
         this.duenioId = perfil._id;
@@ -70,20 +69,39 @@ ngOnInit() {
         this.router.navigate(['/login']);
       }
     });
-}
+  }
 
-onFileSelected(event: Event) {
+  onFileSelected(event: Event) {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
       this.imagenSeleccionada = input.files[0];
     }
-}
+  }
+
+  // 🔥 Función auxiliar para obtener el ID del dueño como string
+  private obtenerIdDuenioString(): string {
+    const duenio = this.objeto.duenioId;
+    if (!duenio) return '';
+    if (typeof duenio === 'object' && duenio !== null) {
+      // Si es objeto, extraer _id
+      return (duenio as any)._id || String(duenio);
+    }
+    return duenio as string;
+  }
+
   guardar() {
-    if (!this.objeto.duenioId) {
+    const duenioIdStr = this.obtenerIdDuenioString();
+    if (!duenioIdStr) {
       alert('Error: No se pudo identificar al usuario');
       console.error('duenioId es undefined');
       return;
     }
+
+    // Preparar el objeto para enviar (con duenioId como string)
+    const objetoParaEnviar = {
+      ...this.objeto,
+      duenioId: duenioIdStr
+    };
 
     let formData: FormData | null = null;
     if (this.imagenSeleccionada) {
@@ -92,12 +110,13 @@ onFileSelected(event: Event) {
       formData.append('categoria', this.objeto.categoria);
       formData.append('descripcion', this.objeto.descripcion || '');
       formData.append('imagen', this.imagenSeleccionada);
-      formData.append('duenioId', this.objeto.duenioId);
+      formData.append('duenioId', duenioIdStr); // 👈 Ahora es string
     }
+
     if (this.esEdicion && this.objetoId) {
       const peticion = formData
         ? this.prestameApi.editarObjetoConImagen(this.objetoId, formData)
-        : this.prestameApi.editarObjeto(this.objetoId, this.objeto);
+        : this.prestameApi.editarObjeto(this.objetoId, objetoParaEnviar); // 👈 Usamos objeto con duenioId string
       peticion.subscribe({
         next: () => {
           alert('Objeto editado correctamente');
@@ -111,7 +130,7 @@ onFileSelected(event: Event) {
     } else {
       const peticion = formData
         ? this.prestameApi.crearObjetoConImagen(formData)
-        : this.prestameApi.crearObjeto(this.objeto);
+        : this.prestameApi.crearObjeto(objetoParaEnviar); // 👈 Usamos objeto con duenioId string
       peticion.subscribe({
         next: () => {
           alert('Objeto publicado correctamente');
