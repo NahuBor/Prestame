@@ -75,7 +75,6 @@ export class ObjetosFeedComponent implements OnInit {
     this.categoriaSeleccionada = this.categoriaSeleccionada === categoria ? '' : categoria;
     await this.cargarObjetos();
   }
-  
 solicitarObjeto(objetoId: string) {
   const dias = prompt('¿Cuántos días necesitas el préstamo? (1, 7 o 30)', '7');
   if (!dias || !['1','7','30'].includes(dias)) {
@@ -83,12 +82,21 @@ solicitarObjeto(objetoId: string) {
     return;
   }
   this.apiService.crearPrestamo({ objetoId, tiempo_del_prestamo: dias }).subscribe({
-    next: (resp) => {
-      alert('Solicitud enviada correctamente');
-
+    next: () => {
+      alert('✅ Solicitud enviada correctamente');
     },
     error: (err) => {
-      alert('Error al enviar la solicitud: ' + err.message);
+      if (err.error?.message?.includes('debes tener al menos un objeto publicado')) {
+        const irAPublicar = confirm(
+          '❌ No puedes solicitar un préstamo porque no tienes objetos publicados.\n' +
+          '¿Quieres ir a publicar un objeto ahora?'
+        );
+        if (irAPublicar) {
+          this.router.navigate(['/objeto-form']);
+        }
+      } else {
+        alert('❌ Error al enviar la solicitud: ' + (err.error?.message || err.message));
+      }
     }
   });
 }

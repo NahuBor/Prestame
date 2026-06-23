@@ -110,21 +110,32 @@ export class ObjetoDetalle implements OnInit {
     }
   }
 
-  solicitarObjeto(objetoId: string) {
-    const dias = prompt('¿Cuántos días necesitas el préstamo? (1, 7 o 30)', '7');
-    if (!dias || !['1','7','30'].includes(dias)) {
-      alert('Por favor, elige 1, 7 o 30 días.');
-      return;
-    }
-    this.prestameApi.crearPrestamo({ objetoId, tiempo_del_prestamo: dias }).subscribe({
-      next: (resp) => {
-        alert('✅ Solicitud enviada correctamente');
-      },
-      error: (err) => {
-        alert('❌ Error al enviar la solicitud: ' + err.message);
-      }
-    });
+solicitarObjeto(objetoId: string) {
+  const dias = prompt('¿Cuántos días necesitas el préstamo? (1, 7 o 30)', '7');
+  if (!dias || !['1','7','30'].includes(dias)) {
+    alert('Por favor, elige 1, 7 o 30 días.');
+    return;
   }
+  this.prestameApi.crearPrestamo({ objetoId, tiempo_del_prestamo: dias }).subscribe({
+    next: () => {
+      alert('✅ Solicitud enviada correctamente');
+    },
+    error: (err) => {
+      // Manejo específico del error
+      if (err.error?.message?.includes('debes tener al menos un objeto publicado')) {
+        const irAPublicar = confirm(
+          '❌ No puedes solicitar un préstamo porque no tienes objetos publicados.\n' +
+          '¿Quieres ir a publicar un objeto ahora?'
+        );
+        if (irAPublicar) {
+          this.router.navigate(['/objeto-form']);
+        }
+      } else {
+        alert('❌ Error al enviar la solicitud: ' + (err.error?.message || err.message));
+      }
+    }
+  });
+}
 
   eliminarObjeto() {
     if (!this.objeto?._id) {
