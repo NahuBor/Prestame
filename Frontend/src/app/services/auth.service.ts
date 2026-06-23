@@ -1,15 +1,8 @@
-import { inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, firstValueFrom, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { User } from '../models/User.model';
-import { PrestameApi } from './prestameApi.service';
-import {map} from 'rxjs/operators'
-import {of, catchError} from 'rxjs'
 import {signal} from '@angular/core'
-interface ResponseMessage {
-  isActive: boolean,
-  user: User
-}
 
 @Injectable({
   providedIn: 'root',
@@ -19,8 +12,8 @@ export class AuthService {
   public actualUser = signal<User | null>(null);
   private apiUrl = 'http://localhost:3000';
 
-  constructor(private http: HttpClient) { }
-
+  constructor(private http: HttpClient) {
+   }
 
   loginService (email: string, password: string) {
     const body = {email, password}
