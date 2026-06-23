@@ -34,8 +34,7 @@ exports.loginService = async (email, password) => {
 
 exports.registerService = async (nombre, password, email) => {
     try {
-         userFounded = await authRepository.findByEmailRepository(email)
-        console.log("el valor de userfounded es: ", userFounded)
+        userFounded = await authRepository.findByEmailRepository(email)
         if (userFounded) {
             return createMessage(typeErrorAuth.USER_ALREADY_EXISTS)
         }
@@ -58,7 +57,6 @@ exports.registerService = async (nombre, password, email) => {
             }
         }
     } catch (error) {
-        console.log("este es el error amigooo");
         return createMessage(typeErrorAuth.INTERNAL_ERROR)
     }
 }

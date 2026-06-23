@@ -1,8 +1,6 @@
 const User = require('../../shared/models/user.model')
 const { getConnectMongoDB } = require('../../database/databaseConection')
 
-
-
 const EMPTY_ARRAY = []
 
 exports.findByEmailRepository = async (email) => {

@@ -3,10 +3,8 @@ const { getConnectMongoDB } = require('../../database/databaseConection')
 
 const EMPTY_ARRAY = []
 
-// CREATE
 exports.crearObjetoRepository = async (datosObjeto) => {
     try {
-        console.log("REPOSITORY - crearObjeto", datosObjeto)
         const objeto = new Objeto(datosObjeto)
         return await objeto.save()
     } catch (error) {
@@ -15,17 +13,13 @@ exports.crearObjetoRepository = async (datosObjeto) => {
     }
 }
 
-// UPDATE
 exports.editarObjetoRepository = async (id, objetoActualizado) => {
     try {
-        console.log("REPOSITORY - editarObjetoRepository - id:", id, "- objetoActualizado:", objetoActualizado)
         const objetoEditado = await Objeto.findByIdAndUpdate(id, objetoActualizado, { new: true })
             .populate('duenioId', 'nombre email')
         if (!objetoEditado) {
-            console.log("objeto no encontrado")
             return EMPTY_ARRAY
         } else {
-            console.log("objeto editado:", objetoEditado)
             return objetoEditado
         }
     } catch (error) {
@@ -37,13 +31,10 @@ exports.editarObjetoRepository = async (id, objetoActualizado) => {
 // DELETE
 exports.eliminarObjetoRepository = async (id) => {
     try {
-        console.log("REPOSITORY - eliminarObjetoRepository - id:", id)
         const objetoEliminado = await Objeto.findByIdAndDelete(id)
         if (!objetoEliminado) {
-            console.log("objeto no encontrado")
             return EMPTY_ARRAY
         } else {
-            console.log("objeto eliminado:", objetoEliminado)
             return objetoEliminado
         }
     } catch (error) {
@@ -52,13 +43,11 @@ exports.eliminarObjetoRepository = async (id) => {
     }
 }
 
-// 🔥 GET ALL - Con populate para mostrar dueño
+
 exports.getAllobjetsRepository = async () => {
     try {
-        console.log("MONGO DB REPOSITORY - getAllObjetsRepository")
         const objetos = await Objeto.find()
             .populate('duenioId', 'nombre email')
-        console.log(objetos);
         return objetos;
     } catch (error) {
         console.log("Error en getAllObjetsRepository ")
@@ -66,39 +55,22 @@ exports.getAllobjetsRepository = async () => {
     }
 }
 
-// 🔥 GET BY ID - Con populate para mostrar dueño
+
 exports.getObjetsByIdRepository = async (idParam) => {
     try {
         const objeto = await Objeto.findById(idParam)
             .populate('duenioId', 'nombre email')
             .lean();
-        
         if (!objeto) {
             return EMPTY_ARRAY;
         }
-        
-        console.log('🔍 OBJETO ENCONTRADO:');
-        console.log('  - duenioId:', JSON.stringify(objeto.duenioId, null, 2));
-        console.log('  - tipo de duenioId:', typeof objeto.duenioId);
-        
-        if (typeof objeto.duenioId === 'object' && objeto.duenioId !== null) {
-            console.log('  - duenioId.nombre:', objeto.duenioId.nombre);
-            console.log('  - duenioId.email:', objeto.duenioId.email);
-        } else {
-            console.log('  ⚠️ duenioId NO está populado, es un string:', objeto.duenioId);
-        }
-        
         return objeto;
     } catch (error) {
-        if (error.name === 'CastError') {
-            return EMPTY_ARRAY;
-        }
-
         return EMPTY_ARRAY;
     }
 };
 
-// 🔥 GET BY DUEÑO - Con populate para mostrar dueño
+
 exports.getObjectsByDuenioIdRepository = async (duenioIdParam) => {
     try {
         const objetos = await Objeto.find({ duenioId: duenioIdParam })
@@ -107,24 +79,17 @@ exports.getObjectsByDuenioIdRepository = async (duenioIdParam) => {
         if (!objetos || objetos.length === 0) {
             return EMPTY_ARRAY;
         }
-        console.log("OBJETOS DEL DUEÑO:", objetos);
+
         return objetos;
     } catch (error) {
-        if (error.name === 'CastError') {
-            return EMPTY_ARRAY;
-        }
-
         return EMPTY_ARRAY
     }
 };
 
-// 🔥 GET BY CATEGORIA - Con populate para mostrar dueño
+
 exports.getObjetsfilteredByCategoriaRepository = async (categoria) => {
     try {
-        console.log(`MONGO DB REPOSITORY - getObjetsByCategoriaRepository: ${categoria}`);
-        const objetos = await Objeto.find({ categoria: categoria })
-            .populate('duenioId', 'nombre email')
-        console.log(`Encontrados ${objetos.length} objetos en categoría: ${categoria}`);
+        const objetos = await Objeto.find({ categoria: categoria }).populate('duenioId', 'nombre email')
         return objetos;
     } catch (error) {
         console.log(`Error en getObjetsByCategoriaRepository:`);
@@ -132,7 +97,6 @@ exports.getObjetsfilteredByCategoriaRepository = async (categoria) => {
     }
 }
 
-// 🔥 UPDATE ESTADO - Sin populate para que sea rápido y no rompa
 exports.updateEstadoObjetoRepository = async (objetoId, nuevoEstado) => {
     try {
         const objeto = await Objeto.findByIdAndUpdate(

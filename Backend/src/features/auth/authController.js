@@ -30,7 +30,6 @@ exports.registerController = async (req, res) => {
     try {
         const { nombre, password, email } = req.body
         const respuestaService = await authService.registerService(nombre, password, email)
-        console.log("en el controller llega: ", respuestaService)
         if (!respuestaService.ok) {
             const {statusCode} = mapResponse(respuestaService.error)
             return res.status(statusCode).send({
@@ -55,7 +54,7 @@ exports.registerController = async (req, res) => {
 }
 
 exports.perfil = async (req, res) => {
-     try {
+    try {
         const user = await authService.findById(req.session.userId)
         return res.status(200).send({
             nombre: user.nombre,
@@ -63,7 +62,6 @@ exports.perfil = async (req, res) => {
             _id: user._id
         })
     } catch (error) {
-        console.log("Error en perfil controller:", error.message) 
         return res.status(500).send("Error en el servidor")
     }
 }
@@ -72,7 +70,7 @@ exports.logoutController = async (req, res) => {
     try {
         if (!req.session) {
             return res.status(403).send({
-                status: 401,
+                status: 403,
                 message: 'SESSION NOT FOUND - ACCESS INVALID'
             })
         }

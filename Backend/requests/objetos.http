@@ -115,5 +115,5 @@ Content-Type: application/json
 ### Crear objeto (requiere estar logueada)
 GET http://127.0.0.1:3000/objetos
 
-### Crear objeto (requiere estar logueada)
+### Verficar si el prestamo existe (requiere estar logueada)
 GET http://127.0.0.1:3000/prestamos/duenio/6a3abc0863623c1265333662

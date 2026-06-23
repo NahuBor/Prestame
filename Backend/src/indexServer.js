@@ -20,9 +20,9 @@ const startServer = async () => {
     try {
         await getConnectMongoDB()
         app.use(sessionMiddleware()) 
-        app.use('/', routers) // 👈 Montar rutas
+        app.use('/', routers)
 
-        // 👇 Escuchar DESPUÉS de montar todo
+
         app.listen(PORT, HOST, () => {
             console.log(`Server corriendo en http://${HOST}:${PORT}`);
         })

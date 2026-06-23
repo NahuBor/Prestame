@@ -64,7 +64,6 @@ exports.getPrestamoByIdRepository = async (prestamoId) => {
     }
 }
 
-// Actualizar estado
 exports.updateEstadoPrestamoRepository = async (prestamoId, nuevoEstado) => {
     try {
         const prestamo = await Prestamo.findByIdAndUpdate(

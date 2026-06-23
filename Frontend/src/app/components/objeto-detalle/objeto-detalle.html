@@ -20,14 +20,13 @@
     <p>{{ objeto.descripcion }}</p>
   </div>
 
-  <!-- 🔥 SECCIÓN DEL DUEÑO - CORREGIDA -->
   <div class="duenio-info">
     <div class="duenio-card">
-      <h3>👤 Dueño del objeto</h3>
+      <h3>Dueño del objeto</h3>
       <div class="duenio-datos">
         <p><strong>Nombre:</strong> {{ getNombreDuenio() }}</p>
         <p *ngIf="getEmailDuenio()"><strong>Email:</strong> {{ getEmailDuenio() }}</p>
-        <p *ngIf="!getEmailDuenio()" class="sin-email">⚠️ El dueño no tiene email registrado</p>
+        <p *ngIf="!getEmailDuenio()" class="sin-email"> El dueño no tiene email registrado</p>
       </div>
     </div>
     <p *ngIf="objeto.fechaCreacion" class="fecha-publicacion">
@@ -35,32 +34,31 @@
     </p>
   </div>
 
-  <!-- ACCIONES CONDICIONALES -->
+
   <div class="acciones">
-    <!-- Botón Solicitar: solo si NO es propio y el objeto está disponible -->
+  
     <button *ngIf="!esPropio && objeto.estado === 'disponible'" 
             class="btn-solicitar" 
             (click)="solicitarObjeto(objeto._id!)">
-      📩 Solicitar préstamo
+      Solicitar préstamo
     </button>
 
     <span *ngIf="!esPropio && objeto.estado === 'prestado'" class="no-disponible">
-      🔒 No disponible
+    No disponible
     </span>
 
-    <!-- Botones para el dueño -->
+
     <button *ngIf="esPropio" class="btn-editar" (click)="editar()">✏️ Editar</button>
     <button *ngIf="esPropio" class="btn-eliminar" (click)="eliminarObjeto()">🗑️ Eliminar</button>
   </div>
 </div>
 
-<!-- Estado de carga -->
 <div *ngIf="cargando" class="loading">
   <div class="spinner"></div>
   <p>Cargando objeto...</p>
 </div>
 
-<!-- Estado de error -->
+
 <div *ngIf="error" class="error-message">
   <p>{{ error }}</p>
   <button (click)="cargarObjeto()">Reintentar</button>
