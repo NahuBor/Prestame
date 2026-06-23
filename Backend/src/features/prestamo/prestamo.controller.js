@@ -1,6 +1,4 @@
 const prestamoService = require('./prestamo.service')
-const objetoRepository = require('../objetos/objeto.Repository')
-
 exports.readPrestamosController = async (req, res) => {
     try {
         const prestamos = await prestamoService.getAllPrestamosService()
