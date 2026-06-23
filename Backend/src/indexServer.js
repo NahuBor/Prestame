@@ -23,7 +23,7 @@ const startServer = async () => {
         app.use(sessionMiddleware()) 
         app.use('/', routers)
     } catch (error) {
-        console.error("Error crítico al iniciar el servidor:", error)
+        console.error("Error crítico al iniciar el servidor:")
     }
 }
 

@@ -8,7 +8,7 @@ exports.readPrestamosController = async (req, res) => {
         res.setHeader('Content-Type', 'application/json')
         return res.status(200).send(prestamos)
     } catch (error) {
-        console.log("Error readPrestamos", error)
+        console.log("Error readPrestamos")
         res.status(500).send({ code: 500, message: "Error al obtener los préstamos" })
     }
 }
@@ -26,7 +26,7 @@ exports.readPrestamosByDuenioController = async (req, res) => {
         }
         res.status(200).send(prestamos)
     } catch (error) {
-        console.log("Error readPrestamosByDuenio", error)
+        console.log("Error readPrestamosByDuenio")
         res.status(500).send({ code: 500, message: "Error al obtener los préstamos del dueño" })
     }
 }
@@ -44,7 +44,7 @@ exports.readPrestamosBySolicitanteController = async (req, res) => {
         }
         res.status(200).send(prestamos)
     } catch (error) {
-        console.log("Error readPrestamosBySolicitante", error)
+        console.log("Error readPrestamosBySolicitante")
         res.status(500).send({ code: 500, message: "Error al obtener los préstamos del solicitante" })
     }
 }

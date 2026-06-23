@@ -24,7 +24,7 @@ exports.crearObjetoController = async (req, res) => {
         }
         res.status(200).send(objeto)
     } catch (error) {
-        console.log("Error - CONTROLLER crearObjeto", error)
+        console.log("Error - CONTROLLER crearObjeto")
         res.status(500).send({
             code: 500,
             message: "Error al agregar el nuevo Objeto"
@@ -52,7 +52,7 @@ exports.editarObjetoController = async (req, res) => {
         }
         res.status(200).send(objeto)
     } catch (error) {
-        console.log("Error - CONTROLLER editarObjeto", error)
+        console.log("Error - CONTROLLER editarObjeto")
         res.status(500).send({ code: 500, message: "Error al editar el objeto" })
     }
 }
@@ -70,7 +70,7 @@ exports.eliminarObjetoController = async (req, res) => {
         }
         res.status(200).send({ code: 200, message: "Objeto eliminado correctamente" })
     } catch (error) {
-        console.log("Error - CONTROLLER eliminarObjeto", error)
+        console.log("Error - CONTROLLER eliminarObjeto")
         res.status(500).send({ code: 500, message: "Error al eliminar el objeto" })
     }
 }
@@ -94,7 +94,7 @@ exports.readObjets = async (req, res) => {
         res.setHeader('Content-Type', 'application/json')
         return res.status(200).send(objetoConImagen)
     } catch (error) {
-        console.log("Error readObjets", error)
+        console.log("Error readObjets")
         res.status(500).send({
             code: 500,
             message: "Error al obtener los objetos"
