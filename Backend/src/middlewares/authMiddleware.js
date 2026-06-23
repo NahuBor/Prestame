@@ -1,5 +1,5 @@
 const authMiddleware = (req, res, next) => {
-
+    console.log("LLEGA AL MIDDLEWARE")
     if (!(req.session && req.session.userId)) {
     return res.status(403).send("Acceso no autorizado")
     }

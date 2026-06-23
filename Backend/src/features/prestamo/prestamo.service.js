@@ -1,5 +1,5 @@
 const prestamoRepository = require('./prestamo.repository')
-const objetoRepository = require('../objetos/objeto.Repository')
+const objetoRepository = require('../objetos/objeto.repository')
 const EMPTY_ARRAY = []
 
 exports.getAllPrestamosService = async () => {
