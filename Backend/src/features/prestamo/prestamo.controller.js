@@ -9,7 +9,7 @@ exports.readPrestamosController = async (req, res) => {
         res.setHeader('Content-Type', 'application/json')
         return res.status(200).send(prestamos)
     } catch (error) {
-        console.log("Error readPrestamos", error)
+        console.log("Error readPrestamos")
         res.status(500).send({ code: 500, message: "Error al obtener los préstamos" })
     }
 }
@@ -22,7 +22,7 @@ exports.readPrestamosByDuenioController = async (req, res) => {
         // Siempre devolver 200, incluso si está vacío
         res.status(200).send(prestamos || [])
     } catch (error) {
-        console.log("Error readPrestamosByDuenio", error)
+        console.log("Error readPrestamosByDuenio")
         res.status(500).send({ code: 500, message: "Error al obtener los préstamos del dueño" })
     }
 }
@@ -35,7 +35,7 @@ exports.readPrestamosBySolicitanteController = async (req, res) => {
         // Siempre devolver 200, incluso si está vacío
         res.status(200).send(prestamos || [])
     } catch (error) {
-        console.log("Error readPrestamosBySolicitante", error)
+        console.log("Error readPrestamosBySolicitante")
         res.status(500).send({ code: 500, message: "Error al obtener los préstamos del solicitante" })
     }
 }
@@ -52,7 +52,7 @@ exports.readPrestamoByIdController = async (req, res) => {
         }
         res.status(200).send(prestamo)
     } catch (error) {
-        console.log("Error readPrestamoById", error)
+        console.log("Error readPrestamoById");
         res.status(500).send({ code: 500, message: "Error al obtener el préstamo" })
     }
 }
@@ -75,7 +75,7 @@ exports.createPrestamoController = async (req, res) => {
 
         res.status(201).send(resultado)
     } catch (error) {
-        console.log("Error - CONTROLLER createPrestamo", error)
+        console.log("Error - CONTROLLER createPrestamo");
         res.status(500).send({ code: 500, message: "Error al crear la solicitud" })
     }
 }

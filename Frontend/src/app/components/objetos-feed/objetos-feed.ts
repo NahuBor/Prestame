@@ -57,7 +57,7 @@ export class ObjetosFeedComponent implements OnInit {
       this.objetos = response || [];
       this.cdr.detectChanges();
     } catch (error: any) {
-      console.log('Error al cargar objetos:', error);
+      console.log('Error al cargar objetos:');
       
       if (error.status === 404) {
         this.objetos = [];

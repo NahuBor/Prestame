@@ -10,7 +10,7 @@ exports.crearObjetoRepository = async (datosObjeto) => {
         const objeto = new Objeto(datosObjeto)
         return await objeto.save()
     } catch (error) {
-        console.log("Error en crearObjetoRepository", error)
+        console.log("Error en crearObjetoRepository")
         return EMPTY_ARRAY
     }
 }
@@ -29,7 +29,7 @@ exports.editarObjetoRepository = async (id, objetoActualizado) => {
             return objetoEditado
         }
     } catch (error) {
-        console.log("Error en editarObjetoRepository", error)
+        console.log("Error en editarObjetoRepository")
         return EMPTY_ARRAY
     }
 }
@@ -47,7 +47,7 @@ exports.eliminarObjetoRepository = async (id) => {
             return objetoEliminado
         }
     } catch (error) {
-        console.log("Error en eliminarObjetoRepository", error)
+        console.log("Error en eliminarObjetoRepository")
         return EMPTY_ARRAY
     }
 }
@@ -61,7 +61,7 @@ exports.getAllobjetsRepository = async () => {
         console.log(objetos);
         return objetos;
     } catch (error) {
-        console.log("Error en getAllObjetsRepository ", error)
+        console.log("Error en getAllObjetsRepository ")
         return EMPTY_ARRAY;
     }
 }
@@ -93,7 +93,7 @@ exports.getObjetsByIdRepository = async (idParam) => {
         if (error.name === 'CastError') {
             return EMPTY_ARRAY;
         }
-        console.error("Error en getObjetsByIdRepository:", error);
+
         return EMPTY_ARRAY;
     }
 };
@@ -113,7 +113,7 @@ exports.getObjectsByDuenioIdRepository = async (duenioIdParam) => {
         if (error.name === 'CastError') {
             return EMPTY_ARRAY;
         }
-        console.error("Error en getObjectsByDuenioIdRepository:", error);
+
         return EMPTY_ARRAY
     }
 };
@@ -127,7 +127,7 @@ exports.getObjetsfilteredByCategoriaRepository = async (categoria) => {
         console.log(`Encontrados ${objetos.length} objetos en categoría: ${categoria}`);
         return objetos;
     } catch (error) {
-        console.log(`Error en getObjetsByCategoriaRepository:`, error);
+        console.log(`Error en getObjetsByCategoriaRepository:`);
         return EMPTY_ARRAY;
     }
 }
@@ -142,7 +142,7 @@ exports.updateEstadoObjetoRepository = async (objetoId, nuevoEstado) => {
         ).lean()
         return objeto
     } catch (error) {
-        console.log("Error en updateEstadoObjetoRepository", error)
+        console.log("Error en updateEstadoObjetoRepository")
         return EMPTY_ARRAY
     }
 }

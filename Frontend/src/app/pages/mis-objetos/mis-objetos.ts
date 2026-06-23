@@ -50,14 +50,14 @@ onRowClick(objeto: Objeto) {
             this.cdr.detectChanges();
           },
           error: (err) => {
-            console.log('Error al cargar objetos', err);
+            console.log('Error al cargar objetos');
             this.cargando = false;
             this.cdr.detectChanges();
           }
         });
       },
       error: (err) => {
-        console.log('Error al cargar objetos', err);
+        console.log('Error al cargar objetos');
         this.cargando = false;
         this.cdr.detectChanges();
       }
@@ -72,7 +72,7 @@ onRowClick(objeto: Objeto) {
         this.cdr.detectChanges();
       },
       error: (err) => {
-        console.log('Error al eliminar', err)
+        console.log('Error al eliminar');
         alert('Error al eliminar el objeto');
       }
     });

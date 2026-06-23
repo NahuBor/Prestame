@@ -1,15 +1,9 @@
-import { inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, firstValueFrom, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { User } from '../models/User.model';
-import { PrestameApi } from './prestameApi.service';
-import {map} from 'rxjs/operators'
-import {of, catchError} from 'rxjs'
 import {signal} from '@angular/core'
-interface ResponseMessage {
-  isActive: boolean,
-  user: User
-}
+import {tap} from 'rxjs/operators'
 
 @Injectable({
   providedIn: 'root',
@@ -19,14 +13,43 @@ export class AuthService {
   public actualUser = signal<User | null>(null);
   private apiUrl = 'http://localhost:3000';
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {
+    this.autoCheckSession()
+   }
 
+   private autoCheckSession() {
+    this.checkSessionService().subscribe({
+      next: (isSessionActive) => {
+        if (isSessionActive) {
+          const savedUser = localStorage.getItem('user_profile');
+          if (savedUser) {
+            this.actualUser.set(JSON.parse(savedUser));
+          } else {
+            this.actualUser.set({ nombre: 'Usuario', email: '' } as User);
+          }
+        } else {
+          this.limpiarSesionLocal();
+        }
+      },
+      error: () => this.limpiarSesionLocal()
+    });
+  }
+  
+  private limpiarSesionLocal() {
+    localStorage.removeItem('user_profile');
+    this.actualUser.set(null);
+  }
 
   loginService (email: string, password: string) {
     const body = {email, password}
-    const respuesta =  this.http.post<User>(`${this.apiUrl}/auth/login`, body, { withCredentials: true });
-    console.log("La respuesta del back es: ", respuesta)
-    return respuesta
+    return this.http.post<User>(`${this.apiUrl}/auth/login`, body, { withCredentials: true }).pipe(
+      tap(user => {
+        if (user) {
+          localStorage.setItem('user_profile', JSON.stringify(user));
+          this.actualUser.set(user);
+        }
+      })
+    );
   }
 
   registerService (nombre: string, apellido: string, email: string, password: string) : Observable <User> | undefined{

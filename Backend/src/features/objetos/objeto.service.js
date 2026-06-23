@@ -7,7 +7,7 @@ exports.crearObjetoService = async (datosObjeto) => {
         console.log("SERVICE - crearObjetoService", datosObjeto)
         return await objetoRepository.crearObjetoRepository(datosObjeto)
     } catch (error) {
-        console.log("Error en crearObjetoRepository", error)
+        console.log("Error en crearObjetoRepository")
         return EMPTY_ARRAY
     }
 }
@@ -23,7 +23,7 @@ exports.editarObjetoService = async (id, objetoActualizado) => {
         }
         return objeto
     } catch (error) {
-        console.log("Error en crearObjetoRepository", error)
+        console.log("Error en crearObjetoRepository")
         return EMPTY_ARRAY
     }
 }
@@ -41,7 +41,7 @@ exports.eliminarObjetoService = async (idObjeto) => {
         return objetoEliminado
     }
     catch (error) {
-        console.log("Error en eliminarObjetoRepository", error)
+        console.log("Error en eliminarObjetoRepository")
         return EMPTY_ARRAY 
     }
 }
@@ -54,7 +54,7 @@ exports.getAllObjets = async () => {
         console.log(testDatos)
         return testDatos || EMPTY_ARRAY
     } catch (error) {
-        console.log("Error en getAllobjetsRepository()", error)//borrar el error
+        console.log("Error en getAllobjetsRepository()")//borrar el error
         return EMPTY_ARRAY
     }
 
@@ -67,7 +67,7 @@ exports.getObjetsfilteredByIdService = async (id) => {
         console.log(testDatos)
         return testDatos
     } catch (error) {
-        console.log("Error en getObjetsfilteredById", error)
+        console.log("Error en getObjetsfilteredById")
         return EMPTY_ARRAY
     }
 }
@@ -79,7 +79,7 @@ exports.getObjetsfilteredByDuenioIdService = async (id) => {
         console.log(testDatos)
         return testDatos
     } catch (error) {
-        console.log("Error en getObjetsfilteredByDuenioIdService", error)
+        console.log("Error en getObjetsfilteredByDuenioIdService")
         return EMPTY_ARRAY
     }
 }
@@ -91,7 +91,7 @@ exports.getObjetsfilteredByCategoriaService = async (categoria) => {
         console.log(`Service recibió ${objetos?.length || 0} objetos de categoría: ${categoria}`);
         return objetos || EMPTY_ARRAY;
     } catch (error) {
-        console.log(`Error en getObjetsfilteredByCategoriaService:`, error);
+        console.log(`Error en getObjetsfilteredByCategoriaService:`);
         return EMPTY_ARRAY;
     }
 }
