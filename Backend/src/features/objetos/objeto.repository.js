@@ -3,7 +3,7 @@ const { getConnectMongoDB } = require('../../database/databaseConection')
 
 const EMPTY_ARRAY = []
 
-// CREATE
+
 exports.crearObjetoRepository = async (datosObjeto) => {
     try {
         console.log("REPOSITORY - crearObjeto", datosObjeto)
@@ -15,10 +15,9 @@ exports.crearObjetoRepository = async (datosObjeto) => {
     }
 }
 
-//UPDATE
+
 exports.editarObjetoRepository = async (id, objetoActualizado) => {
     try {
-        console.log("REPOSITORY - editarObjetoRepository - id:", id, "- objetoActualizado:", objetoActualizado)
         const objetoEditado = await Objeto.findByIdAndUpdate(id, objetoActualizado, { new: true })
         if (!objetoEditado) {
             console.log("objeto no encontrado")
@@ -33,7 +32,7 @@ exports.editarObjetoRepository = async (id, objetoActualizado) => {
     }
 }
 
-//DELETE
+
 exports.eliminarObjetoRepository = async (id) => {
     try {
         console.log("REPOSITORY - eliminarObjetoRepository - id:", id)
@@ -55,7 +54,6 @@ exports.getAllobjetsRepository = async () => {
     try {
         console.log(" MONGO DBREPOSITORY - getAllObjetsRepository ")
         const objetos = await Objeto.find();
-        console.log(objetos);
         return objetos; 
     } catch (error) {
         console.log("Error en getAllObjetsRepository ")
@@ -65,14 +63,12 @@ exports.getAllobjetsRepository = async () => {
 
 exports.getObjetsByIdRepository = async (idParam) => {
     try {
-        const objeto = await Objeto.findById(idParam).lean(); // .lean() retorna objetos JavaScripts planos, no documentos Mongoose (más rápido)
+        const objeto = await Objeto.findById(idParam).lean(); 
         if (!objeto) {
             return EMPTY_ARRAY;
         }
-        console.log("OBEJTO" + objeto)
         return objeto;
     } catch (error) {
-        // Si el ID no es un formato válido de MongoDB, capturamos el error
         if (error.name === 'CastError') {
             return EMPTY_ARRAY;
         }
@@ -84,30 +80,23 @@ exports.getObjetsByIdRepository = async (idParam) => {
 
 exports.getObjectsByDuenioIdRepository = async (duenioIdParam) => {
     try {
-        // Buscar todos los objetos que pertenezcan a ese duenioId
         const objetos = await Objeto.find({ duenioId: duenioIdParam }).lean();
-        // Si no hay objetos, devolvemos array vacío
         if (!objetos || objetos.length === 0) {
             return EMPTY_ARRAY;
         }
-        console.log("OBJETOS DEL DUEÑO:", objetos);
-        return objetos; // ya es un array
+        return objetos; 
     } catch (error) {
-        // Si el ID no es un formato válido de MongoDB
         if (error.name === 'CastError') {
             return EMPTY_ARRAY;
         }
         console.error("Error en getObjectsByDuenioIdRepository:");
-        console.log("Error en etObjectsByDuenioIdRepository ");
         return EMPTY_ARRAY
     }
 };
 
 exports.getObjetsfilteredByCategoriaRepository = async (categoria) => {
     try {
-        console.log(`MONGO DBREPOSITORY - getObjetsByCategoriaRepository: ${categoria}`);
         const objetos = await Objeto.find({ categoria: categoria });
-        console.log(`Encontrados ${objetos.length} objetos en categoría: ${categoria}`);
         return objetos;
     } catch (error) {
         console.log(`Error en getObjetsByCategoriaRepository:`);

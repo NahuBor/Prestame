@@ -87,3 +87,30 @@ exports.logoutController = async (req, res) => {
         return res.status(500).json({ message: 'Error en el servidor al desloguarse' })
     }
 }
+
+
+exports.getUserById = async (req, res) => {
+    try {
+        const userId = req.params.id;
+        const user = await authService.findById(userId);
+        
+        if (!user) {
+            return res.status(404).send({
+                code: 404,
+                message: 'Usuario no encontrado'
+            });
+        }
+        
+        return res.status(200).send({
+            _id: user._id,
+            nombre: user.nombre,
+            email: user.email
+        });
+    } catch (error) {
+        console.log("Error en getUserById:", error.message);
+        return res.status(500).send({
+            code: 500,
+            message: 'Error al obtener el usuario'
+        });
+    }
+}

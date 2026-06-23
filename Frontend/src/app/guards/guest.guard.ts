@@ -11,16 +11,13 @@ export const guestGuard: CanActivateFn = (route, state) => {
     return _authService.checkSessionService().pipe(
         map((isSessionActive: boolean) => {
             if (isSessionActive) {
-                // Si ya está logueado, lo mandamos a la sección interna
                 router.navigate(['/objetos']); 
-                return false; // Bloquea el acceso a la página de login/register
+                return false;
             } else {
-                return true; // Si no está logueado, lo deja pasar al login tranquilamente
+                return true; 
             }
         }),
         catchError(() => {
-            // Si el backend da error (403/401) significa que NO hay sesión activa,
-            // por ende, es un invitado válido y puede ver el login.
             return of(true);
         })
     );

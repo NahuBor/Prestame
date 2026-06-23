@@ -86,7 +86,6 @@ isNotValid(control: string) {
       }
     )
     
-    
     this.loading = true;
   }
 

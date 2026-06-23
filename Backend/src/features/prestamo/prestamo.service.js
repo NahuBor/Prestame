@@ -42,7 +42,6 @@ exports.createPrestamoService = async (datosPrestamo) => {
             fechaCreacion: new Date()
         }
 
-
         const prestamoCreado = await prestamoRepository.crearPrestamoRepository(nuevoPrestamo)
         if (!prestamoCreado) {
             return { error: true, message: "No se pudo crear la solicitud", status: 500 }
@@ -113,12 +112,7 @@ exports.updateEstadoPrestamoService = async (prestamoId, nuevoEstado, usuarioId)
             return { error: true, message: 'Préstamo no encontrado', status: 404 }
         }
 
-
         const duenioStr = String(prestamo.duenioId._id).trim()
-
-
-
-
 
         if (duenioStr !== usuarioIdStr) {
 
@@ -136,7 +130,6 @@ exports.updateEstadoPrestamoService = async (prestamoId, nuevoEstado, usuarioId)
             }
             await objetoRepository.updateEstadoObjetoRepository(prestamo.objetoId, 'prestado')
         }
-
         const prestamoActualizado = await prestamoRepository.updateEstadoPrestamoRepository(prestamoId, nuevoEstado)
         return prestamoActualizado
     } catch (error) {

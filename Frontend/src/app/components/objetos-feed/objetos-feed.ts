@@ -30,6 +30,8 @@ export class ObjetosFeedComponent implements OnInit {
 
   async ngOnInit() {
     await this.cargarObjetos();
+     console.log('typeof prompt:', typeof prompt); 
+    console.log('window:', window);
   }
     onRowClick(objeto: Objeto) {
    

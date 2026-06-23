@@ -20,7 +20,6 @@ exports.crearPrestamoRepository = async (datosPrestamo) => {
     }
 }
 
-
 exports.getPrestamosByDuenioRepository = async (duenioId) => {
     try {
         const prestamos = await Prestamo.find({ duenioId })
@@ -34,7 +33,6 @@ exports.getPrestamosByDuenioRepository = async (duenioId) => {
         return EMPTY_ARRAY
     }
 }
-
 
 exports.getPrestamosBySolicitanteRepository = async (solicitanteId) => {
     try {
@@ -64,7 +62,6 @@ exports.getPrestamoByIdRepository = async (prestamoId) => {
     }
 }
 
-// Actualizar estado
 exports.updateEstadoPrestamoRepository = async (prestamoId, nuevoEstado) => {
     try {
         const prestamo = await Prestamo.findByIdAndUpdate(

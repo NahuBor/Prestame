@@ -20,7 +20,7 @@ export class Prestamos implements OnInit {
   error = '';
   private peticionesCompletadas = 0;
 
-  // ✅ Propiedades computadas para filtrar
+ 
 get solicitudesPendientesComoDuenio(): Prestamo[] {
     return this.prestamosComoDuenio.filter(p => p.estado === 'pendiente');
   }
@@ -57,7 +57,7 @@ get solicitudesPendientesComoDuenio(): Prestamo[] {
     this.cargando = true;
     this.error = '';
 
-    // 1. Préstamos donde es dueño
+   
     this.prestameApi.obtenerPrestamosComoDuenio(userId).subscribe({
       next: (data) => {
         this.prestamosComoDuenio = Array.isArray(data) ? data : [];
@@ -73,7 +73,6 @@ get solicitudesPendientesComoDuenio(): Prestamo[] {
       }
     });
 
-    // 2. Préstamos donde es solicitante
     this.prestameApi.obtenerPrestamosComoSolicitante(userId).subscribe({
       next: (data) => {
         this.prestamosComoSolicitante = Array.isArray(data) ? data : [];
@@ -96,7 +95,7 @@ get solicitudesPendientesComoDuenio(): Prestamo[] {
     }
   }
 
-  // ✅ Aceptar solicitud
+
   aceptarSolicitud(prestamo: Prestamo) {
     if (prestamo.estado !== 'pendiente') return;
     this.prestameApi.actualizarEstadoPrestamo(prestamo._id!, 'aceptado').subscribe({
@@ -117,7 +116,7 @@ get solicitudesPendientesComoDuenio(): Prestamo[] {
     });
   }
 
-  // ✅ Rechazar solicitud
+ 
   rechazarSolicitud(prestamo: Prestamo) {
     if (prestamo.estado !== 'pendiente') return;
     this.prestameApi.actualizarEstadoPrestamo(prestamo._id!, 'rechazado').subscribe({
@@ -137,8 +136,4 @@ get solicitudesPendientesComoDuenio(): Prestamo[] {
     });
   }
 
-  verObjeto(objetoId: string) {
-    // Navegar al detalle del objeto (opcional)
-    // this.router.navigate(['/objeto-detalle', objetoId]);
-  }
 }

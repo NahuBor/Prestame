@@ -2,7 +2,6 @@
 
   <div class="detalle-actions">
     <button (click)="volver()">← Volver</button>
-
   </div>
 
   <div *ngIf="objeto.imagen" class="detalle-imagen">
@@ -22,19 +21,16 @@
   </div>
 
   <div>
-    <p *ngIf="objeto.duenioId"><strong>Dueño:</strong> {{ objeto.duenioId }}</p>
+    
+    <p><strong>Dueño:</strong> {{ duenioNombre || 'Cargando...' }}</p>
+    <p><strong>Email:</strong> {{ duenioEmail || 'Cargando...' }}</p>
     <p *ngIf="objeto.fechaCreacion"><strong>Publicado:</strong> {{ objeto.fechaCreacion | date:'dd/MM/yyyy' }}</p>
   </div>
 
-  <!-- ACCIONES CONDICIONALES -->
   <div>
-    <!-- Botón Solicitar: solo si NO es propio y además no venimos de mis-objetos (por seguridad) -->
-
     <span *ngIf="!esPropio && objeto.estado === 'prestado'" class="no-disponible">
       No disponible
     </span>
-    <!-- Botones para el dueño (se muestran si es propio) -->
-  
-     <button *ngIf="esPropio" class="btn-eliminar btn-action" (click)="eliminarObjeto()">🗑️ Eliminar</button>
+    <button *ngIf="esPropio" class="btn-eliminar btn-action" (click)="eliminarObjeto()">Eliminar</button>
   </div>
 </div>
