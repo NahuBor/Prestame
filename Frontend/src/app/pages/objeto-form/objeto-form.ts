@@ -4,7 +4,7 @@ import { PrestameApi } from '../../services/prestameApi.service';
 import { Objeto } from '../../models/objeto.interface';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-
+import { perfil_usuario } from '../../models/perfil_usuario.model';
 
 @Component({
   selector: 'app-objeto-form',
@@ -25,6 +25,13 @@ export class ObjetoForm implements OnInit {
     categoria: 'herramientas',
     duenioId: ''
   };
+
+perfil: perfil_usuario={
+  _id:'',
+  nombre: '',
+  email: ''
+};
+
   constructor(
     private prestameApi: PrestameApi,
     private route: ActivatedRoute,
@@ -34,8 +41,8 @@ export class ObjetoForm implements OnInit {
 
 
 ngOnInit() {
-    this.prestameApi.obtenerPerfil().subscribe({
-      next: (perfil: any) => {
+    this.prestameApi.obtenerPerfil(this.perfil).subscribe({
+      next: (perfil) => {
         this.duenioId = perfil._id;
         this.objeto.duenioId = this.duenioId;
 
@@ -45,7 +52,7 @@ ngOnInit() {
           this.cargando = true;
 
           this.prestameApi.obtenerObjetoPorId(this.objetoId).subscribe({
-            next: (data: any) => {
+            next: (data) => {
               this.objeto = data as Objeto;
               this.cargando = false;
               this.cdr.detectChanges();

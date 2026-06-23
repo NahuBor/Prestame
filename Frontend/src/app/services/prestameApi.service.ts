@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { Objeto } from '../models/objeto.interface';
 import {User} from '../models/User.model'
 import { Prestamo } from '../models/prestamo.model';
+import {perfil_usuario} from '../models/perfil_usuario.model'
 
 @Injectable({
   providedIn: 'root',
@@ -12,8 +13,11 @@ export class PrestameApi {
   private apiUrl = 'http://localhost:3000';
   constructor(private http: HttpClient) { }
 
-  obtenerPerfil() {
-    return this.http.get(`${this.apiUrl}/auth/perfil`, { withCredentials: true });
+  obtenerPerfil(perfil: perfil_usuario) {
+    return this.http.get<perfil_usuario>(`${this.apiUrl}/auth/perfil`, { withCredentials: true });
+  }
+    obtenerPerfil2() {
+    return this.http.get<perfil_usuario>(`${this.apiUrl}/auth/perfil`, { withCredentials: true });
   }
   crearObjeto(objeto: Objeto) {
     return this.http.post<Objeto>(`${this.apiUrl}/objetos`, objeto, { withCredentials: true });

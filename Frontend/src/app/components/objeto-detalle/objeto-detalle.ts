@@ -41,28 +41,33 @@ export class ObjetoDetalle implements OnInit {
     await this.cargarObjeto();
   }
 
-  async cargarObjeto() {
-    try {
-      const id = this.route.snapshot.paramMap.get('id');
-      if (!id) {
-        this.error = 'ID no válido';
+cargarObjeto() {
+  const id = this.route.snapshot.paramMap.get('id');
+  if (!id) {
+    this.error = 'ID no válido';
+    this.cargando = false;
+    this.cdr.detectChanges();
+    return;
+  }
+
+  this.prestameApi.obtenerObjetoPorId(id)
+    .pipe(timeout(10000))
+    .subscribe({
+      next: (data: Objeto) => { 
+        this.objeto = data;
+        this.cargando = false;
+        this.verificarPropiedad();
+        this.cdr.detectChanges();
+      },
+      error: (err: Error) => {   
+        this.error = err.name === 'TimeoutError'
+          ? 'Tiempo de espera agotado'
+          : 'Error al cargar';
         this.cargando = false;
         this.cdr.detectChanges();
-        return;
       }
-      const data = await firstValueFrom(
-        this.prestameApi.obtenerObjetoPorId(id).pipe(timeout(10000))
-      );
-      this.objeto = data;
-      this.cargando = false;
-      this.verificarPropiedad();
-      this.cdr.detectChanges();
-    } catch (err: any) {
-      this.error = err.name === 'TimeoutError' ? 'Tiempo de espera agotado' : 'Error al cargar';
-      this.cargando = false;
-      this.cdr.detectChanges();
-    }
-  }
+    });
+}
 
   private verificarPropiedad() {
     if (!this.objeto) {
@@ -93,11 +98,22 @@ export class ObjetoDetalle implements OnInit {
       this.router.navigate(['/objeto-form', this.objeto._id]);
     }
   }
-
-  solicitarObjeto() {
-    // TODO: implementar cuando tengas el servicio de préstamos
-    alert('Función de solicitar pendiente');
+solicitarObjeto(objetoId: string) {
+  const dias = prompt('¿Cuántos días necesitas el préstamo? (1, 7 o 30)', '7');
+  if (!dias || !['1','7','30'].includes(dias)) {
+    alert('Por favor, elige 1, 7 o 30 días.');
+    return;
   }
+  this.prestameApi.crearPrestamo({ objetoId, tiempo_del_prestamo: dias }).subscribe({
+    next: (resp) => {
+      alert('Solicitud enviada correctamente');
+
+    },
+    error: (err) => {
+      alert('Error al enviar la solicitud: ' + err.message);
+    }
+  });
+}
 
   // ✅ Método eliminar (igual que en MisObjetos)
   eliminarObjeto() {

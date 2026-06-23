@@ -33,7 +33,7 @@ export class ObjetosFeedComponent implements OnInit {
   }
     onRowClick(objeto: Objeto) {
    
-    // Aquí puedes navegar a una ruta de detalle (si la tienes)
+   
     this.router.navigate(['/objeto-detalle', objeto._id], { state: { objeto } });
     
 
@@ -85,7 +85,7 @@ solicitarObjeto(objetoId: string) {
   this.apiService.crearPrestamo({ objetoId, tiempo_del_prestamo: dias }).subscribe({
     next: (resp) => {
       alert('Solicitud enviada correctamente');
-      // Opcional: recargar la lista o cambiar el estado local
+
     },
     error: (err) => {
       alert('Error al enviar la solicitud: ' + err.message);

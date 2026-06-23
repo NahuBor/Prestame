@@ -16,7 +16,7 @@ exports.readPrestamosController = async (req, res) => {
 exports.readPrestamosByDuenioController = async (req, res) => {
     try {
         const duenioId = req.params.id
-        console.log("DUENIO ID recibido:", duenioId)
+
         const prestamos = await prestamoService.getPrestamosByDuenioService(duenioId)
         if (!prestamos || prestamos.length === 0) {
             return res.status(404).send({
@@ -34,7 +34,7 @@ exports.readPrestamosByDuenioController = async (req, res) => {
 exports.readPrestamosBySolicitanteController = async (req, res) => {
     try {
         const solicitanteId = req.params.id
-        console.log("SOLICITANTE ID recibido:", solicitanteId)
+  
         const prestamos = await prestamoService.getPrestamosBySolicitanteService(solicitanteId)
         if (!prestamos || prestamos.length === 0) {
             return res.status(404).send({
@@ -70,7 +70,7 @@ exports.createPrestamoController = async (req, res) => {
     try {
         const { objetoId, tiempo_del_prestamo } = req.body
         const solicitanteId = req.session.userId
-        console.log("📩 Creando préstamo para solicitante:", solicitanteId)
+   
 
         if (!objetoId || !tiempo_del_prestamo) {
             return res.status(400).send({ code: 400, message: "Faltan datos: objetoId y tiempo_del_prestamo son requeridos" })
@@ -96,9 +96,6 @@ exports.updateEstadoPrestamoController = async (req, res) => {
         const { estado } = req.body
         const usuarioId = req.session.userId
 
-        console.log("📩 CONTROLLER - prestamoId:", prestamoId)
-        console.log("📩 CONTROLLER - usuarioId:", usuarioId)
-        console.log("📩 CONTROLLER - req.session completo:", req.session)
 
         if (!estado || !['aceptado', 'rechazado'].includes(estado)) {
             return res.status(400).send({ code: 400, message: 'El estado debe ser "aceptado" o "rechazado"' })
@@ -112,7 +109,7 @@ exports.updateEstadoPrestamoController = async (req, res) => {
 
         res.status(200).send(resultado)
     } catch (error) {
-        console.log("Error - updateEstadoPrestamoController", error)
+
         res.status(500).send({ code: 500, message: "Error al actualizar el estado del préstamo" })
     }
 }

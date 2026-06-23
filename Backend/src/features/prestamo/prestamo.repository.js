@@ -20,7 +20,7 @@ exports.crearPrestamoRepository = async (datosPrestamo) => {
     }
 }
 
-// Obtener por dueño (con populate)
+
 exports.getPrestamosByDuenioRepository = async (duenioId) => {
     try {
         const prestamos = await Prestamo.find({ duenioId })
@@ -35,7 +35,7 @@ exports.getPrestamosByDuenioRepository = async (duenioId) => {
     }
 }
 
-// Obtener por solicitante (con populate)
+
 exports.getPrestamosBySolicitanteRepository = async (solicitanteId) => {
     try {
         const prestamos = await Prestamo.find({ solicitanteId })
@@ -50,7 +50,6 @@ exports.getPrestamosBySolicitanteRepository = async (solicitanteId) => {
     }
 }
 
-// Obtener por ID (con populate)
 exports.getPrestamoByIdRepository = async (prestamoId) => {
     try {
         const prestamo = await Prestamo.findById(prestamoId)
