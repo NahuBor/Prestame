@@ -5,9 +5,12 @@ const authMiddleware = require('../../middlewares/authMiddleware')
 const prestamoRouter = express.Router()
 prestamoRouter.use(express.json())
 
+prestamoRouter.post('/:id/solicitar-devolucion', authMiddleware, prestamoController.solicitarDevolucionController)
+prestamoRouter.post('/:id/confirmar-devolucion', authMiddleware, prestamoController.confirmarDevolucionController)
 prestamoRouter.get('/duenio/:id', authMiddleware, prestamoController.readPrestamosByDuenioController)
 prestamoRouter.get('/solicitante/:id', authMiddleware, prestamoController.readPrestamosBySolicitanteController)
 prestamoRouter.put('/:id/estado', authMiddleware, prestamoController.updateEstadoPrestamoController)
+
 
 prestamoRouter.get('/', authMiddleware, prestamoController.readPrestamosController)
 prestamoRouter.post('/', authMiddleware, prestamoController.createPrestamoController)

@@ -1,4 +1,5 @@
 const prestamoService = require('./prestamo.service')
+
 exports.readPrestamosController = async (req, res) => {
     try {
         const prestamos = await prestamoService.getAllPrestamosService()
@@ -16,7 +17,6 @@ exports.readPrestamosController = async (req, res) => {
 exports.readPrestamosByDuenioController = async (req, res) => {
     try {
         const duenioId = req.params.id
-
         const prestamos = await prestamoService.getPrestamosByDuenioService(duenioId)
         if (!prestamos || prestamos.length === 0) {
             return res.status(404).send({
@@ -34,7 +34,6 @@ exports.readPrestamosByDuenioController = async (req, res) => {
 exports.readPrestamosBySolicitanteController = async (req, res) => {
     try {
         const solicitanteId = req.params.id
-  
         const prestamos = await prestamoService.getPrestamosBySolicitanteService(solicitanteId)
         if (!prestamos || prestamos.length === 0) {
             return res.status(404).send({
@@ -70,7 +69,6 @@ exports.createPrestamoController = async (req, res) => {
     try {
         const { objetoId, tiempo_del_prestamo } = req.body
         const solicitanteId = req.session.userId
-   
 
         if (!objetoId || !tiempo_del_prestamo) {
             return res.status(400).send({ code: 400, message: "Faltan datos: objetoId y tiempo_del_prestamo son requeridos" })
@@ -96,7 +94,6 @@ exports.updateEstadoPrestamoController = async (req, res) => {
         const { estado } = req.body
         const usuarioId = req.session.userId
 
-
         if (!estado || !['aceptado', 'rechazado'].includes(estado)) {
             return res.status(400).send({ code: 400, message: 'El estado debe ser "aceptado" o "rechazado"' })
         }
@@ -109,7 +106,85 @@ exports.updateEstadoPrestamoController = async (req, res) => {
 
         res.status(200).send(resultado)
     } catch (error) {
-
         res.status(500).send({ code: 500, message: "Error al actualizar el estado del préstamo" })
     }
 }
+
+// ============================================
+// SOLICITAR DEVOLUCIÓN CONTROLLER (CORREGIDO)
+// ============================================
+exports.solicitarDevolucionController = async (req, res) => {
+  try {
+    const prestamoId = req.params.id;
+    let usuarioId = req.session.userId;
+    
+    // Normalizar el ID del usuario
+    if (usuarioId && typeof usuarioId === 'object') {
+      usuarioId = usuarioId._id || usuarioId.id || String(usuarioId);
+    } else if (usuarioId) {
+      usuarioId = String(usuarioId);
+    }
+    
+    console.log('=== CONTROLLER SOLICITAR DEVOLUCIÓN ===');
+    console.log('prestamoId:', prestamoId);
+    console.log('usuarioId normalizado:', usuarioId);
+
+    if (!usuarioId) {
+      return res.status(401).send({ code: 401, message: 'Usuario no autenticado' });
+    }
+
+    const resultado = await prestamoService.solicitarDevolucionService(prestamoId, usuarioId);
+
+    if (resultado.error) {
+      return res.status(resultado.status || 400).send({ 
+        code: resultado.status || 400, 
+        message: resultado.message 
+      });
+    }
+
+    res.status(200).send(resultado);
+  } catch (error) {
+    console.log("Error solicitarDevolucionController", error);
+    res.status(500).send({ code: 500, message: "Error al solicitar devolución" });
+  }
+};
+
+// ============================================
+// CONFIRMAR DEVOLUCIÓN CONTROLLER (CORREGIDO)
+// ============================================
+exports.confirmarDevolucionController = async (req, res) => {
+  try {
+    const prestamoId = req.params.id;
+    let usuarioId = req.session.userId;
+    
+    // 🔥 CORRECCIÓN: Normalizar el ID del usuario (igual que en solicitarDevolucion)
+    if (usuarioId && typeof usuarioId === 'object') {
+      usuarioId = usuarioId._id || usuarioId.id || String(usuarioId);
+    } else if (usuarioId) {
+      usuarioId = String(usuarioId);
+    }
+    
+    console.log('=== CONTROLLER CONFIRMAR DEVOLUCIÓN ===');
+    console.log('prestamoId:', prestamoId);
+    console.log('usuarioId normalizado:', usuarioId);
+    console.log('Tipo de usuarioId:', typeof usuarioId);
+
+    if (!usuarioId) {
+      return res.status(401).send({ code: 401, message: 'Usuario no autenticado' });
+    }
+
+    const resultado = await prestamoService.confirmarDevolucionService(prestamoId, usuarioId);
+
+    if (resultado.error) {
+      return res.status(resultado.status || 400).send({ 
+        code: resultado.status || 400, 
+        message: resultado.message 
+      });
+    }
+
+    res.status(200).send(resultado);
+  } catch (error) {
+    console.log("Error confirmarDevolucionController", error);
+    res.status(500).send({ code: 500, message: "Error al confirmar devolución" });
+  }
+};

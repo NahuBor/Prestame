@@ -144,3 +144,122 @@ exports.updateEstadoPrestamoService = async (prestamoId, nuevoEstado, usuarioId)
         return { error: true, message: 'Error interno del servidor', status: 500 }
     }
 }
+
+// Agregar esta función
+// ============================================
+// SOLICITAR DEVOLUCIÓN SERVICE (CORREGIDO)
+// ============================================
+exports.solicitarDevolucionService = async (prestamoId, usuarioId) => {
+  try {
+    console.log('=== SOLICITAR DEVOLUCIÓN SERVICE ===');
+    console.log('prestamoId:', prestamoId);
+    console.log('usuarioId recibido:', usuarioId);
+    console.log('Tipo de usuarioId:', typeof usuarioId);
+
+    // Normalizar usuarioId para asegurar que sea un string
+    let usuarioIdStr = usuarioId;
+    if (usuarioId && typeof usuarioId === 'object') {
+      usuarioIdStr = usuarioId._id || usuarioId.id || String(usuarioId);
+    } else if (usuarioId) {
+      usuarioIdStr = String(usuarioId);
+    } else {
+      return { error: true, message: 'Usuario no identificado', status: 400 };
+    }
+
+    console.log('usuarioIdStr final:', usuarioIdStr);
+
+    const prestamo = await prestamoRepository.getPrestamoByIdRepository(prestamoId);
+    if (!prestamo) {
+      return { error: true, message: 'Préstamo no encontrado', status: 404 };
+    }
+
+    console.log('Préstamo encontrado:');
+    console.log('solicitanteId:', prestamo.solicitanteId);
+    console.log('solicitanteId._id:', prestamo.solicitanteId?._id);
+
+    // Asegurar que el ID del solicitante sea string
+    const solicitanteIdStr = String(prestamo.solicitanteId?._id || '');
+    console.log('solicitanteIdStr:', solicitanteIdStr);
+    console.log('Comparando:', solicitanteIdStr, '===', usuarioIdStr);
+
+    // Solo el solicitante puede solicitar devolución
+    if (solicitanteIdStr !== usuarioIdStr) {
+      console.log('❌ No coincide: solicitante es', solicitanteIdStr, 'usuario es', usuarioIdStr);
+      return { error: true, message: 'Solo el solicitante puede devolver el objeto', status: 403 };
+    }
+
+    console.log('✅ Usuario es el solicitante, procediendo...');
+
+    if (prestamo.estado !== 'aceptado') {
+      return { error: true, message: 'Solo se pueden devolver préstamos activos', status: 400 };
+    }
+
+    const resultado = await prestamoRepository.updateEstadoPrestamoRepository(prestamoId, 'pendiente_devolucion');
+    console.log('✅ Estado actualizado a pendiente_devolucion');
+    return resultado;
+  } catch (error) {
+    console.log("Error en solicitarDevolucionService", error);
+    return { error: true, message: 'Error interno del servidor', status: 500 };
+  }
+};
+
+// ============================================
+// CONFIRMAR DEVOLUCIÓN SERVICE (CORREGIDO)
+// ============================================
+exports.confirmarDevolucionService = async (prestamoId, usuarioId) => {
+  try {
+    console.log('=== CONFIRMAR DEVOLUCIÓN SERVICE ===');
+    console.log('prestamoId:', prestamoId);
+    console.log('usuarioId recibido:', usuarioId);
+    console.log('Tipo de usuarioId:', typeof usuarioId);
+
+    // 🔥 CORRECCIÓN: Normalizar usuarioId (igual que en solicitarDevolucion)
+    let usuarioIdStr = usuarioId;
+    if (usuarioId && typeof usuarioId === 'object') {
+      usuarioIdStr = usuarioId._id || usuarioId.id || String(usuarioId);
+    } else if (usuarioId) {
+      usuarioIdStr = String(usuarioId);
+    } else {
+      return { error: true, message: 'Usuario no identificado', status: 400 };
+    }
+
+    console.log('usuarioIdStr final:', usuarioIdStr);
+
+    const prestamo = await prestamoRepository.getPrestamoByIdRepository(prestamoId);
+    if (!prestamo) {
+      return { error: true, message: 'Préstamo no encontrado', status: 404 };
+    }
+
+    console.log('Préstamo encontrado:');
+    console.log('duenioId:', prestamo.duenioId);
+    console.log('duenioId._id:', prestamo.duenioId?._id);
+
+    // 🔥 CORRECCIÓN: Asegurar que el ID del dueño sea string
+    const duenioIdStr = String(prestamo.duenioId?._id || '');
+    console.log('duenioIdStr:', duenioIdStr);
+    console.log('Comparando:', duenioIdStr, '===', usuarioIdStr);
+
+    // Solo el dueño puede confirmar devolución
+    if (duenioIdStr !== usuarioIdStr) {
+      console.log('❌ No coincide: dueño es', duenioIdStr, 'usuario es', usuarioIdStr);
+      return { error: true, message: 'Solo el dueño puede confirmar la devolución', status: 403 };
+    }
+
+    console.log('✅ Usuario es el dueño, procediendo...');
+
+    if (prestamo.estado !== 'pendiente_devolucion') {
+      console.log('Estado actual:', prestamo.estado);
+      return { error: true, message: 'No hay una devolución pendiente de confirmar', status: 400 };
+    }
+
+    // Actualizar estado del objeto a disponible
+    await objetoRepository.updateEstadoObjetoRepository(prestamo.objetoId, 'disponible');
+    
+    const resultado = await prestamoRepository.updateEstadoPrestamoRepository(prestamoId, 'devuelto');
+    console.log('✅ Estado actualizado a devuelto');
+    return resultado;
+  } catch (error) {
+    console.log("Error en confirmarDevolucionService", error);
+    return { error: true, message: 'Error interno del servidor', status: 500 };
+  }
+};

@@ -5,8 +5,6 @@ import { AuthService } from '../../services/auth.service';
 import { Prestamo } from '../../models/prestamo.model';
 import { perfil_usuario } from '../../models/perfil_usuario.model';
 
-
-
 @Component({
   selector: 'app-mis-prestamos',
   imports: [CommonModule],
@@ -21,15 +19,38 @@ export class Prestamos implements OnInit {
   private peticionesCompletadas = 0;
 
   // ✅ Propiedades computadas para filtrar
-get solicitudesPendientesComoDuenio(): Prestamo[] {
+  get solicitudesPendientesComoDuenio(): Prestamo[] {
     return this.prestamosComoDuenio.filter(p => p.estado === 'pendiente');
   }
 
   get prestamosAceptadosComoDuenio(): Prestamo[] {
-    return this.prestamosComoDuenio.filter(p => p.estado === 'aceptado' || p.estado === 'devuelto');
+    // Incluir 'aceptado' y 'pendiente_devolucion' como activos
+    return this.prestamosComoDuenio.filter(p => 
+      p.estado === 'aceptado' || p.estado === 'pendiente_devolucion'
+    );
   }
 
-  
+  get prestamosActivosComoSolicitante(): Prestamo[] {
+    // Para el solicitante, los activos son los aceptados o en proceso de devolución
+    return this.prestamosComoSolicitante.filter(p => 
+      p.estado === 'aceptado' || p.estado === 'pendiente_devolucion'
+    );
+  }
+
+  get prestamosCompletados(): Prestamo[] {
+    // Historial: devueltos y rechazados
+    return [
+      ...this.prestamosComoDuenio.filter(p => p.estado === 'devuelto' || p.estado === 'rechazado'),
+      ...this.prestamosComoSolicitante.filter(p => p.estado === 'devuelto' || p.estado === 'rechazado')
+    ];
+  }
+
+  get historialComoDuenio(): Prestamo[] {
+    // Historial como dueño: devueltos y rechazados
+    return this.prestamosComoDuenio.filter(p => 
+      p.estado === 'devuelto' || p.estado === 'rechazado'
+    );
+  }
 
   constructor(
     private prestameApi: PrestameApi,
@@ -133,6 +154,75 @@ get solicitudesPendientesComoDuenio(): Prestamo[] {
       error: (err) => {
         console.error('Error al rechazar:', err);
         alert('Error al rechazar la solicitud');
+      }
+    });
+  }
+
+  // ✅ NUEVO: Solicitar devolución (desde el lado del solicitante)
+  solicitarDevolucion(prestamo: Prestamo) {
+    // Usamos type assertion para evitar el error de TypeScript
+    if ((prestamo.estado as string) !== 'aceptado') {
+      alert('Este préstamo no está activo');
+      return;
+    }
+    
+    if (!confirm('¿Estás seguro de que quieres devolver este objeto?')) {
+      return;
+    }
+
+    this.prestameApi.solicitarDevolucion(prestamo._id!).subscribe({
+      next: (actualizado) => {
+        // Actualizar en la lista de solicitante
+        const index = this.prestamosComoSolicitante.findIndex(p => p._id === prestamo._id);
+        if (index !== -1) {
+          this.prestamosComoSolicitante[index] = actualizado;
+        }
+        // También actualizar en la lista del dueño si existe
+        const indexDuenio = this.prestamosComoDuenio.findIndex(p => p._id === prestamo._id);
+        if (indexDuenio !== -1) {
+          this.prestamosComoDuenio[indexDuenio] = actualizado;
+        }
+        this.cdr.detectChanges();
+        alert('✅ Solicitud de devolución enviada. Espera confirmación del dueño.');
+        // Recargar para actualizar todas las listas
+        this.cargarPrestamos();
+      },
+      error: (err) => {
+        console.error('Error al solicitar devolución:', err);
+        alert(err.error?.message || 'Error al solicitar la devolución');
+      }
+    });
+  }
+
+  // ✅ NUEVO: Confirmar devolución (desde el lado del dueño)
+  confirmarDevolucion(prestamo: Prestamo) {
+    if ((prestamo.estado as string) !== 'pendiente_devolucion') {
+      alert('No hay una devolución pendiente');
+      return;
+    }
+
+    if (!confirm('¿Has recibido el objeto de vuelta?')) {
+      return;
+    }
+
+    this.prestameApi.confirmarDevolucion(prestamo._id!).subscribe({
+      next: (actualizado) => {
+        const index = this.prestamosComoDuenio.findIndex(p => p._id === prestamo._id);
+        if (index !== -1) {
+          this.prestamosComoDuenio[index] = actualizado;
+        }
+        // También actualizar en la lista de solicitante si existe
+        const indexSolicitante = this.prestamosComoSolicitante.findIndex(p => p._id === prestamo._id);
+        if (indexSolicitante !== -1) {
+          this.prestamosComoSolicitante[indexSolicitante] = actualizado;
+        }
+        this.cdr.detectChanges();
+        alert('✅ Devolución confirmada. El objeto vuelve a estar disponible.');
+        this.cargarPrestamos();
+      },
+      error: (err) => {
+        console.error('Error al confirmar devolución:', err);
+        alert(err.error?.message || 'Error al confirmar la devolución');
       }
     });
   }

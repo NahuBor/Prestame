@@ -16,7 +16,7 @@ export interface Prestamo {
     nombre: string;
     email?: string;
   };
-  estado: 'pendiente' | 'aceptado' | 'rechazado' | 'devuelto';
+  estado: 'pendiente' | 'aceptado' | 'rechazado' | 'devuelto'| 'pendiente_devolucion';
   tiempo_del_prestamo: '1' | '7' | '30';
   fechaCreacion: Date;
 }
