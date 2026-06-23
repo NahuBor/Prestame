@@ -54,44 +54,20 @@ export class PrestameApi {
     return this.http.post<Prestamo>(`${this.apiUrl}/prestamos`, datos, { withCredentials: true });
   }
 
-  obtenerPrestamosComoDuenio(duenioId: string): Observable<Prestamo[]> {
-    return this.http.get<Prestamo[]>(`${this.apiUrl}/prestamos/duenio/${duenioId}`, { withCredentials: true });
-  }
+obtenerPrestamosComoDuenio(duenioId: string): Observable<Prestamo[]> {
+  return this.http.get<Prestamo[]>(`${this.apiUrl}/prestamos/duenio/${duenioId}`, { withCredentials: true });
+}
 
-  // Obtener préstamos donde el usuario es SOLICITANTE (mis solicitudes)
-  obtenerPrestamosComoSolicitante(solicitanteId: string): Observable<Prestamo[]> {
-    return this.http.get<Prestamo[]>(`${this.apiUrl}/prestamos/solicitante/${solicitanteId}`, { withCredentials: true });
-  }
+// Obtener préstamos donde el usuario es SOLICITANTE (mis solicitudes)
+obtenerPrestamosComoSolicitante(solicitanteId: string): Observable<Prestamo[]> {
+  return this.http.get<Prestamo[]>(`${this.apiUrl}/prestamos/solicitante/${solicitanteId}`, { withCredentials: true });
+}
 
   // Actualizar estado de un préstamo (aceptar, rechazar, devolver)
   actualizarEstadoPrestamo(id: string, estado: string): Observable<Prestamo> {
     return this.http.put<Prestamo>(`${this.apiUrl}/prestamos/${id}/estado`, { estado }, { withCredentials: true });
+
   }
 
-  // ✅ NUEVOS MÉTODOS PARA DEVOLUCIÓN
-  /**
-   * Solicita la devolución de un préstamo activo (lo hace el solicitante)
-   * @param prestamoId - ID del préstamo
-   * @returns Observable con el préstamo actualizado
-   */
-  solicitarDevolucion(prestamoId: string): Observable<Prestamo> {
-    return this.http.post<Prestamo>(
-      `${this.apiUrl}/prestamos/${prestamoId}/solicitar-devolucion`, 
-      {}, // Body vacío
-      { withCredentials: true }
-    );
-  }
-
-  /**
-   * Confirma la devolución de un préstamo (lo hace el dueño del objeto)
-   * @param prestamoId - ID del préstamo
-   * @returns Observable con el préstamo actualizado
-   */
-  confirmarDevolucion(prestamoId: string): Observable<Prestamo> {
-    return this.http.post<Prestamo>(
-      `${this.apiUrl}/prestamos/${prestamoId}/confirmar-devolucion`, 
-      {}, // Body vacío
-      { withCredentials: true }
-    );
-  }
+  
 }
