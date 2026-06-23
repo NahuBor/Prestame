@@ -78,7 +78,7 @@ export class Prestamos implements OnInit {
     this.cargando = true;
     this.error = '';
 
-    // 1. Préstamos donde es dueño
+   
     this.prestameApi.obtenerPrestamosComoDuenio(userId).subscribe({
       next: (data) => {
         this.prestamosComoDuenio = Array.isArray(data) ? data : [];
@@ -94,7 +94,6 @@ export class Prestamos implements OnInit {
       }
     });
 
-    // 2. Préstamos donde es solicitante
     this.prestameApi.obtenerPrestamosComoSolicitante(userId).subscribe({
       next: (data) => {
         this.prestamosComoSolicitante = Array.isArray(data) ? data : [];
@@ -117,7 +116,7 @@ export class Prestamos implements OnInit {
     }
   }
 
-  // ✅ Aceptar solicitud
+
   aceptarSolicitud(prestamo: Prestamo) {
     if (prestamo.estado !== 'pendiente') return;
     this.prestameApi.actualizarEstadoPrestamo(prestamo._id!, 'aceptado').subscribe({
@@ -138,7 +137,7 @@ export class Prestamos implements OnInit {
     });
   }
 
-  // ✅ Rechazar solicitud
+ 
   rechazarSolicitud(prestamo: Prestamo) {
     if (prestamo.estado !== 'pendiente') return;
     this.prestameApi.actualizarEstadoPrestamo(prestamo._id!, 'rechazado').subscribe({

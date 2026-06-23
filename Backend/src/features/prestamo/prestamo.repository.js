@@ -5,7 +5,7 @@ exports.getAllprestamosRepository = async () => {
     try {
         return await Prestamo.find()
     } catch (error) {
-        console.log("Error getAllPrestamosRepository", error)
+        console.log("Error getAllPrestamosRepository");
         return EMPTY_ARRAY
     }
 }
@@ -15,11 +15,10 @@ exports.crearPrestamoRepository = async (datosPrestamo) => {
         const prestamo = new Prestamo(datosPrestamo)
         return await prestamo.save()
     } catch (error) {
-        console.log("Error crearPrestamoRepository", error)
+        console.log("Error crearPrestamoRepository");
         return null
     }
 }
-
 
 exports.getPrestamosByDuenioRepository = async (duenioId) => {
     try {
@@ -30,11 +29,10 @@ exports.getPrestamosByDuenioRepository = async (duenioId) => {
             .lean()
         return prestamos || EMPTY_ARRAY
     } catch (error) {
-        console.log("Error getPrestamosByDuenioRepository", error)
+        console.log("Error getPrestamosByDuenioRepository");
         return EMPTY_ARRAY
     }
 }
-
 
 exports.getPrestamosBySolicitanteRepository = async (solicitanteId) => {
     try {
@@ -45,7 +43,7 @@ exports.getPrestamosBySolicitanteRepository = async (solicitanteId) => {
             .lean()
         return prestamos || EMPTY_ARRAY
     } catch (error) {
-        console.log("Error getPrestamosBySolicitanteRepository", error)
+        console.log("Error getPrestamosBySolicitanteRepository");
         return EMPTY_ARRAY
     }
 }
@@ -59,12 +57,11 @@ exports.getPrestamoByIdRepository = async (prestamoId) => {
             .lean()
         return prestamo
     } catch (error) {
-        console.log("Error getPrestamoByIdRepository", error)
+        console.log("Error getPrestamoByIdRepository");
         return null
     }
 }
 
-// Actualizar estado
 exports.updateEstadoPrestamoRepository = async (prestamoId, nuevoEstado) => {
     try {
         const prestamo = await Prestamo.findByIdAndUpdate(
@@ -74,7 +71,7 @@ exports.updateEstadoPrestamoRepository = async (prestamoId, nuevoEstado) => {
         ).lean()
         return prestamo
     } catch (error) {
-        console.log("Error updateEstadoPrestamoRepository", error)
+        console.log("Error updateEstadoPrestamoRepository");
         return null
     }
 }

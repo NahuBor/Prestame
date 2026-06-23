@@ -28,7 +28,7 @@ const startServer = async () => {
         })
 
     } catch (error) {
-        console.error("Error crítico al iniciar el servidor:", error)
+        console.error("Error crítico al iniciar el servidor:")
     }
 }
 

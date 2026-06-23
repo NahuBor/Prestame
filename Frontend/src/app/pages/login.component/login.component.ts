@@ -76,7 +76,7 @@ isNotValid(control: string) {
           this.router.navigate(['/mis-objetos'])
         },
         error: (err) => {
-          console.log("el error esta en:", err)
+          console.log("el error esta en:");
           this.errorMessage = 'Error al iniciar sesión'
           this.isLoading = false;
         },
@@ -85,7 +85,6 @@ isNotValid(control: string) {
         }
       }
     )
-    
     
     this.loading = true;
   }

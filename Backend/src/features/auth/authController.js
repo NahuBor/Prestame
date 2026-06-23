@@ -18,7 +18,7 @@ exports.loginController = async (req, res) => {
         console.log("testing", req.session.userId)
         return res.status(200).send(respuestaService.user)
     } catch (error) {
-        console.log("Ocurrió un error en loginController()", error)
+        console.log("Ocurrió un error en loginController()");
         return res.status(500).send({
             status: 500,
             message: INTERNAL_ERROR
@@ -44,7 +44,7 @@ exports.registerController = async (req, res) => {
             user: respuestaService.user
         })
     } catch (error) {
-        console.log("Error en registerController()", error)
+        console.log("Error en registerController()");
         return res.status(500).send(
             {
                 status: 500,
@@ -72,8 +72,8 @@ exports.logoutController = async (req, res) => {
     try {
         if (!req.session) {
             return res.status(403).send({
-                status: 403,
-                message: 'SESSION NOT FOUND'
+                status: 401,
+                message: 'SESSION NOT FOUND - ACCESS INVALID'
             })
         }
         req.session.destroy((err) => {
@@ -85,5 +85,32 @@ exports.logoutController = async (req, res) => {
         })
     } catch (error) {
         return res.status(500).json({ message: 'Error en el servidor al desloguarse' })
+    }
+}
+
+
+exports.getUserById = async (req, res) => {
+    try {
+        const userId = req.params.id;
+        const user = await authService.findById(userId);
+        
+        if (!user) {
+            return res.status(404).send({
+                code: 404,
+                message: 'Usuario no encontrado'
+            });
+        }
+        
+        return res.status(200).send({
+            _id: user._id,
+            nombre: user.nombre,
+            email: user.email
+        });
+    } catch (error) {
+        console.log("Error en getUserById:", error.message);
+        return res.status(500).send({
+            code: 500,
+            message: 'Error al obtener el usuario'
+        });
     }
 }

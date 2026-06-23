@@ -54,8 +54,6 @@ export class RegisterComponent {
     return campo.touched === true && campo.invalid === true;
   }
 
-
-
   get passwordsDoNotMatch(): boolean {
     const pass = this.registerForm.get('password')?.value ?? '';
     const confirmPass = this.registerForm.get('confirmPassword')?.value ?? '';

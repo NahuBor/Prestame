@@ -7,7 +7,7 @@ exports.getAllPrestamosService = async () => {
         const prestamos = await prestamoRepository.getAllprestamosRepository()
         return prestamos || EMPTY_ARRAY
     } catch (error) {
-        console.log("Error en getAllPrestamosService", error)
+        console.log("Error en getAllPrestamosService");
         return EMPTY_ARRAY
     }
 }
@@ -47,14 +47,13 @@ exports.createPrestamoService = async (datosPrestamo) => {
             fechaCreacion: new Date()
         }
 
-
         const prestamoCreado = await prestamoRepository.crearPrestamoRepository(nuevoPrestamo)
         if (!prestamoCreado) {
             return { error: true, message: "No se pudo crear la solicitud", status: 500 }
         }
         return prestamoCreado
     } catch (error) {
-        console.log("Error en createPrestamoService", error)
+        console.log("Error en createPrestamoService");
         return { error: true, message: "Error interno del servidor", status: 500 }
     }
 }
@@ -64,7 +63,7 @@ exports.getPrestamosByDuenioService = async (duenioId) => {
 
         return await prestamoRepository.getPrestamosByDuenioRepository(duenioId)
     } catch (error) {
-        console.log("Error getPrestamosByDuenioService", error)
+        console.log("Error getPrestamosByDuenioService");
         return EMPTY_ARRAY
     }
 }
@@ -74,7 +73,7 @@ exports.getPrestamosBySolicitanteService = async (solicitanteId) => {
       
         return await prestamoRepository.getPrestamosBySolicitanteRepository(solicitanteId)
     } catch (error) {
-        console.log("Error getPrestamosBySolicitanteService", error)
+        console.log("Error getPrestamosBySolicitanteService");
         return EMPTY_ARRAY
     }
 }
@@ -83,7 +82,7 @@ exports.getPrestamoByIdService = async (prestamoId) => {
     try {
         return await prestamoRepository.getPrestamoByIdRepository(prestamoId)
     } catch (error) {
-        console.log("Error getPrestamoByIdService", error)
+        console.log("Error getPrestamoByIdService");
         return null
     }
 }
@@ -118,12 +117,7 @@ exports.updateEstadoPrestamoService = async (prestamoId, nuevoEstado, usuarioId)
             return { error: true, message: 'Préstamo no encontrado', status: 404 }
         }
 
-
         const duenioStr = String(prestamo.duenioId._id).trim()
-
-
-
-
 
         if (duenioStr !== usuarioIdStr) {
 
@@ -141,11 +135,10 @@ exports.updateEstadoPrestamoService = async (prestamoId, nuevoEstado, usuarioId)
             }
             await objetoRepository.updateEstadoObjetoRepository(prestamo.objetoId, 'prestado')
         }
-
         const prestamoActualizado = await prestamoRepository.updateEstadoPrestamoRepository(prestamoId, nuevoEstado)
         return prestamoActualizado
     } catch (error) {
-        console.log("Error en updateEstadoPrestamoService", error)
+        console.log("Error en updateEstadoPrestamoService");
         return { error: true, message: 'Error interno del servidor', status: 500 }
     }
 }

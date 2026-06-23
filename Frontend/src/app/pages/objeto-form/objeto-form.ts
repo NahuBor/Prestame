@@ -57,7 +57,7 @@ export class ObjetoForm implements OnInit {
               this.cdr.detectChanges();
             },
             error: (err) => {
-              console.log('Error al cargar objeto', err);
+              console.log('Error al cargar objeto');
               this.cargando = false;
               this.cdr.detectChanges();
             }
@@ -124,7 +124,7 @@ export class ObjetoForm implements OnInit {
         },
         error: (err) => {
           alert('Error al editar el objeto');
-          console.log('Error al editar', err);
+          console.log('Error al editar');
         }
       });
     } else {
@@ -138,7 +138,7 @@ export class ObjetoForm implements OnInit {
         },
         error: (err) => {
           alert('Error al crear el objeto');
-          console.log('Error al crear', err);
+          console.log('Error al crear');
         }
       });
     }

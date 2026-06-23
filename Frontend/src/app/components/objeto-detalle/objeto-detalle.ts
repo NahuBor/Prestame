@@ -19,26 +19,33 @@ export class ObjetoDetalle implements OnInit {
   esPropio = false;
   desdeMisObjetos = false;
 
+  duenioNombre: string = '';
+  duenioEmail: string = '';
+
   constructor(
     private route: ActivatedRoute,
     private prestameApi: PrestameApi,
     private router: Router,
     private cdr: ChangeDetectorRef,
     private authService: AuthService
-  ) {}
+  ) {
+    
+  }
 
   async ngOnInit() {
     const navigation = this.router.getCurrentNavigation();
     const state = navigation?.extras?.state as { objeto: Objeto; desde?: string };
+    
     if (state?.objeto) {
       this.objeto = state.objeto;
       this.desdeMisObjetos = state.desde === 'mis-objetos';
       this.cargando = false;
       this.verificarPropiedad();
+      this.cargarDuenio(this.objeto.duenioId);
       this.cdr.detectChanges();
       return;
     }
-    await this.cargarObjeto();
+    this.cargarObjeto();
   }
 
   cargarObjeto() {
@@ -134,8 +141,15 @@ solicitarObjeto(objetoId: string) {
         alert('❌ Error al enviar la solicitud: ' + (err.error?.message || err.message));
       }
     }
-  });
-}
+    this.prestameApi.crearPrestamo({ objetoId, tiempo_del_prestamo: dias }).subscribe({
+      next: (resp) => {
+        alert('Solicitud enviada correctamente');
+      },
+      error: (err) => {
+        alert('Error al enviar la solicitud: ' + err.message);
+      }
+    });
+  }
 
   eliminarObjeto() {
     if (!this.objeto?._id) {

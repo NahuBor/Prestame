@@ -3,14 +3,14 @@ const { getConnectMongoDB } = require('../../database/databaseConection')
 
 const EMPTY_ARRAY = []
 
-// CREATE
+
 exports.crearObjetoRepository = async (datosObjeto) => {
     try {
         console.log("REPOSITORY - crearObjeto", datosObjeto)
         const objeto = new Objeto(datosObjeto)
         return await objeto.save()
     } catch (error) {
-        console.log("Error en crearObjetoRepository", error)
+        console.log("Error en crearObjetoRepository")
         return EMPTY_ARRAY
     }
 }
@@ -18,7 +18,6 @@ exports.crearObjetoRepository = async (datosObjeto) => {
 // UPDATE
 exports.editarObjetoRepository = async (id, objetoActualizado) => {
     try {
-        console.log("REPOSITORY - editarObjetoRepository - id:", id, "- objetoActualizado:", objetoActualizado)
         const objetoEditado = await Objeto.findByIdAndUpdate(id, objetoActualizado, { new: true })
             .populate('duenioId', 'nombre email')
         if (!objetoEditado) {
@@ -29,7 +28,7 @@ exports.editarObjetoRepository = async (id, objetoActualizado) => {
             return objetoEditado
         }
     } catch (error) {
-        console.log("Error en editarObjetoRepository", error)
+        console.log("Error en editarObjetoRepository")
         return EMPTY_ARRAY
     }
 }
@@ -47,7 +46,7 @@ exports.eliminarObjetoRepository = async (id) => {
             return objetoEliminado
         }
     } catch (error) {
-        console.log("Error en eliminarObjetoRepository", error)
+        console.log("Error en eliminarObjetoRepository")
         return EMPTY_ARRAY
     }
 }
@@ -61,7 +60,7 @@ exports.getAllobjetsRepository = async () => {
         console.log(objetos);
         return objetos;
     } catch (error) {
-        console.log("Error en getAllObjetsRepository ", error)
+        console.log("Error en getAllObjetsRepository ")
         return EMPTY_ARRAY;
     }
 }
@@ -127,7 +126,7 @@ exports.getObjetsfilteredByCategoriaRepository = async (categoria) => {
         console.log(`Encontrados ${objetos.length} objetos en categoría: ${categoria}`);
         return objetos;
     } catch (error) {
-        console.log(`Error en getObjetsByCategoriaRepository:`, error);
+        console.log(`Error en getObjetsByCategoriaRepository:`);
         return EMPTY_ARRAY;
     }
 }
@@ -142,7 +141,7 @@ exports.updateEstadoObjetoRepository = async (objetoId, nuevoEstado) => {
         ).lean()
         return objeto
     } catch (error) {
-        console.log("Error en updateEstadoObjetoRepository", error)
+        console.log("Error en updateEstadoObjetoRepository")
         return EMPTY_ARRAY
     }
 }

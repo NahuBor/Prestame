@@ -14,7 +14,6 @@ exports.crearObjetoController = async (req, res) => {
                 contentType: req.file.mimetype
             }
         }
-        console.log("CONTROLLER - crearObjetoController - ", typeof nuevoObjeto, nuevoObjeto)
         const objeto = await objetoService.crearObjetoService(nuevoObjeto)
         if (!objeto || objeto.length === 0) {
             return res.status(400).send({
@@ -24,7 +23,7 @@ exports.crearObjetoController = async (req, res) => {
         }
         res.status(200).send(objeto)
     } catch (error) {
-        console.log("Error - CONTROLLER crearObjeto", error)
+        console.log("Error - CONTROLLER crearObjeto")
         res.status(500).send({
             code: 500,
             message: "Error al agregar el nuevo Objeto"
@@ -52,7 +51,7 @@ exports.editarObjetoController = async (req, res) => {
         }
         res.status(200).send(objeto)
     } catch (error) {
-        console.log("Error - CONTROLLER editarObjeto", error)
+        console.log("Error - CONTROLLER editarObjeto")
         res.status(500).send({ code: 500, message: "Error al editar el objeto" })
     }
 }
@@ -60,7 +59,6 @@ exports.editarObjetoController = async (req, res) => {
 exports.eliminarObjetoController = async (req, res) => {
     try {
         const idObjeto = req.params.id
-        console.log("CONTROLLER - eliminarObjetoController - idObjeto:", idObjeto)
         const objeto = await objetoService.eliminarObjetoService(idObjeto)
         if (!objeto || objeto.length === 0) {
             return res.status(404).send({
@@ -70,7 +68,7 @@ exports.eliminarObjetoController = async (req, res) => {
         }
         res.status(200).send({ code: 200, message: "Objeto eliminado correctamente" })
     } catch (error) {
-        console.log("Error - CONTROLLER eliminarObjeto", error)
+        console.log("Error - CONTROLLER eliminarObjeto")
         res.status(500).send({ code: 500, message: "Error al eliminar el objeto" })
     }
 }
@@ -94,7 +92,7 @@ exports.readObjets = async (req, res) => {
         res.setHeader('Content-Type', 'application/json')
         return res.status(200).send(objetoConImagen)
     } catch (error) {
-        console.log("Error readObjets", error)
+        console.log("Error readObjets")
         res.status(500).send({
             code: 500,
             message: "Error al obtener los objetos"
@@ -170,7 +168,7 @@ exports.readObjetsByCategoriaController = async (req, res) => {
         res.setHeader('Content-Type', 'application/json')
         return res.status(200).send(objetoConImagen)
     } catch (error) {
-        console.log(" Error readObjetsByCategoriaController", error)
+        console.log(" Error readObjetsByCategoriaController");
         res.status(500).send({
             code: 500,
             message: "Error al obtener los objetos por categoría"

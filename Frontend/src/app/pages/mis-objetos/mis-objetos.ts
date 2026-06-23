@@ -41,7 +41,6 @@ onRowClick(objeto: Objeto) {
     this.cargando = true;
     this.prestameApi.obtenerPerfil(this.perfil).subscribe({
       next: (perfil) => {
-        console.log('Perfil obtenido:', perfil);
         const duenioId = perfil._id;
         this.prestameApi.obtenerMisObjetos(duenioId).subscribe({
           next: (data) => {
@@ -50,14 +49,14 @@ onRowClick(objeto: Objeto) {
             this.cdr.detectChanges();
           },
           error: (err) => {
-            console.log('Error al cargar objetos', err);
+            console.log('Error al cargar objetos');
             this.cargando = false;
             this.cdr.detectChanges();
           }
         });
       },
       error: (err) => {
-        console.log('Error al cargar objetos', err);
+        console.log('Error al cargar objetos');
         this.cargando = false;
         this.cdr.detectChanges();
       }
@@ -72,7 +71,7 @@ onRowClick(objeto: Objeto) {
         this.cdr.detectChanges();
       },
       error: (err) => {
-        console.log('Error al eliminar', err)
+        console.log('Error al eliminar');
         alert('Error al eliminar el objeto');
       }
     });
