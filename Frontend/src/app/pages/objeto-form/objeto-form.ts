@@ -58,7 +58,7 @@ ngOnInit() {
               this.cdr.detectChanges();
             },
             error: (err) => {
-              console.log('Error al cargar objeto', err);
+              console.log('Error al cargar objeto');
               this.cargando = false;
               this.cdr.detectChanges();
             }
@@ -105,7 +105,7 @@ onFileSelected(event: Event) {
         },
         error: (err) => {
           alert('Error al editar el objeto');
-          console.log('Error al editar', err);
+          console.log('Error al editar');
         }
       });
     } else {
@@ -119,7 +119,7 @@ onFileSelected(event: Event) {
         },
         error: (err) => {
           alert('Error al crear el objeto');
-          console.log('Error al crear', err);
+          console.log('Error al crear');
         }
       });
     }

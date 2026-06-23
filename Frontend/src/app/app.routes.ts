@@ -10,8 +10,8 @@ import { guestGuard } from './guards/guest.guard';
 import { Prestamos } from './pages/prestamo/prestamo';
 
 export const routes: Routes = [
-    { path: 'login', component: LoginComponent /*canActivate: [guestGuard]*/ },
-    { path: 'register', component: RegisterComponent /*canActivate: [guestGuard]*/},
+    { path: 'login', component: LoginComponent, canActivate: [guestGuard] },
+    { path: 'register', component: RegisterComponent, canActivate: [guestGuard]},
     { path: 'objetos', component: ObjetosFeedComponent },
     { path: 'mis-objetos', component: MisObjetos, canActivate: [authGuard] },
     { path: 'objeto-form', component: ObjetoForm, canActivate: [authGuard] },
