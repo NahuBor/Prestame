@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 
 const objetoSchema = new mongoose.Schema({
-    duenioId: { type: mongoose.Schema.Types.ObjectId, ref: 'Usuario', required: true },
+    duenioId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
     titulo: { type: String, required: true },
     descripcion: { type: String },
     categoria: { type: String, enum: ['herramientas', 'libros', 'otro'], required: true },
