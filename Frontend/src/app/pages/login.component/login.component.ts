@@ -90,13 +90,5 @@ isNotValid(control: string) {
     this.loading = true;
   }
 
-// showSession() {
-//   console.log("aver")
-//     const respuestaSession = this.authService.checkSessionService()
-//     if (respuestaSession) {
-//       this.sessionMensaje = "Sesión iniciada"
-//     } else {
-//       this.sessionMensaje = "Sesión no iniciada"
-//     }    
-//   }
+
 }
