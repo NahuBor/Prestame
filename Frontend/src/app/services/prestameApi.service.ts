@@ -16,6 +16,9 @@ export class PrestameApi {
   obtenerPerfil(perfil: perfil_usuario) {
     return this.http.get<perfil_usuario>(`${this.apiUrl}/auth/perfil`, { withCredentials: true });
   }
+    obtenerPerfil2() {
+    return this.http.get<perfil_usuario>(`${this.apiUrl}/auth/perfil`, { withCredentials: true });
+  }
   crearObjeto(objeto: Objeto) {
     return this.http.post<Objeto>(`${this.apiUrl}/objetos`, objeto, { withCredentials: true });
   }

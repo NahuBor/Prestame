@@ -29,12 +29,7 @@
   <!-- ACCIONES CONDICIONALES -->
   <div>
     <!-- Botón Solicitar: solo si NO es propio y además no venimos de mis-objetos (por seguridad) -->
-    <button 
-      *ngIf="!esPropio && !desdeMisObjetos && objeto.estado === 'disponible'" 
-      class="btn-solicitar" 
-      (click)="solicitarObjeto()">
-      Solicitar
-    </button>
+
     <span *ngIf="!esPropio && objeto.estado === 'prestado'" class="no-disponible">
       No disponible
     </span>
