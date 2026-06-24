@@ -54,8 +54,6 @@ export class ObjetoDetalle implements OnInit {
       .pipe(timeout(10000))
       .subscribe({
         next: (data: Objeto) => {
-          console.log('📦 Objeto recibido:', data);
-          console.log('👤 Dueño:', data.duenioId);
           this.objeto = data;
           this.cargando = false;
           this.verificarPropiedad();
@@ -84,7 +82,7 @@ export class ObjetoDetalle implements OnInit {
     
     const idUsuario = (usuario as any)._id;
     
-    // 🔥 Verificar si duenioId es un objeto o string
+
     let idDuenio: string;
     if (this.objeto.duenioId && typeof this.objeto.duenioId === 'object') {
       idDuenio = (this.objeto.duenioId as any)._id;
@@ -93,7 +91,7 @@ export class ObjetoDetalle implements OnInit {
     }
     
     this.esPropio = idDuenio === idUsuario;
-    console.log('🔍 ¿Es propio?', this.esPropio);
+
   }
 
   volver() {
@@ -118,20 +116,20 @@ solicitarObjeto(objetoId: string) {
   }
   this.prestameApi.crearPrestamo({ objetoId, tiempo_del_prestamo: dias }).subscribe({
     next: () => {
-      alert('✅ Solicitud enviada correctamente');
+      alert('Solicitud enviada correctamente');
     },
     error: (err) => {
-      // Manejo específico del error
+  
       if (err.error?.message?.includes('debes tener al menos un objeto publicado')) {
         const irAPublicar = confirm(
-          '❌ No puedes solicitar un préstamo porque no tienes objetos publicados.\n' +
+          ' No puedes solicitar un préstamo porque no tienes objetos publicados.\n' +
           '¿Quieres ir a publicar un objeto ahora?'
         );
         if (irAPublicar) {
           this.router.navigate(['/objeto-form']);
         }
       } else {
-        alert('❌ Error al enviar la solicitud: ' + (err.error?.message || err.message));
+        alert(' Error al enviar la solicitud: ' + (err.error?.message || err.message));
       }
     }
   });
@@ -149,14 +147,14 @@ solicitarObjeto(objetoId: string) {
           this.router.navigate(['/mis-objetos']);
         },
         error: (err) => {
-          console.error('Error al eliminar', err);
+
           alert('Error al eliminar el objeto');
         }
       });
     }
   }
 
-  // 🔥 Método para obtener el nombre del dueño
+
   getNombreDuenio(): string {
     if (!this.objeto?.duenioId) return 'Desconocido';
     if (typeof this.objeto.duenioId === 'object' && this.objeto.duenioId !== null) {
@@ -165,7 +163,7 @@ solicitarObjeto(objetoId: string) {
     return 'Desconocido';
   }
 
-  // 🔥 Método para obtener el email del dueño
+
   getEmailDuenio(): string | null {
     if (!this.objeto?.duenioId) return null;
     if (typeof this.objeto.duenioId === 'object' && this.objeto.duenioId !== null) {

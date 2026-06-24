@@ -18,27 +18,27 @@ export class Prestamos implements OnInit {
   error = '';
   private peticionesCompletadas = 0;
 
-  // ✅ Propiedades computadas para filtrar
+
   get solicitudesPendientesComoDuenio(): Prestamo[] {
     return this.prestamosComoDuenio.filter(p => p.estado === 'pendiente');
   }
 
   get prestamosAceptadosComoDuenio(): Prestamo[] {
-    // Incluir 'aceptado' y 'pendiente_devolucion' como activos
+
     return this.prestamosComoDuenio.filter(p => 
       p.estado === 'aceptado' || p.estado === 'pendiente_devolucion'
     );
   }
 
   get prestamosActivosComoSolicitante(): Prestamo[] {
-    // Para el solicitante, los activos son los aceptados o en proceso de devolución
+
     return this.prestamosComoSolicitante.filter(p => 
       p.estado === 'aceptado' || p.estado === 'pendiente_devolucion'
     );
   }
 
   get prestamosCompletados(): Prestamo[] {
-    // Historial: devueltos y rechazados
+
     return [
       ...this.prestamosComoDuenio.filter(p => p.estado === 'devuelto' || p.estado === 'rechazado'),
       ...this.prestamosComoSolicitante.filter(p => p.estado === 'devuelto' || p.estado === 'rechazado')
@@ -46,7 +46,7 @@ export class Prestamos implements OnInit {
   }
 
   get historialComoDuenio(): Prestamo[] {
-    // Historial como dueño: devueltos y rechazados
+
     return this.prestamosComoDuenio.filter(p => 
       p.estado === 'devuelto' || p.estado === 'rechazado'
     );
@@ -78,7 +78,7 @@ export class Prestamos implements OnInit {
     this.cargando = true;
     this.error = '';
 
-    // 1. Préstamos donde es dueño
+  
     this.prestameApi.obtenerPrestamosComoDuenio(userId).subscribe({
       next: (data) => {
         this.prestamosComoDuenio = Array.isArray(data) ? data : [];
@@ -94,7 +94,6 @@ export class Prestamos implements OnInit {
       }
     });
 
-    // 2. Préstamos donde es solicitante
     this.prestameApi.obtenerPrestamosComoSolicitante(userId).subscribe({
       next: (data) => {
         this.prestamosComoSolicitante = Array.isArray(data) ? data : [];
@@ -117,7 +116,7 @@ export class Prestamos implements OnInit {
     }
   }
 
-  // ✅ Aceptar solicitud
+
   aceptarSolicitud(prestamo: Prestamo) {
     if (prestamo.estado !== 'pendiente') return;
     this.prestameApi.actualizarEstadoPrestamo(prestamo._id!, 'aceptado').subscribe({
@@ -128,7 +127,7 @@ export class Prestamos implements OnInit {
         }
         this.cdr.detectChanges();
         alert('Solicitud aceptada');
-        // Recargar para actualizar todas las listas
+
         this.cargarPrestamos();
       },
       error: (err) => {
@@ -138,7 +137,7 @@ export class Prestamos implements OnInit {
     });
   }
 
-  // ✅ Rechazar solicitud
+
   rechazarSolicitud(prestamo: Prestamo) {
     if (prestamo.estado !== 'pendiente') return;
     this.prestameApi.actualizarEstadoPrestamo(prestamo._id!, 'rechazado').subscribe({
@@ -158,9 +157,9 @@ export class Prestamos implements OnInit {
     });
   }
 
-  // ✅ NUEVO: Solicitar devolución (desde el lado del solicitante)
+
   solicitarDevolucion(prestamo: Prestamo) {
-    // Usamos type assertion para evitar el error de TypeScript
+
     if ((prestamo.estado as string) !== 'aceptado') {
       alert('Este préstamo no está activo');
       return;
@@ -172,19 +171,19 @@ export class Prestamos implements OnInit {
 
     this.prestameApi.solicitarDevolucion(prestamo._id!).subscribe({
       next: (actualizado) => {
-        // Actualizar en la lista de solicitante
+
         const index = this.prestamosComoSolicitante.findIndex(p => p._id === prestamo._id);
         if (index !== -1) {
           this.prestamosComoSolicitante[index] = actualizado;
         }
-        // También actualizar en la lista del dueño si existe
+
         const indexDuenio = this.prestamosComoDuenio.findIndex(p => p._id === prestamo._id);
         if (indexDuenio !== -1) {
           this.prestamosComoDuenio[indexDuenio] = actualizado;
         }
         this.cdr.detectChanges();
-        alert('✅ Solicitud de devolución enviada. Espera confirmación del dueño.');
-        // Recargar para actualizar todas las listas
+        alert(' Solicitud de devolución enviada. Espera confirmación del dueño.');
+
         this.cargarPrestamos();
       },
       error: (err) => {
@@ -194,7 +193,6 @@ export class Prestamos implements OnInit {
     });
   }
 
-  // ✅ NUEVO: Confirmar devolución (desde el lado del dueño)
   confirmarDevolucion(prestamo: Prestamo) {
     if ((prestamo.estado as string) !== 'pendiente_devolucion') {
       alert('No hay una devolución pendiente');
@@ -211,13 +209,13 @@ export class Prestamos implements OnInit {
         if (index !== -1) {
           this.prestamosComoDuenio[index] = actualizado;
         }
-        // También actualizar en la lista de solicitante si existe
+
         const indexSolicitante = this.prestamosComoSolicitante.findIndex(p => p._id === prestamo._id);
         if (indexSolicitante !== -1) {
           this.prestamosComoSolicitante[indexSolicitante] = actualizado;
         }
         this.cdr.detectChanges();
-        alert('✅ Devolución confirmada. El objeto vuelve a estar disponible.');
+        alert(' Devolución confirmada. El objeto vuelve a estar disponible.');
         this.cargarPrestamos();
       },
       error: (err) => {
@@ -227,8 +225,5 @@ export class Prestamos implements OnInit {
     });
   }
 
-  verObjeto(objetoId: string) {
-    // Navegar al detalle del objeto (opcional)
-    // this.router.navigate(['/objeto-detalle', objetoId]);
-  }
+
 }

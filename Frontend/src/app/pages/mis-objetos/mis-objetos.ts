@@ -41,7 +41,6 @@ onRowClick(objeto: Objeto) {
     this.cargando = true;
     this.prestameApi.obtenerPerfil(this.perfil).subscribe({
       next: (perfil) => {
-        console.log('Perfil obtenido:', perfil);
         const duenioId = perfil._id;
         this.prestameApi.obtenerMisObjetos(duenioId).subscribe({
           next: (data) => {

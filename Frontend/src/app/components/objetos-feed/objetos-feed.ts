@@ -83,24 +83,23 @@ solicitarObjeto(objetoId: string) {
   }
   this.apiService.crearPrestamo({ objetoId, tiempo_del_prestamo: dias }).subscribe({
     next: () => {
-      alert('✅ Solicitud enviada correctamente');
+      alert(' Solicitud enviada correctamente');
     },
     error: (err) => {
       if (err.error?.message?.includes('debes tener al menos un objeto publicado')) {
         const irAPublicar = confirm(
-          '❌ No puedes solicitar un préstamo porque no tienes objetos publicados.\n' +
+          ' No puedes solicitar un préstamo porque no tienes objetos publicados.\n' +
           '¿Quieres ir a publicar un objeto ahora?'
         );
         if (irAPublicar) {
           this.router.navigate(['/objeto-form']);
         }
       } else {
-        alert('❌ Error al enviar la solicitud: ' + (err.error?.message || err.message));
+        alert(' Error al enviar la solicitud: ' + (err.error?.message || err.message));
       }
     }
   });
 }
   onImageError(objeto: Objeto): void {
-    objeto.imagen = 'assets/imagen-default.jpg';
-  }
+    objeto.imagen = './lupa.jpeg' }
 }

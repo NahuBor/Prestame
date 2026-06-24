@@ -78,12 +78,11 @@ export class ObjetoForm implements OnInit {
     }
   }
 
-  // 🔥 Función auxiliar para obtener el ID del dueño como string
   private obtenerIdDuenioString(): string {
     const duenio = this.objeto.duenioId;
     if (!duenio) return '';
     if (typeof duenio === 'object' && duenio !== null) {
-      // Si es objeto, extraer _id
+
       return (duenio as any)._id || String(duenio);
     }
     return duenio as string;
@@ -93,11 +92,10 @@ export class ObjetoForm implements OnInit {
     const duenioIdStr = this.obtenerIdDuenioString();
     if (!duenioIdStr) {
       alert('Error: No se pudo identificar al usuario');
-      console.error('duenioId es undefined');
+
       return;
     }
 
-    // Preparar el objeto para enviar (con duenioId como string)
     const objetoParaEnviar = {
       ...this.objeto,
       duenioId: duenioIdStr
@@ -110,13 +108,13 @@ export class ObjetoForm implements OnInit {
       formData.append('categoria', this.objeto.categoria);
       formData.append('descripcion', this.objeto.descripcion || '');
       formData.append('imagen', this.imagenSeleccionada);
-      formData.append('duenioId', duenioIdStr); // 👈 Ahora es string
+      formData.append('duenioId', duenioIdStr); 
     }
 
     if (this.esEdicion && this.objetoId) {
       const peticion = formData
         ? this.prestameApi.editarObjetoConImagen(this.objetoId, formData)
-        : this.prestameApi.editarObjeto(this.objetoId, objetoParaEnviar); // 👈 Usamos objeto con duenioId string
+        : this.prestameApi.editarObjeto(this.objetoId, objetoParaEnviar); 
       peticion.subscribe({
         next: () => {
           alert('Objeto editado correctamente');
@@ -130,7 +128,7 @@ export class ObjetoForm implements OnInit {
     } else {
       const peticion = formData
         ? this.prestameApi.crearObjetoConImagen(formData)
-        : this.prestameApi.crearObjeto(objetoParaEnviar); // 👈 Usamos objeto con duenioId string
+        : this.prestameApi.crearObjeto(objetoParaEnviar); 
       peticion.subscribe({
         next: () => {
           alert('Objeto publicado correctamente');

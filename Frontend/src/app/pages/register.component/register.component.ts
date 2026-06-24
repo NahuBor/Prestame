@@ -88,11 +88,11 @@ export class RegisterComponent {
     )?.subscribe(
       {
         next: (res) => {
-          console.log(res)
+
           this.router.navigate(['/login'])
         },
         error: (err) => {
-          console.log(err)
+
           this.errorMessage = 'Error al registrarse'
           this.isLoading = false;
         },

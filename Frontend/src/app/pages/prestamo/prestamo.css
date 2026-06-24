@@ -1,6 +1,4 @@
-/* =============================================
-   ESTILOS PARA MIS PRÉSTAMOS (TEMA OSCURO)
-   ============================================= */
+
 .container {
   max-width: 800px;
   margin: 2rem auto;
@@ -22,8 +20,6 @@
   font-weight: 600;
   margin: 0;
 }
-
-/* ── Secciones ──────────────────────────────── */
 .seccion {
   margin-top: 2rem;
 }
@@ -57,7 +53,6 @@
   padding: 1rem 0;
 }
 
-/* ── Fila de préstamo (similar a obj-row) ── */
 .prestamo-row {
   background: #2a2a2a;
   border-radius: 10px;
@@ -66,7 +61,7 @@
   align-items: center;
   justify-content: space-between;
   margin-bottom: .75rem;
-  flex-wrap: wrap; /* Por si se necesita en móvil */
+  flex-wrap: wrap;
 }
 
 .prestamo-info {
@@ -74,7 +69,7 @@
   display: flex;
   flex-direction: column;
   gap: 0.1rem;
-  min-width: 0; /* Evita desborde */
+  min-width: 0; 
 }
 
 .prestamo-titulo {
@@ -105,7 +100,7 @@
   flex-wrap: wrap;
 }
 
-/* Badges de estado (igual que en mis objetos) */
+
 .badge-pendiente {
   background: #4a3a00;
   color: #f5a623;
@@ -139,7 +134,7 @@
   font-weight: 500;
 }
 
-/* Botones de acción (igual que en mis objetos) */
+
 .btn-aceptar,
 .btn-rechazar {
   background: transparent;
@@ -162,7 +157,7 @@
   border-color: #7c4a4a;
 }
 
-/* ── Estados de carga y error ────────────────── */
+
 .loading-message {
   text-align: center;
   padding: 2rem 0;
@@ -202,7 +197,7 @@
   border-color: #ff6b6b;
 }
 
-/* ── Responsive ──────────────────────────────── */
+
 @media (max-width: 600px) {
   .container {
     margin: 1rem;
@@ -225,7 +220,7 @@
   }
 }
 
-/* Nuevos badges */
+
 .badge-pendiente_devolucion {
   background: #4a3a2a;
   color: #f5a623;
@@ -245,7 +240,7 @@
   font-weight: 500;
 }
 
-/* Nuevos botones */
+
 .btn-devolver,
 .btn-confirmar {
   background: transparent;
@@ -269,7 +264,7 @@
   border-color: #4a7c59;
 }
 
-/* Mensaje de espera */
+
 .mensaje-espera {
   color: #f5a623;
   font-size: .78rem;
@@ -278,7 +273,6 @@
   gap: .25rem;
 }
 
-/* Animación de pulso para estado pendiente_devolucion */
 @keyframes pulse {
   0% { opacity: 0.8; }
   50% { opacity: 1; }

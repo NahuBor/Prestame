@@ -3,25 +3,25 @@
     <h2>Mis préstamos</h2>
   </div>
 
-  <!-- Cargando -->
+
   <div *ngIf="cargando" class="loading-message">
     <div class="spinner"></div>
     <p>Cargando préstamos...</p>
   </div>
 
-  <!-- Error -->
+
   <div *ngIf="error" class="error-message">
     <p>{{ error }}</p>
     <button (click)="cargarPrestamos()" class="btn-reintentar">Reintentar</button>
   </div>
 
-  <!-- Contenido -->
+
   <div *ngIf="!cargando && !error">
 
-    <!-- SECCIÓN 1: Solicitudes recibidas (pendientes como dueño) -->
+
     <div class="seccion">
       <div class="solicitudes-header">
-        <h3>📩 Solicitudes recibidas</h3>
+        <h3> Solicitudes recibidas</h3>
         <span class="badge-pendientes">{{ solicitudesPendientesComoDuenio.length }}</span>
       </div>
       <div *ngIf="solicitudesPendientesComoDuenio.length === 0" class="empty-message">
@@ -36,14 +36,14 @@
           </div>
         </div>
         <div class="prestamo-actions">
-          <span class="badge-pendiente">⏳ Pendiente</span>
-          <button class="btn-aceptar" (click)="aceptarSolicitud(prestamo)">✅ Aceptar</button>
-          <button class="btn-rechazar" (click)="rechazarSolicitud(prestamo)">❌ Rechazar</button>
+          <span class="badge-pendiente"> Pendiente</span>
+          <button class="btn-aceptar" (click)="aceptarSolicitud(prestamo)"> Aceptar</button>
+          <button class="btn-rechazar" (click)="rechazarSolicitud(prestamo)"> Rechazar</button>
         </div>
       </div>
     </div>
 
-    <!-- SECCIÓN 2: Préstamos activos (como dueño) -->
+
     <div class="seccion">
       <div class="solicitudes-header">
         <h3>📋 Préstamos activos (como dueño)</h3>
@@ -61,25 +61,25 @@
           </div>
         </div>
         <div class="prestamo-actions">
-          <!-- Badge según el estado -->
+
           <span [class]="'badge-' + prestamo.estado">
-            <span *ngIf="prestamo.estado === 'aceptado'">✅ Activo</span>
-            <span *ngIf="prestamo.estado === 'pendiente_devolucion'">⏳ Devolución pendiente</span>
+            <span *ngIf="prestamo.estado === 'aceptado'"> Activo</span>
+            <span *ngIf="prestamo.estado === 'pendiente_devolucion'"> Devolución pendiente</span>
           </span>
-          <!-- Botón de confirmar devolución solo si está pendiente_devolucion -->
+
           <button *ngIf="prestamo.estado === 'pendiente_devolucion'" 
                   class="btn-confirmar" 
                   (click)="confirmarDevolucion(prestamo)">
-            ✅ Confirmar devolución
+            Confirmar devolución
           </button>
         </div>
       </div>
     </div>
 
-    <!-- SECCIÓN 3: Préstamos activos (como solicitante) -->
+
     <div class="seccion">
       <div class="solicitudes-header">
-        <h3>📋 Préstamos activos (como solicitante)</h3>
+        <h3> Préstamos activos (como solicitante)</h3>
         <span class="badge-pendientes">{{ prestamosActivosComoSolicitante.length }}</span>
       </div>
       <div *ngIf="prestamosActivosComoSolicitante.length === 0" class="empty-message">
@@ -94,29 +94,29 @@
           </div>
         </div>
         <div class="prestamo-actions">
-          <!-- Badge según el estado -->
+
           <span [class]="'badge-' + prestamo.estado">
-            <span *ngIf="prestamo.estado === 'aceptado'">✅ Activo</span>
-            <span *ngIf="prestamo.estado === 'pendiente_devolucion'">⏳ Esperando confirmación</span>
+            <span *ngIf="prestamo.estado === 'aceptado'"> Activo</span>
+            <span *ngIf="prestamo.estado === 'pendiente_devolucion'">Esperando confirmación</span>
           </span>
-          <!-- Botón de solicitar devolución solo si está aceptado -->
+
           <button *ngIf="prestamo.estado === 'aceptado'" 
                   class="btn-devolver" 
                   (click)="solicitarDevolucion(prestamo)">
-            🔄 Devolver objeto
+            Devolver objeto
           </button>
-          <!-- Mostrar mensaje si está pendiente_devolucion -->
+
           <span *ngIf="prestamo.estado === 'pendiente_devolucion'" class="mensaje-espera">
-            ⏳ Esperando confirmación del dueño
+             Esperando confirmación del dueño
           </span>
         </div>
       </div>
     </div>
 
-    <!-- SECCIÓN 4: Mis solicitudes (historial completo) -->
+
     <div class="seccion">
       <div class="solicitudes-header">
-        <h3>📜 Historial de solicitudes</h3>
+        <h3> Historial de solicitudes</h3>
         <span class="badge-pendientes">{{ prestamosComoSolicitante.length }}</span>
       </div>
       <div *ngIf="prestamosComoSolicitante.length === 0" class="empty-message">
@@ -133,20 +133,20 @@
         </div>
         <div class="prestamo-actions">
           <span [class]="'badge-' + prestamo.estado">
-            <span *ngIf="prestamo.estado === 'pendiente'">⏳ Pendiente</span>
-            <span *ngIf="prestamo.estado === 'aceptado'">✅ Activo</span>
-            <span *ngIf="prestamo.estado === 'rechazado'">❌ Rechazado</span>
-            <span *ngIf="prestamo.estado === 'devuelto'">📦 Devuelto</span>
-            <span *ngIf="prestamo.estado === 'pendiente_devolucion'">⏳ En devolución</span>
+            <span *ngIf="prestamo.estado === 'pendiente'"> Pendiente</span>
+            <span *ngIf="prestamo.estado === 'aceptado'">Activo</span>
+            <span *ngIf="prestamo.estado === 'rechazado'"> Rechazado</span>
+            <span *ngIf="prestamo.estado === 'devuelto'"> Devuelto</span>
+            <span *ngIf="prestamo.estado === 'pendiente_devolucion'"> En devolución</span>
           </span>
         </div>
       </div>
     </div>
 
-    <!-- SECCIÓN 5: Historial como dueño -->
+
     <div class="seccion">
       <div class="solicitudes-header">
-        <h3>📜 Historial como dueño</h3>
+        <h3> Historial como dueño</h3>
         <span class="badge-pendientes">{{ historialComoDuenio.length }}</span>
       </div>
       <div *ngIf="historialComoDuenio.length === 0" class="empty-message">
@@ -162,8 +162,8 @@
         </div>
         <div class="prestamo-actions">
           <span class="badge-completado">
-            <span *ngIf="prestamo.estado === 'devuelto'">📦 Completado</span>
-            <span *ngIf="prestamo.estado === 'rechazado'">❌ Rechazado</span>
+            <span *ngIf="prestamo.estado === 'devuelto'">Completado</span>
+            <span *ngIf="prestamo.estado === 'rechazado'"> Rechazado</span>
           </span>
         </div>
       </div>

@@ -144,8 +144,7 @@ exports.solicitarDevolucionService = async (prestamoId, usuarioId) => {
     }
 
     const solicitanteIdStr = String(prestamo.solicitanteId?._id || '');
-    console.log('solicitanteIdStr:', solicitanteIdStr);
-    console.log('Comparando:', solicitanteIdStr, '===', usuarioIdStr);
+
     if (solicitanteIdStr !== usuarioIdStr) {
     return { error: true, message: 'Solo el solicitante puede devolver el objeto', status: 403 };
     }

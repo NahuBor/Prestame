@@ -32,7 +32,7 @@ export class Navbar implements OnInit {
         this.router.navigate(['/login'])
       },
       error: (err) => {
-        console.log(err)
+     
       },
       complete: () => {
         this.cdr.detectChanges();

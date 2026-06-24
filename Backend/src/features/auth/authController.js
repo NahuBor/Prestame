@@ -13,9 +13,9 @@ exports.loginController = async (req, res) => {
                 message: respuestaService.error
             })
         }
-        console.log(respuestaService.user)
+   
         req.session.userId = respuestaService.user
-        console.log("testing", req.session.userId)
+
         return res.status(200).send(respuestaService.user)
     } catch (error) {
         console.log("Ocurrió un error en loginController()");
@@ -76,7 +76,7 @@ exports.logoutController = async (req, res) => {
         }
         req.session.destroy((err) => {
             if (err) {
-                console.log(err)
+
                 return res.status(500).json({ message: 'Error al destruir la sesión' })
             }
             return res.status(200).json({ message: 'Se ha deslogueado correctamente' })

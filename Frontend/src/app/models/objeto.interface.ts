@@ -1,6 +1,6 @@
 export interface Objeto {
   _id?: string;
-  duenioId?: string | {  // 👈 Puede ser string o objeto
+  duenioId?: string | {  
     _id: string;
     nombre: string;
     email: string;
