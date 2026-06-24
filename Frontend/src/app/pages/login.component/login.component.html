@@ -1,0 +1,67 @@
+<div class="container-fluid vh-100 p-5 align-items-center justify-content-center d-flex red bg-primary bg-gradient" id="conta">
+    <div class="row border border-dark center h-100 rounded g-0">
+        <div class="col-12 col-md-6 d-none d-md-block">
+                <img class="card-img-top w-100 h-100 rounded" id="loginimg" src="./Logo.jpeg" alt="Card image cap">
+        </div>
+        <div class="col-12 col-md-6 p-5 d-flex flex-column justify-content-center bg-light rounded" id="loginform">
+            <h2 class="fw-bold text-center">Iniciar Sesión {{sessionMensaje}}</h2>
+            <form [formGroup] = "loginForm" (ngSubmit) = "login()">
+                <label for="email" class="form-label fs-3">Email</label>
+                <input 
+                formControlName = "email" 
+                type="email" 
+                autocomplete="off"
+                class="form-control form-control-lg" 
+                id="email"
+                [ngClass]="{'is-invalid': isNotValid('email'),
+                'is-valid': isValid('email')}"
+                placeholder="georgiarose@gmail.com">
+                @if (showErrors('email', 'required')) {
+                    <div class="text-danger small mt-1">
+                        El email es obligatorio
+                    </div>
+                }
+                @if (showErrors('email', 'minLength')) {
+                    <div class="text-danger small mt-1">
+                        El email debe tener minimo 8 caracteres
+                    </div>
+            }
+
+                <label for="password" class="form-label text-center fs-3 mt-3">Contraseña</label>
+                <input 
+                formControlName = "password" 
+                type="password" 
+                autocomplete="off"
+                class="form-control form-control-lg" 
+                id="password"
+                [ngClass]="{'is-invalid': isNotValid('password'),
+                'is-valid': isValid('password')}"
+                placeholder="********">
+                @if (showErrors('password', 'required')) {
+                    <div class="text-danger small mt-1">
+                        La contraseña es obligatoria
+                    </div>
+                }                
+                @if (showErrors('password', 'minlength')) {
+                    <div class="text-danger small mt-1">
+                        La contraseña debe tener minimo 8 caracteres
+                    </div>
+                }
+                
+                <div class="text-center">
+                    <button type="submit" [disabled] = "loginForm.invalid || isLoading" class="btn btn-primary my-5 center fs-3">
+                        @if (isLoading) {
+                            <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                            <span>Procesando...</span>
+                        } @else {
+                            <span>Iniciar Sesión</span>
+                        }
+                        </button>
+                </div>
+            </form>
+            <button type="button" (click)="irAlRegistro()" class="btn btn-secondary mt-3">Registrarse</button>
+        </div>
+    </div>                  
+</div>
+
+

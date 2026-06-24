@@ -1,0 +1,96 @@
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { Objeto } from '../models/objeto.interface';
+import {User} from '../models/User.model'
+import { Prestamo } from '../models/prestamo.model';
+import {perfil_usuario} from '../models/perfil_usuario.model'
+
+@Injectable({
+  providedIn: 'root',
+})
+export class PrestameApi {
+  private apiUrl = 'http://localhost:3000';
+  constructor(private http: HttpClient) { }
+
+  obtenerPerfil(perfil: perfil_usuario) {
+    return this.http.get<perfil_usuario>(`${this.apiUrl}/auth/perfil`, { withCredentials: true });
+  }
+    obtenerPerfil2() {
+    return this.http.get<perfil_usuario>(`${this.apiUrl}/auth/perfil`, { withCredentials: true });
+  }
+  crearObjeto(objeto: Objeto) {
+    return this.http.post<Objeto>(`${this.apiUrl}/objetos`, objeto, { withCredentials: true });
+  }
+  crearObjetoConImagen(formData: FormData) {
+    return this.http.post<Objeto>(`${this.apiUrl}/objetos`, formData, { withCredentials: true });
+  }
+  editarObjeto(id: string, objeto: Objeto) {
+    return this.http.put<Objeto>(`${this.apiUrl}/objetos/${id}`, objeto, { withCredentials: true });
+  }
+  editarObjetoConImagen(id: string, formData: FormData) {
+    return this.http.put<Objeto>(`${this.apiUrl}/objetos/${id}`, formData, { withCredentials: true });
+  }
+  eliminarObjeto(id: string) {
+    return this.http.delete(`${this.apiUrl}/objetos/${id}`, { withCredentials: true });
+  }
+
+  obtenerMisObjetos(duenioId: string) {
+    return this.http.get<Objeto[]>(`${this.apiUrl}/objetos/duenio/${duenioId}`, { withCredentials: true });
+  }
+  obtenerObjetoPorId(id: string) {
+    return this.http.get<Objeto>(`${this.apiUrl}/objetos/${id}`, { withCredentials: true });
+  }
+
+  obtenerObjetosPublicos() {
+    return this.http.get<Objeto[]>(`${this.apiUrl}/objetos`, { withCredentials: true });
+  }
+
+    obtenerObjetosPorCategoria(categoria: string) {
+    return this.http.get<Objeto[]>(`${this.apiUrl}/objetos/categoria/${categoria}`, { withCredentials: true });
+  }
+  
+  crearPrestamo(datos: { objetoId: string, tiempo_del_prestamo: string }): Observable<Prestamo> {
+    return this.http.post<Prestamo>(`${this.apiUrl}/prestamos`, datos, { withCredentials: true });
+  }
+
+  obtenerPrestamosComoDuenio(duenioId: string): Observable<Prestamo[]> {
+    return this.http.get<Prestamo[]>(`${this.apiUrl}/prestamos/duenio/${duenioId}`, { withCredentials: true });
+  }
+
+
+  obtenerPrestamosComoSolicitante(solicitanteId: string): Observable<Prestamo[]> {
+    return this.http.get<Prestamo[]>(`${this.apiUrl}/prestamos/solicitante/${solicitanteId}`, { withCredentials: true });
+  }
+
+
+  actualizarEstadoPrestamo(id: string, estado: string): Observable<Prestamo> {
+    return this.http.put<Prestamo>(`${this.apiUrl}/prestamos/${id}/estado`, { estado }, { withCredentials: true });
+  }
+
+  /**
+   * Solicita la devolución de un préstamo activo (lo hace el solicitante)
+   * @param prestamoId - ID del préstamo
+   * @returns Observable con el préstamo actualizado
+   */
+  solicitarDevolucion(prestamoId: string): Observable<Prestamo> {
+    return this.http.post<Prestamo>(
+      `${this.apiUrl}/prestamos/${prestamoId}/solicitar-devolucion`, 
+      {}, 
+      { withCredentials: true }
+    );
+  }
+
+  /**
+   * Confirma la devolución de un préstamo (lo hace el dueño del objeto)
+   * @param prestamoId - ID del préstamo
+   * @returns Observable con el préstamo actualizado
+   */
+  confirmarDevolucion(prestamoId: string): Observable<Prestamo> {
+    return this.http.post<Prestamo>(
+      `${this.apiUrl}/prestamos/${prestamoId}/confirmar-devolucion`, 
+      {}, 
+      { withCredentials: true }
+    );
+  }
+}

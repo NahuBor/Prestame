@@ -1,0 +1,65 @@
+<div *ngIf="!cargando && !error && objeto" class="detalle-container">
+
+  <div class="detalle-actions">
+    <button (click)="volver()">← Volver</button>
+  </div>
+
+  <div *ngIf="objeto.imagen" class="detalle-imagen">
+    <img [src]="objeto.imagen" alt="Imagen de {{ objeto.titulo }}" />
+  </div>
+
+  <h1>{{ objeto.titulo }}</h1>
+
+  <div class="info-badges">
+    <span><strong>Estado:</strong> {{ objeto.estado || 'disponible' }}</span>
+    <span><strong>Categoría:</strong> {{ objeto.categoria }}</span>
+  </div>
+
+  <div *ngIf="objeto.descripcion" class="descripcion">
+    <h3>Descripción</h3>
+    <p>{{ objeto.descripcion }}</p>
+  </div>
+
+  <div class="duenio-info">
+    <div class="duenio-card">
+      <h3>Dueño del objeto</h3>
+      <div class="duenio-datos">
+        <p><strong>Nombre:</strong> {{ getNombreDuenio() }}</p>
+        <p *ngIf="getEmailDuenio()"><strong>Email:</strong> {{ getEmailDuenio() }}</p>
+        <p *ngIf="!getEmailDuenio()" class="sin-email"> El dueño no tiene email registrado</p>
+      </div>
+    </div>
+    <p *ngIf="objeto.fechaCreacion" class="fecha-publicacion">
+      <strong>Publicado:</strong> {{ objeto.fechaCreacion | date:'dd/MM/yyyy' }}
+    </p>
+  </div>
+
+
+  <div class="acciones">
+  
+    <button *ngIf="!esPropio && objeto.estado === 'disponible'" 
+            class="btn-solicitar" 
+            (click)="solicitarObjeto(objeto._id!)">
+      Solicitar préstamo
+    </button>
+
+    <span *ngIf="!esPropio && objeto.estado === 'prestado'" class="no-disponible">
+    No disponible
+    </span>
+
+
+    <button *ngIf="esPropio" class="btn-editar" (click)="editar()">✏️ Editar</button>
+    <button *ngIf="esPropio" class="btn-eliminar" (click)="eliminarObjeto()">🗑️ Eliminar</button>
+  </div>
+</div>
+
+<div *ngIf="cargando" class="loading">
+  <div class="spinner"></div>
+  <p>Cargando objeto...</p>
+</div>
+
+
+<div *ngIf="error" class="error-message">
+  <p>{{ error }}</p>
+  <button (click)="cargarObjeto()">Reintentar</button>
+</div>

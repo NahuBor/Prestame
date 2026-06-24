@@ -1,0 +1,74 @@
+
+<div class="container">
+  <div class="header">
+    <h2>Objetos disponibles</h2>
+    <span class="badge-total" *ngIf="objetos.length > 0">
+      {{ objetos.length }} objeto{{ objetos.length > 1 ? 's' : '' }}
+    </span>
+  </div>
+
+  <div class="filtros">
+    <button 
+      *ngFor="let categoria of categorias"
+      (click)="filtrarPorCategoria(categoria)"
+      [class.activo]="categoriaSeleccionada === categoria"
+      class="filtro-btn">
+      {{ categoria | titlecase }}
+    </button>
+    <button 
+      (click)="filtrarPorCategoria('')"
+      [class.activo]="!categoriaSeleccionada"
+      class="filtro-btn limpiar">
+      Todos
+    </button>
+  </div>
+
+  <div *ngIf="cargando" class="loading-message">
+    <div class="spinner"></div>
+    <p>Cargando objetos...</p>
+  </div>
+
+  <div *ngIf="error" class="error-message">
+    <p>{{ error }}</p>
+    <button (click)="cargarObjetos()" class="btn-reintentar">Reintentar</button>
+  </div>
+
+  <p *ngIf="!cargando && !error && objetos.length === 0" class="empty-message">
+    {{ categoriaSeleccionada ? 'No hay objetos en esta categoría' : 'No hay objetos disponibles para préstamo' }}
+  </p>
+
+
+  <div 
+    *ngFor="let objeto of objetos" 
+    class="obj-row" 
+    (click)="onRowClick(objeto)" 
+    style="cursor: pointer;">
+    
+    <img 
+      *ngIf="objeto.imagen" 
+      [src]="objeto.imagen" 
+      class="obj-img" 
+      [alt]="objeto.titulo"
+      (error)="onImageError(objeto)">
+    
+    <div class="obj-info">
+      <h5>{{ objeto.titulo }}</h5>
+      <small>{{ objeto.categoria }}</small>
+      <div class="descripcion" *ngIf="objeto.descripcion">
+        {{ objeto.descripcion | slice:0:60 }}{{ objeto.descripcion.length > 60 ? '...' : '' }}
+      </div>
+    </div>
+    
+    <div class="obj-actions">
+      <span [class]="objeto.estado === 'disponible' ? 'badge-disponible' : 'badge-prestado'">
+        {{ objeto.estado || 'disponible' }}
+      </span>
+      <button 
+        class="btn-solicitar" 
+        (click)="solicitarObjeto(objeto._id!); $event.stopPropagation()"
+        [disabled]="objeto.estado !== 'disponible'">
+        {{ objeto.estado === 'disponible' ? 'Solicitar' : 'No disponible' }}
+      </button>
+    </div>
+  </div>
+</div>

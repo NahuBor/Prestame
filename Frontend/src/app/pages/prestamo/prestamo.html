@@ -1,0 +1,173 @@
+<div class="container">
+  <div class="header">
+    <h2>Mis préstamos</h2>
+  </div>
+
+
+  <div *ngIf="cargando" class="loading-message">
+    <div class="spinner"></div>
+    <p>Cargando préstamos...</p>
+  </div>
+
+
+  <div *ngIf="error" class="error-message">
+    <p>{{ error }}</p>
+    <button (click)="cargarPrestamos()" class="btn-reintentar">Reintentar</button>
+  </div>
+
+
+  <div *ngIf="!cargando && !error">
+
+
+    <div class="seccion">
+      <div class="solicitudes-header">
+        <h3> Solicitudes recibidas</h3>
+        <span class="badge-pendientes">{{ solicitudesPendientesComoDuenio.length }}</span>
+      </div>
+      <div *ngIf="solicitudesPendientesComoDuenio.length === 0" class="empty-message">
+        No hay solicitudes pendientes.
+      </div>
+      <div *ngFor="let prestamo of solicitudesPendientesComoDuenio" class="prestamo-row">
+        <div class="prestamo-info">
+          <div class="prestamo-titulo">{{ prestamo.objetoId?.titulo || 'Sin título' }}</div>
+          <div class="prestamo-detalle">
+            <span><strong>Solicitante:</strong> {{ prestamo.solicitanteId?.nombre || 'Desconocido' }}</span>
+            <span><strong>Días:</strong> {{ prestamo.tiempo_del_prestamo }}</span>
+          </div>
+        </div>
+        <div class="prestamo-actions">
+          <span class="badge-pendiente"> Pendiente</span>
+          <button class="btn-aceptar" (click)="aceptarSolicitud(prestamo)"> Aceptar</button>
+          <button class="btn-rechazar" (click)="rechazarSolicitud(prestamo)"> Rechazar</button>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="seccion">
+      <div class="solicitudes-header">
+        <h3>📋 Préstamos activos (como dueño)</h3>
+        <span class="badge-pendientes">{{ prestamosAceptadosComoDuenio.length }}</span>
+      </div>
+      <div *ngIf="prestamosAceptadosComoDuenio.length === 0" class="empty-message">
+        No tienes préstamos activos.
+      </div>
+      <div *ngFor="let prestamo of prestamosAceptadosComoDuenio" class="prestamo-row">
+        <div class="prestamo-info">
+          <div class="prestamo-titulo">{{ prestamo.objetoId?.titulo || 'Sin título' }}</div>
+          <div class="prestamo-detalle">
+            <span><strong>Solicitante:</strong> {{ prestamo.solicitanteId?.nombre || 'Desconocido' }}</span>
+            <span><strong>Días:</strong> {{ prestamo.tiempo_del_prestamo }}</span>
+          </div>
+        </div>
+        <div class="prestamo-actions">
+
+          <span [class]="'badge-' + prestamo.estado">
+            <span *ngIf="prestamo.estado === 'aceptado'"> Activo</span>
+            <span *ngIf="prestamo.estado === 'pendiente_devolucion'"> Devolución pendiente</span>
+          </span>
+
+          <button *ngIf="prestamo.estado === 'pendiente_devolucion'" 
+                  class="btn-confirmar" 
+                  (click)="confirmarDevolucion(prestamo)">
+            Confirmar devolución
+          </button>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="seccion">
+      <div class="solicitudes-header">
+        <h3> Préstamos activos (como solicitante)</h3>
+        <span class="badge-pendientes">{{ prestamosActivosComoSolicitante.length }}</span>
+      </div>
+      <div *ngIf="prestamosActivosComoSolicitante.length === 0" class="empty-message">
+        No tienes préstamos activos como solicitante.
+      </div>
+      <div *ngFor="let prestamo of prestamosActivosComoSolicitante" class="prestamo-row">
+        <div class="prestamo-info">
+          <div class="prestamo-titulo">{{ prestamo.objetoId?.titulo || 'Sin título' }}</div>
+          <div class="prestamo-detalle">
+            <span><strong>Dueño:</strong> {{ prestamo.duenioId?.nombre || 'Desconocido' }}</span>
+            <span><strong>Días:</strong> {{ prestamo.tiempo_del_prestamo }}</span>
+          </div>
+        </div>
+        <div class="prestamo-actions">
+
+          <span [class]="'badge-' + prestamo.estado">
+            <span *ngIf="prestamo.estado === 'aceptado'"> Activo</span>
+            <span *ngIf="prestamo.estado === 'pendiente_devolucion'">Esperando confirmación</span>
+          </span>
+
+          <button *ngIf="prestamo.estado === 'aceptado'" 
+                  class="btn-devolver" 
+                  (click)="solicitarDevolucion(prestamo)">
+            Devolver objeto
+          </button>
+
+          <span *ngIf="prestamo.estado === 'pendiente_devolucion'" class="mensaje-espera">
+             Esperando confirmación del dueño
+          </span>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="seccion">
+      <div class="solicitudes-header">
+        <h3> Historial de solicitudes</h3>
+        <span class="badge-pendientes">{{ prestamosComoSolicitante.length }}</span>
+      </div>
+      <div *ngIf="prestamosComoSolicitante.length === 0" class="empty-message">
+        No has realizado solicitudes.
+      </div>
+      <div *ngFor="let prestamo of prestamosComoSolicitante" class="prestamo-row">
+        <div class="prestamo-info">
+          <div class="prestamo-titulo">{{ prestamo.objetoId?.titulo || 'Sin título' }}</div>
+          <div class="prestamo-detalle">
+            <span><strong>Dueño:</strong> {{ prestamo.duenioId?.nombre || 'Desconocido' }}</span>
+            <span><strong>Días:</strong> {{ prestamo.tiempo_del_prestamo }}</span>
+            <span><strong>Estado:</strong> {{ prestamo.estado }}</span>
+          </div>
+        </div>
+        <div class="prestamo-actions">
+          <span [class]="'badge-' + prestamo.estado">
+            <span *ngIf="prestamo.estado === 'pendiente'"> Pendiente</span>
+            <span *ngIf="prestamo.estado === 'aceptado'">Activo</span>
+            <span *ngIf="prestamo.estado === 'rechazado'"> Rechazado</span>
+            <span *ngIf="prestamo.estado === 'devuelto'"> Devuelto</span>
+            <span *ngIf="prestamo.estado === 'pendiente_devolucion'"> En devolución</span>
+          </span>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="seccion">
+      <div class="solicitudes-header">
+        <h3> Historial como dueño</h3>
+        <span class="badge-pendientes">{{ historialComoDuenio.length }}</span>
+      </div>
+      <div *ngIf="historialComoDuenio.length === 0" class="empty-message">
+        No hay préstamos en el historial.
+      </div>
+      <div *ngFor="let prestamo of historialComoDuenio" class="prestamo-row">
+        <div class="prestamo-info">
+          <div class="prestamo-titulo">{{ prestamo.objetoId?.titulo || 'Sin título' }}</div>
+          <div class="prestamo-detalle">
+            <span><strong>Solicitante:</strong> {{ prestamo.solicitanteId?.nombre || 'Desconocido' }}</span>
+            <span><strong>Estado final:</strong> {{ prestamo.estado }}</span>
+          </div>
+        </div>
+        <div class="prestamo-actions">
+          <span class="badge-completado">
+            <span *ngIf="prestamo.estado === 'devuelto'">Completado</span>
+            <span *ngIf="prestamo.estado === 'rechazado'"> Rechazado</span>
+          </span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

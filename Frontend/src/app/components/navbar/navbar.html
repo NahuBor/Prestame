@@ -1,0 +1,20 @@
+<nav class="navbar">
+  <div class="navbar-brand">
+    <a routerLink="/">Préstame</a>
+  </div>
+
+  <div class="navbar-links">    
+    @if (!usuarioLogueado()) {
+      <a routerLink="/login" class="nav-link">Iniciá sesión</a>
+      <a routerLink="/register" class="nav-link btn-register">Registrate</a>
+    }
+
+    @if (usuarioLogueado()) {
+      <span class="nav-user">{{ usuarioLogueado()?.nombre }}</span>
+      <a routerLink="/objetos" class="nav-link">Objetos</a>
+      <a routerLink="/mis-objetos" class="nav-link">Mis objetos</a>
+      <a routerLink="/prestamo" class="nav-link">Mis préstamos</a>
+      <button class="nav-link btn-salir" (click)="cerrarSesion()">Salir</button>
+    }
+  </div>
+</nav>

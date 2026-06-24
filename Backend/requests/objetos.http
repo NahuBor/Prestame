@@ -1,0 +1,112 @@
+
+### Registrar usuario --> Este usuario no esta registrado en la DB
+POST http://127.0.0.1:3000/auth/register
+Content-Type: application/json
+
+{
+    "nombre": "Gustavo Profe",
+    "email": "Gus@test.com",
+    "password": "12345678"// o elija la que desee
+}
+
+--------------------------------------------------------------
+
+# LOGOUT
+POST http://127.0.0.1:3000/auth/logout
+Content-Type: application/json
+
+
+
+### Login --> Dejamos un usuario para logearse
+POST http://127.0.0.1:3000/auth/login
+Content-Type: application/json
+
+{
+    "email": "link@test.com",
+    "password": "12345678"
+}
+
+
+### Crear objeto (requiere estar logueada)
+POST http://127.0.0.1:3000/objetos
+Content-Type: application/json
+
+{
+    "titulo": "Cuchillo eléctrico",
+    "descripcion": "Bosch 18V con baterías",
+    "categoria": "herramientas"
+}
+### 
+
+### Editar objeto - caso feliz 
+PUT http://127.0.0.1:3000/objetos/6a369c0c5a64367cd9805550
+Content-Type: application/json
+
+{
+    "titulo": "Taladro ACTUALIZADO",
+    "descripcion": "Con maletín y mechas",
+    "categoria": "otro"
+}
+
+
+
+### Traer los objetos (requiere estar logueada)
+GET http://127.0.0.1:3000/objetos
+
+
+
+### Editar objeto - caso fallo (id inexistente)
+PUT http://127.0.0.1:3000/objetos/000000000000000000000000
+Content-Type: application/json
+
+{
+    "titulo": "Esto no existe",
+    "descripcion": "Id inválido",
+    "categoria": "herramientas"
+}
+
+### Eliminar objeto - caso feliz
+DELETE http://127.0.0.1:3000/objetos/6a36e6bb1e98d11dd94e5e74
+
+
+
+
+### Eliminar objeto - caso fallo (id inexistente - Requiere Estar Logeado)
+DELETE http://127.0.0.1:3000/objetos/000000000000000000000000
+
+
+### Traer mis objetos por duenioId (Requiere estar loggeado)
+GET http://127.0.0.1:3000/objetos/duenio/6a2b1de016a755a64aed94c1
+
+
+
+### GET objeto por id (Requiere estar loggeado)
+GET http://127.0.0.1:3000/objetos/6a2d92677f05f3782a0d4a47
+
+### Traer Perfil de Usuario (Requiere estar loggeado)
+GET http://127.0.0.1:3000/auth/perfil
+
+### Categoria
+GET http://127.0.0.1:3000/objetos/categoria/herramientas
+
+### Prestamo
+GET http://127.0.0.1:3000/prestamos
+
+
+
+
+### Crear objeto (requiere estar logueada)
+POST http://127.0.0.1:3000/prestamos
+Content-Type: application/json
+
+{
+     "objetoId": "6a37013f3f0fc095979f9168",
+    "duenioId": "6a2b1de016a755a64aed94c1",
+    "tiempo_del_prestamo":"7"
+
+
+}
+
+
+
+
