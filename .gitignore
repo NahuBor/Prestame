@@ -27,8 +27,7 @@ Frontend/__screenshots__/
 # BACKEND
 
 Backend/node_modules
-Backend/src/.env
-
+.env
 
 # ==========================================
 # IDEs, Editores y Sistema (Globales)
