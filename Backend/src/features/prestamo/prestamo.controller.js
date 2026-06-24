@@ -56,6 +56,7 @@ exports.readPrestamoByIdController = async (req, res) => {
     }
 }
 
+
 exports.createPrestamoController = async (req, res) => {
     try {
         const { objetoId, tiempo_del_prestamo } = req.body
