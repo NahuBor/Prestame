@@ -14,12 +14,11 @@ exports.readPrestamosController = async (req, res) => {
     }
 }
 
-// ✅ CAMBIADO: ahora devuelve 200 con array vacío si no hay préstamos
 exports.readPrestamosByDuenioController = async (req, res) => {
     try {
         const duenioId = req.params.id
         const prestamos = await prestamoService.getPrestamosByDuenioService(duenioId)
-        // Siempre devolver 200, incluso si está vacío
+
         res.status(200).send(prestamos || [])
     } catch (error) {
         console.log("Error readPrestamosByDuenio")
@@ -27,12 +26,12 @@ exports.readPrestamosByDuenioController = async (req, res) => {
     }
 }
 
-// ✅ CAMBIADO: ahora devuelve 200 con array vacío si no hay préstamos
+
 exports.readPrestamosBySolicitanteController = async (req, res) => {
     try {
         const solicitanteId = req.params.id
         const prestamos = await prestamoService.getPrestamosBySolicitanteService(solicitanteId)
-        // Siempre devolver 200, incluso si está vacío
+
         res.status(200).send(prestamos || [])
     } catch (error) {
         console.log("Error readPrestamosBySolicitante")
@@ -102,11 +101,9 @@ exports.updateEstadoPrestamoController = async (req, res) => {
     }
 }
 
-// ============================================
-// SOLICITAR DEVOLUCIÓN CONTROLLER
-// ============================================
+
 exports.solicitarDevolucionController = async (req, res) => {
-  try {
+    try {
     const prestamoId = req.params.id;
     let usuarioId = req.session.userId;
     
@@ -116,9 +113,6 @@ exports.solicitarDevolucionController = async (req, res) => {
       usuarioId = String(usuarioId);
     }
     
-    console.log('=== CONTROLLER SOLICITAR DEVOLUCIÓN ===');
-    console.log('prestamoId:', prestamoId);
-    console.log('usuarioId normalizado:', usuarioId);
 
     if (!usuarioId) {
       return res.status(401).send({ code: 401, message: 'Usuario no autenticado' });
@@ -135,14 +129,12 @@ exports.solicitarDevolucionController = async (req, res) => {
 
     res.status(200).send(resultado);
   } catch (error) {
-    console.log("Error solicitarDevolucionController", error);
+    console.log("Error solicitarDevolucionController");
     res.status(500).send({ code: 500, message: "Error al solicitar devolución" });
   }
 };
 
-// ============================================
-// CONFIRMAR DEVOLUCIÓN CONTROLLER
-// ============================================
+
 exports.confirmarDevolucionController = async (req, res) => {
   try {
     const prestamoId = req.params.id;
@@ -153,11 +145,7 @@ exports.confirmarDevolucionController = async (req, res) => {
     } else if (usuarioId) {
       usuarioId = String(usuarioId);
     }
-    
-    console.log('=== CONTROLLER CONFIRMAR DEVOLUCIÓN ===');
-    console.log('prestamoId:', prestamoId);
-    console.log('usuarioId normalizado:', usuarioId);
-    console.log('Tipo de usuarioId:', typeof usuarioId);
+
 
     if (!usuarioId) {
       return res.status(401).send({ code: 401, message: 'Usuario no autenticado' });
@@ -174,7 +162,7 @@ exports.confirmarDevolucionController = async (req, res) => {
 
     res.status(200).send(resultado);
   } catch (error) {
-    console.log("Error confirmarDevolucionController", error);
+    console.log("Error confirmarDevolucionController");
     res.status(500).send({ code: 500, message: "Error al confirmar devolución" });
   }
 };

@@ -15,9 +15,9 @@ export class AuthService {
 
   constructor(private http: HttpClient) {
     this.autoCheckSession()
-   }
+  }
 
-   private autoCheckSession() {
+  private autoCheckSession() {
     this.checkSessionService().subscribe({
       next: (isSessionActive) => {
         if (isSessionActive) {
